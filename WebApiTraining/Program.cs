@@ -1,5 +1,7 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApiTraining.Data.Data;
+using WebApiTraining.Data.Entities;
+using WebApiTraining.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,5 +47,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
+
+app.MapMaintainerEndpoints();
+app.MapPlatformEndpoints();
+app.MapSimulatorEndpoints();
+
+
 
 app.Run();
