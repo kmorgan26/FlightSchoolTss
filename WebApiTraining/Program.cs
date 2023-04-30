@@ -1,7 +1,26 @@
+using Microsoft.EntityFrameworkCore;
+using WebApiTraining.Data.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+#region connection strings and contexts
+//Connection Strings are stored in the json file in User Secrets on development machines
+
+var connectionString = builder.Configuration.GetConnectionString("FstssDataConnectionString");
+builder.Services.AddDbContext<FstssDataContext>(options =>
+{
+    options.UseSqlServer(connectionString);
+});
+
+var identityConnectionString = builder.Configuration.GetConnectionString("FstssIdentityConnectionString");
+builder.Services.AddDbContext<FstssIdentityContext>(options =>
+{
+    options.UseSqlServer(identityConnectionString);
+});
+
+#endregion
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -17,7 +36,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
