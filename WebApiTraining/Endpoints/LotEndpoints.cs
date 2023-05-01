@@ -9,7 +9,7 @@ public static class LotEndpoints
 {
     public static void MapLotEndpoints (this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("/api/Lot").WithTags(nameof(Lot));
+        var group = routes.MapGroup("/api/lot").WithTags(nameof(Lot));
 
         group.MapGet("/", async (FstssDataContext db) =>
         {
@@ -47,7 +47,7 @@ public static class LotEndpoints
         {
             db.Lots.Add(lot);
             await db.SaveChangesAsync();
-            return TypedResults.Created($"/api/Lot/{lot.Id}",lot);
+            return TypedResults.Created($"/api/lot/{lot.Id}",lot);
         })
         .WithName("CreateLot")
         .WithOpenApi();
