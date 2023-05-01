@@ -51,6 +51,9 @@ app.UseCors("AllowAll");
 app.MapMaintainerEndpoints();
 app.MapPlatformEndpoints();
 app.MapSimulatorEndpoints();
+app.MapLotEndpoints();
+
+app.MapLotEndpoints();
 
 
 
