@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApiTraining.Data.Data;
 
@@ -10,9 +11,11 @@ using WebApiTraining.Data.Data;
 namespace WebApiTraining.Data.Migrations
 {
     [DbContext(typeof(FstssDataContext))]
-    partial class FstssDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230501183405_AddLots")]
+    partial class AddLots
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
