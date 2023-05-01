@@ -1,36 +1,45 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.OpenApi;
+using Microsoft.EntityFrameworkCore;
 using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Entities;
+using WebApiTraining.DTOs.Maintainer;
+
 namespace WebApiTraining.Endpoints;
 
 public static class MaintainerEndpoints
 {
-    public static void MapMaintainerEndpoints (this IEndpointRouteBuilder routes)
+    public static void MapMaintainerEndpoints(this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup("/api/maintainer").WithTags(nameof(Maintainer));
 
-        group.MapGet("/", async (FstssDataContext db) =>
+        group.MapGet("/", async (FstssDataContext db, IMapper mapper) =>
         {
-            return await db.Maintainers.ToListAsync();
+            var maintainers = await db.Maintainers.ToListAsync();
+            return mapper.Map<List<MaintainerDto>>(maintainers);
         })
         .WithName("GetAllMaintainers")
         .WithOpenApi();
 
-        group.MapGet("/{id}", async Task<Results<Ok<Maintainer>, NotFound>> (int id, FstssDataContext db) =>
+        group.MapGet("/{id}", async Task<Results<Ok<MaintainerDto>, NotFound>> (int id, FstssDataContext db, IMapper mapper) =>
         {
-            return await db.Maintainers.AsNoTracking()
-                .FirstOrDefaultAsync(model => model.Id == id)
-                is Maintainer model
-                    ? TypedResults.Ok(model)
-                    : TypedResults.NotFound();
+            var maintainer = await db.Maintainers.AsNoTracking()
+                .FirstOrDefaultAsync(model => model.Id == id);
+
+            if (maintainer == null) return TypedResults.NotFound();
+
+            var result = mapper.Map<MaintainerDto>(maintainer);
+
+            return TypedResults.Ok(result);
+
         })
         .WithName("GetMaintainerById")
         .WithOpenApi();
 
-        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, Maintainer maintainer, FstssDataContext db) =>
+        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, MaintainerDto maintainerDto, FstssDataContext db, IMapper mapper) =>
         {
+            var maintainer = mapper.Map<Maintainer>(maintainerDto);
+
             var affected = await db.Maintainers
                 .Where(model => model.Id == id)
                 .ExecuteUpdateAsync(setters => setters
@@ -42,11 +51,13 @@ public static class MaintainerEndpoints
         .WithName("UpdateMaintainer")
         .WithOpenApi();
 
-        group.MapPost("/", async (Maintainer maintainer, FstssDataContext db) =>
+        group.MapPost("/", async (CreateMaintainerDto maintainerDto, FstssDataContext db, IMapper mapper) =>
         {
+            var maintainer = mapper.Map<Maintainer>(maintainerDto);
             db.Maintainers.Add(maintainer);
+            
             await db.SaveChangesAsync();
-            return TypedResults.Created($"/api/maintainer/{maintainer.Id}",maintainer);
+            return TypedResults.Created($"/api/maintainer/{maintainer.Id}", maintainer);
         })
         .WithName("CreateMaintainer")
         .WithOpenApi();
