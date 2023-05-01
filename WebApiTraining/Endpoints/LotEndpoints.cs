@@ -35,7 +35,6 @@ public static class LotEndpoints
                 .Where(model => model.Id == id)
                 .ExecuteUpdateAsync(setters => setters
                   .SetProperty(m => m.PlatformId, lot.PlatformId)
-                  .SetProperty(m => m.Id, lot.Id)
                   .SetProperty(m => m.Name, lot.Name)
                 );
 
