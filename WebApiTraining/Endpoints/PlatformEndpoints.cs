@@ -34,7 +34,7 @@ public static class PlatformEndpoints
         .WithName("GetPlatformById")
         .WithOpenApi();
 
-        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, PlatformDto platformDto, FstssDataContext db, IMapper mapper) =>
+        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, PlatformDto platformDto, FstssDataContext db) =>
         {
             var affected = await db.Platforms
                 .Where(model => model.Id == id)
