@@ -53,8 +53,4 @@ app.MapPlatformEndpoints();
 app.MapSimulatorEndpoints();
 app.MapLotEndpoints();
 
-app.MapLotEndpoints();
-
-
-
 app.Run();
