@@ -19,11 +19,14 @@ namespace WebApiTraining.Data.Data
             modelBuilder.ApplyConfiguration(new MaintainerConfiguration());
             modelBuilder.ApplyConfiguration(new PlatformConfiguration());
             modelBuilder.ApplyConfiguration(new SimulatorConfiguration());
+            modelBuilder.ApplyConfiguration(new LotConfiguration());
         }
 
         public DbSet<Maintainer> Maintainers { get; set; }
         public DbSet<Platform> Platforms { get; set; }
         public DbSet<Simulator> Simulators { get; set; }
+        public DbSet<Lot> Lots { get; set; }
+
     }
     public class FstssDataContextFactory : IDesignTimeDbContextFactory<FstssDataContext>
     {
