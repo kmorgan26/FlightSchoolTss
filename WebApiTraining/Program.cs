@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebApiTraining.Configurations;
 using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Endpoints;
@@ -25,6 +26,8 @@ builder.Services.AddDbContext<FstssIdentityContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAutoMapper(typeof(MapperConfig));
+
 
 builder.Services.AddCors(options =>
 {
