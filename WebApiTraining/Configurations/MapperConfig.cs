@@ -2,6 +2,7 @@
 using WebApiTraining.Data.Entities;
 using WebApiTraining.DTOs.Maintainer;
 using WebApiTraining.DTOs.Platform;
+using WebApiTraining.DTOs.Simulator;
 
 namespace WebApiTraining.Configurations;
 
@@ -14,6 +15,9 @@ public class MapperConfig : Profile
 
         CreateMap<Platform, PlatformDto>().ReverseMap();
         CreateMap<Platform, CreatePlatformDto>().ReverseMap();
+
+        CreateMap<Simulator, SimulatorDto>().ReverseMap();
+        CreateMap<Simulator, CreateSimulatorDto>().ReverseMap();
 
     }
 }
