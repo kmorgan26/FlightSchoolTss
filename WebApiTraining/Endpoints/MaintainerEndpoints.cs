@@ -36,14 +36,12 @@ public static class MaintainerEndpoints
         .WithName("GetMaintainerById")
         .WithOpenApi();
 
-        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, MaintainerDto maintainerDto, FstssDataContext db, IMapper mapper) =>
+        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, MaintainerDto maintainerDto, FstssDataContext db) =>
         {
-            var maintainer = mapper.Map<Maintainer>(maintainerDto);
-
             var affected = await db.Maintainers
                 .Where(model => model.Id == id)
                 .ExecuteUpdateAsync(setters => setters
-                  .SetProperty(m => m.Name, maintainer.Name)
+                  .SetProperty(m => m.Name, maintainerDto.Name)
                 );
 
             return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
@@ -57,7 +55,9 @@ public static class MaintainerEndpoints
             db.Maintainers.Add(maintainer);
             
             await db.SaveChangesAsync();
-            return TypedResults.Created($"/api/maintainer/{maintainer.Id}", maintainer);
+
+            var result = mapper.Map<MaintainerDto>(maintainer);
+            return TypedResults.Created($"/api/maintainer/{maintainer.Id}", result);
         })
         .WithName("CreateMaintainer")
         .WithOpenApi();
