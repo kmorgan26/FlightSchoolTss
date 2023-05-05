@@ -5,9 +5,9 @@ using WebApiTraining.Data.Interfaces;
 
 namespace WebApiTraining.Data.Repositories;
 
-public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity, IDisposable
+public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
 {
-    private readonly FstssDataContext _context;
+    protected readonly FstssDataContext _context;
     private readonly DbSet<TEntity> _dbSet;
     public GenericRepository(FstssDataContext context)
     {
@@ -17,6 +17,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     public async Task<TEntity> AddAsync(TEntity entity)
     {
         await _dbSet.AddAsync(entity);
+        await _context.SaveChangesAsync();
         return entity;
     }
     public async Task DeleteAsync(int id)
@@ -26,6 +27,7 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         {
             _dbSet.Remove(entity);
         }
+        await _context.SaveChangesAsync();
     }
     public async Task<TEntity> GetAsync(int? id)
     {
@@ -43,15 +45,11 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
             return entity;
         }
         _dbSet.Update(entity);
+        await _context.SaveChangesAsync();
         return entity;
     }
     public async Task<bool> Exists(int id)
     {
         return await _dbSet.AnyAsync(e => e.Id == id);
-    }
-    public void Dispose()
-    {
-        _context.SaveChangesAsync().Dispose();
-        GC.SuppressFinalize(this);
     }
 }

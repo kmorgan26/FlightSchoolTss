@@ -2,6 +2,8 @@
 using WebApiTraining.Configurations;
 using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Entities;
+using WebApiTraining.Data.Interfaces;
+using WebApiTraining.Data.Repositories;
 using WebApiTraining.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +30,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
+builder.Services.AddScoped<IMaintainerRepository, MaintainerRepository>();
+builder.Services.AddScoped<IPlatformRepository, PlatformRepository>();
+builder.Services.AddScoped<ISimulatorRepository, SimulatorRepository>();
 
 builder.Services.AddCors(options =>
 {
