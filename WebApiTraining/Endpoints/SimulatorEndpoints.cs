@@ -27,9 +27,7 @@ public static class SimulatorEndpoints
             var simulator = await db.Simulators.AsNoTracking()
                 .FirstOrDefaultAsync(model => model.Id == id);
 
-            var result = mapper.Map<SimulatorDto>(simulator);
-
-            return simulator is null ? TypedResults.NotFound() : TypedResults.Ok(result);
+            return simulator is null ? TypedResults.NotFound() : TypedResults.Ok(mapper.Map<SimulatorDto>(simulator));
 
         })
         .WithName("GetSimulatorById")

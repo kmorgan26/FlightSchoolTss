@@ -26,9 +26,7 @@ public static class LotEndpoints
             var lot = await db.Lots.AsNoTracking()
                 .FirstOrDefaultAsync(model => model.Id == id);
 
-            var result = mapper.Map<LotDto>(lot);
-
-            return lot is null ? TypedResults.NotFound() : TypedResults.Ok(result);
+            return lot is null ? TypedResults.NotFound() : TypedResults.Ok(mapper.Map<LotDto>(lot));
         })
         .WithName("GetLotById")
         .WithOpenApi();

@@ -26,9 +26,7 @@ public static class PlatformEndpoints
             var platform = await db.Platforms.AsNoTracking()
                 .FirstOrDefaultAsync(model => model.Id == id);
 
-            var result = mapper.Map<PlatformDto>(platform);
-
-            return platform is null ? TypedResults.NotFound() : TypedResults.Ok(result);
+            return platform is null ? TypedResults.NotFound() : TypedResults.Ok(mapper.Map<PlatformDto>(platform));
                 
         })
         .WithName("GetPlatformById")
