@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.OpenApi;
 using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Entities;
+using AutoMapper;
+using WebApiTraining.DTOs.Lot;
+
 namespace WebApiTraining.Endpoints;
 
 public static class LotEndpoints
@@ -11,31 +13,33 @@ public static class LotEndpoints
     {
         var group = routes.MapGroup("/api/lot").WithTags(nameof(Lot));
 
-        group.MapGet("/", async (FstssDataContext db) =>
+        group.MapGet("/", async (FstssDataContext db, IMapper mapper) =>
         {
-            return await db.Lots.ToListAsync();
+            var lots = await db.Lots.ToListAsync();
+            return mapper.Map<List<LotDto>>(lots);
         })
         .WithName("GetAllLots")
         .WithOpenApi();
 
-        group.MapGet("/{id}", async Task<Results<Ok<Lot>, NotFound>> (int id, FstssDataContext db) =>
+        group.MapGet("/{id}", async Task<Results<Ok<LotDto>, NotFound>> (int id, FstssDataContext db, IMapper mapper) =>
         {
-            return await db.Lots.AsNoTracking()
-                .FirstOrDefaultAsync(model => model.Id == id)
-                is Lot model
-                    ? TypedResults.Ok(model)
-                    : TypedResults.NotFound();
+            var lot = await db.Lots.AsNoTracking()
+                .FirstOrDefaultAsync(model => model.Id == id);
+
+            var result = mapper.Map<LotDto>(lot);
+
+            return lot is null ? TypedResults.NotFound() : TypedResults.Ok(result);
         })
         .WithName("GetLotById")
         .WithOpenApi();
 
-        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, Lot lot, FstssDataContext db) =>
+        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, LotDto lotDto, FstssDataContext db) =>
         {
             var affected = await db.Lots
                 .Where(model => model.Id == id)
                 .ExecuteUpdateAsync(setters => setters
-                  .SetProperty(m => m.PlatformId, lot.PlatformId)
-                  .SetProperty(m => m.Name, lot.Name)
+                  .SetProperty(m => m.PlatformId, lotDto.PlatformId)
+                  .SetProperty(m => m.Name, lotDto.Name)
                 );
 
             return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
@@ -43,11 +47,14 @@ public static class LotEndpoints
         .WithName("UpdateLot")
         .WithOpenApi();
 
-        group.MapPost("/", async (Lot lot, FstssDataContext db) =>
+        group.MapPost("/", async (CreateLotDto createLotDto, FstssDataContext db, IMapper mapper) =>
         {
+            var lot = mapper.Map<Lot>(createLotDto);
             db.Lots.Add(lot);
+
             await db.SaveChangesAsync();
-            return TypedResults.Created($"/api/lot/{lot.Id}",lot);
+            var result = mapper.Map<LotDto>(lot);
+            return TypedResults.Created($"/api/lot/{lot.Id}",result);
         })
         .WithName("CreateLot")
         .WithOpenApi();
