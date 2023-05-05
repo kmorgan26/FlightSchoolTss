@@ -1,4 +1,6 @@
-﻿namespace WebApiTraining.DTOs.Platform;
+﻿using WebApiTraining.DTOs.Maintainer;
+
+namespace WebApiTraining.DTOs.Platform;
 
 public class PlatformDto
 {
@@ -6,4 +8,6 @@ public class PlatformDto
     public string Name { get; set; }
     public bool IsActive { get; set; }
     public int MaintainerId { get; set; }
+
+    public virtual MaintainerDto Maintainer { get; set; }
 }
