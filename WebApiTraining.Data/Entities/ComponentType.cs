@@ -2,7 +2,7 @@
 
 namespace WebApiTraining.Data.Entities;
 
-internal class ComponentType : BaseEntity
+public class ComponentType : BaseEntity
 {
 
 }

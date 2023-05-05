@@ -2,7 +2,7 @@
 
 namespace WebApiTraining.Data.Entities;
 
-internal class Component : BaseEntity
+public class Component : BaseEntity
 {
     public Guid UniqueIdentifier { get; set; } = Guid.NewGuid();
     public int ComponentTypeId { get; set; }
