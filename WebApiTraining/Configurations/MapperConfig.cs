@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using WebApiTraining.Data.Entities;
+using WebApiTraining.DTOs.Lot;
 using WebApiTraining.DTOs.Maintainer;
 using WebApiTraining.DTOs.Platform;
 using WebApiTraining.DTOs.Simulator;
@@ -18,6 +19,9 @@ public class MapperConfig : Profile
 
         CreateMap<Simulator, SimulatorDto>().ReverseMap();
         CreateMap<Simulator, CreateSimulatorDto>().ReverseMap();
+
+        CreateMap<Lot, LotDto>().ReverseMap();
+        CreateMap<Lot, CreateLotDto>().ReverseMap();
 
     }
 }
