@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Platform;
