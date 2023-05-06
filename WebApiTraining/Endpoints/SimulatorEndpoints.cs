@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Entities;
+using WebApiTraining.Data.Interfaces;
+using WebApiTraining.DTOs.Platform;
 using WebApiTraining.DTOs.Simulator;
 
 namespace WebApiTraining.Endpoints;
@@ -13,63 +15,62 @@ public static class SimulatorEndpoints
     {
         var group = routes.MapGroup("/api/simulator").WithTags(nameof(Simulator));
 
-        group.MapGet("/", async (FstssDataContext db, IMapper mapper) =>
+        group.MapGet("/", async (ISimulatorRepository repo, IMapper mapper) =>
         {
-            var simulators = await db.Simulators.ToListAsync();
+            var simulators = await repo.GetAllAsync();
             return mapper.Map<List<SimulatorDto>>(simulators);
         })
+        .WithTags(nameof(Simulator))
         .WithName("GetAllSimulators")
-        .WithOpenApi();
+        .Produces<List<SimulatorDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async Task<Results<Ok<SimulatorDto>, NotFound>> (int id, FstssDataContext db, IMapper mapper) =>
+        group.MapGet("/{id}", async (int id, ISimulatorRepository repo, IMapper mapper) =>
         {
-            var simulator = await db.Simulators.AsNoTracking()
-                .FirstOrDefaultAsync(model => model.Id == id);
-
-            return simulator is null ? TypedResults.NotFound() : TypedResults.Ok(mapper.Map<SimulatorDto>(simulator));
+            return await repo.GetAsync(id)
+                is Simulator model
+                    ? Results.Ok(mapper.Map<SimulatorDto>(model))
+                    : Results.NotFound();
 
         })
+        .WithTags(nameof(Simulator))
         .WithName("GetSimulatorById")
-        .WithOpenApi();
+        .Produces<SimulatorDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, SimulatorDto simulatorDto, FstssDataContext db) =>
+        group.MapPut("/{id}", async (int id, SimulatorDto simulatorDto, ISimulatorRepository repo, IMapper mapper) =>
         {
-            var affected = await db.Simulators
-                .Where(model => model.Id == id)
-                .ExecuteUpdateAsync(setters => setters
-                  .SetProperty(m => m.Alias, simulatorDto.Alias)
-                  .SetProperty(m => m.PlatformId, simulatorDto.PlatformId)
-                  .SetProperty(m => m.IsActive, simulatorDto.IsActive)
-                  .SetProperty(m => m.Name, simulatorDto.Name)
-                );
+            var foundModel = await repo.GetAsync(id);
 
-            return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
+            if (foundModel is null)
+                return Results.NotFound();
+
+            mapper.Map(simulatorDto, foundModel);
+
+            await repo.UpdateAsync(foundModel.Id);
+            return Results.NoContent();
         })
+        .WithTags(nameof(Simulator))
         .WithName("UpdateSimulator")
-        .WithOpenApi();
+        .Produces(StatusCodes.Status404NotFound)
+        .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateSimulatorDto createSimulatorDto, FstssDataContext db, IMapper mapper) =>
+        group.MapPost("/", async (CreateSimulatorDto createSimulatorDto, ISimulatorRepository repo, IMapper mapper) =>
         {
             var simulator = mapper.Map<Simulator>(createSimulatorDto);
-            db.Simulators.Add(simulator);
-
-            await db.SaveChangesAsync();
-            
-            var result = mapper.Map<SimulatorDto>(simulator);
-            return TypedResults.Created($"/api/simulator/{simulator.Id}", result);
+            await repo.AddAsync(simulator);
+            return Results.Created($"/api/Simulator/{simulator.Id}", simulator);
         })
+        .WithTags(nameof(Simulator))
         .WithName("CreateSimulator")
-        .WithOpenApi();
+        .Produces<Simulator>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async Task<Results<Ok, NotFound>> (int id, FstssDataContext db) =>
+        group.MapDelete("/{id}", async (int id, ISimulatorRepository repo) =>
         {
-            var affected = await db.Simulators
-                .Where(model => model.Id == id)
-                .ExecuteDeleteAsync();
-
-            return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
+            return await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
         })
+        .WithTags(nameof(Simulator))
         .WithName("DeleteSimulator")
-        .WithOpenApi();
+        .Produces<Simulator>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
     }
 }
