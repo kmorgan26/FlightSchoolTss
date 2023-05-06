@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
-using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Maintainer;
-using WebApiTraining.DTOs.Platform;
 
 namespace WebApiTraining.Endpoints;
 
