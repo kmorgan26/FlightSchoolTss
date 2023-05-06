@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http.HttpResults;
-using WebApiTraining.Data.Data;
+﻿using AutoMapper;
 using WebApiTraining.Data.Entities;
-using AutoMapper;
+using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Lot;
 
 namespace WebApiTraining.Endpoints;
@@ -13,59 +11,61 @@ public static class LotEndpoints
     {
         var group = routes.MapGroup("/api/lot").WithTags(nameof(Lot));
 
-        group.MapGet("/", async (FstssDataContext db, IMapper mapper) =>
+        group.MapGet("/", async (ILotRepository repo, IMapper mapper) =>
         {
-            var lots = await db.Lots.ToListAsync();
+            var lots = await repo.GetAllAsync();
             return mapper.Map<List<LotDto>>(lots);
         })
+        .WithTags(nameof(Lot))
         .WithName("GetAllLots")
-        .WithOpenApi();
+        .Produces<List<LotDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async Task<Results<Ok<LotDto>, NotFound>> (int id, FstssDataContext db, IMapper mapper) =>
+        group.MapGet("/{id}", async (int id, ILotRepository repo, IMapper mapper) =>
         {
-            var lot = await db.Lots.AsNoTracking()
-                .FirstOrDefaultAsync(model => model.Id == id);
-
-            return lot is null ? TypedResults.NotFound() : TypedResults.Ok(mapper.Map<LotDto>(lot));
+            return await repo.GetAsync(id)
+                is Lot model
+                    ? Results.Ok(mapper.Map<LotDto>(model))
+                    : Results.NotFound();
         })
+        .WithTags(nameof(Lot))
         .WithName("GetLotById")
-        .WithOpenApi();
+        .Produces<LotDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, LotDto lotDto, FstssDataContext db) =>
+        group.MapPut("/{id}", async (int id, LotDto lotDto, ILotRepository repo, IMapper mapper) =>
         {
-            var affected = await db.Lots
-                .Where(model => model.Id == id)
-                .ExecuteUpdateAsync(setters => setters
-                  .SetProperty(m => m.PlatformId, lotDto.PlatformId)
-                  .SetProperty(m => m.Name, lotDto.Name)
-                );
+            var foundModel = await repo.GetAsync(id);
 
-            return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
+            if (foundModel is null)
+                return Results.NotFound();
+
+            mapper.Map(lotDto, foundModel);
+
+            await repo.UpdateAsync(foundModel.Id);
+            return Results.NoContent();
         })
+        .WithTags(nameof(Lot))
         .WithName("UpdateLot")
-        .WithOpenApi();
+        .Produces(StatusCodes.Status404NotFound)
+        .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateLotDto createLotDto, FstssDataContext db, IMapper mapper) =>
+        group.MapPost("/", async (CreateLotDto createLotDto, ILotRepository repo, IMapper mapper) =>
         {
             var lot = mapper.Map<Lot>(createLotDto);
-            db.Lots.Add(lot);
-
-            await db.SaveChangesAsync();
-            var result = mapper.Map<LotDto>(lot);
-            return TypedResults.Created($"/api/lot/{lot.Id}",result);
+            await repo.AddAsync(lot);
+            return Results.Created($"/api/Lot/{lot.Id}", lot);
         })
+        .WithTags(nameof(Lot))
         .WithName("CreateLot")
-        .WithOpenApi();
+        .Produces<Lot>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async Task<Results<Ok, NotFound>> (int id, FstssDataContext db) =>
+        group.MapDelete("/{id}", async (int id, ILotRepository repo) =>
         {
-            var affected = await db.Lots
-                .Where(model => model.Id == id)
-                .ExecuteDeleteAsync();
-
-            return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
+            return await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
         })
+        .WithTags(nameof(Lot))
         .WithName("DeleteLot")
-        .WithOpenApi();
+        .Produces<Lot>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
     }
 }
