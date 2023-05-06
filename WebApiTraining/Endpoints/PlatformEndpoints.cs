@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
-using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Entities;
+using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Platform;
 
 namespace WebApiTraining.Endpoints;
@@ -13,62 +13,60 @@ public static class PlatformEndpoints
     {
         var group = routes.MapGroup("/api/Platform").WithTags(nameof(Platform));
 
-        group.MapGet("/", async (FstssDataContext db, IMapper mapper) =>
+        group.MapGet("/", async (IPlatformRepository repo, IMapper mapper) =>
         {
-            var platforms = await db.Platforms.ToListAsync();
+            var platforms = await repo.GetAllAsync();
             return mapper.Map<List<PlatformDto>>(platforms);
         })
+        .WithTags(nameof(Platform))
         .WithName("GetAllPlatforms")
-        .WithOpenApi();
+        .Produces<List<PlatformDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async Task<Results<Ok<PlatformDto>, NotFound>> (int id, FstssDataContext db, IMapper mapper) =>
+        group.MapGet("/{id}", async (int id, IPlatformRepository repo, IMapper mapper) =>
         {
-            var platform = await db.Platforms.AsNoTracking()
-                .FirstOrDefaultAsync(model => model.Id == id);
-
-            return platform is null ? TypedResults.NotFound() : TypedResults.Ok(mapper.Map<PlatformDto>(platform));
-                
+            return await repo.GetAsync(id)
+                is Platform model
+                    ? Results.Ok(mapper.Map<PlatformDto>(model))
+                    : Results.NotFound();
         })
+        .WithTags(nameof(Platform))
         .WithName("GetPlatformById")
-        .WithOpenApi();
+        .Produces<PlatformDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async Task<Results<Ok, NotFound>> (int id, PlatformDto platformDto, FstssDataContext db) =>
+        group.MapPut("/{id}", async (int id, PlatformDto platformDto, IPlatformRepository repo, IMapper mapper) =>
         {
-            var affected = await db.Platforms
-                .Where(model => model.Id == id)
-                .ExecuteUpdateAsync(setters => setters
-                  .SetProperty(m => m.IsActive, platformDto.IsActive)
-                  .SetProperty(m => m.Name, platformDto.Name)
-                  .SetProperty(m => m.MaintainerId, platformDto.MaintainerId)
-                );
+            var foundModel = await repo.GetAsync(id);
 
-            return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
+            if (foundModel is null)
+                return Results.NotFound();
+
+            mapper.Map(platformDto, foundModel);
+            await repo.UpdateAsync(foundModel.Id);
+            return Results.NoContent();
         })
+        .WithTags(nameof(Platform))
         .WithName("UpdatePlatform")
-        .WithOpenApi();
+        .Produces(StatusCodes.Status404NotFound)
+        .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreatePlatformDto createPlatformDto, FstssDataContext db, IMapper mapper) =>
+        group.MapPost("/", async (CreatePlatformDto createPlatformDto, IPlatformRepository repo, IMapper mapper) =>
         {
             var platform = mapper.Map<Platform>(createPlatformDto);
-            db.Platforms.Add(platform);
-            
-            await db.SaveChangesAsync();
-
-            var result = mapper.Map<PlatformDto>(platform);
-            return TypedResults.Created($"/api/Platform/{platform.Id}", result);
+            await repo.AddAsync(platform);
+            return Results.Created($"/api/Platform/{platform.Id}", platform);
         })
+        .WithTags(nameof(Platform))
         .WithName("CreatePlatform")
-        .WithOpenApi();
+        .Produces<Platform>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async Task<Results<Ok, NotFound>> (int id, FstssDataContext db) =>
+        group.MapDelete("/{id}", async (int id, IPlatformRepository repo) =>
         {
-            var affected = await db.Platforms
-                .Where(model => model.Id == id)
-                .ExecuteDeleteAsync();
-
-            return affected == 1 ? TypedResults.Ok() : TypedResults.NotFound();
+            return await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
         })
+        .WithTags(nameof(Platform))
         .WithName("DeletePlatform")
-        .WithOpenApi();
+        .Produces<Platform>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
     }
 }

@@ -5,6 +5,7 @@ using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Maintainer;
+using WebApiTraining.DTOs.Platform;
 
 namespace WebApiTraining.Endpoints;
 
@@ -19,8 +20,9 @@ public static class MaintainerEndpoints
             var maintainers = await repo.GetAllAsync();
             return mapper.Map<List<MaintainerDto>>(maintainers);
         })
+        .WithTags(nameof(Maintainer))
         .WithName("GetAllMaintainers")
-        .WithOpenApi();
+        .Produces<List<MaintainerDto>>(StatusCodes.Status200OK);
 
         group.MapGet("/{id}", async Task<Results<Ok<MaintainerDto>, NotFound>> (int id, IMaintainerRepository repo, IMapper mapper) =>
         {
@@ -33,23 +35,27 @@ public static class MaintainerEndpoints
             return TypedResults.Ok(result);
 
         })
+        .WithTags(nameof(Maintainer))
         .WithName("GetMaintainerById")
-        .WithOpenApi();
+        .Produces<MaintainerDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
 
         group.MapPut("/{id}", async (int id, MaintainerDto maintainerDto, IMaintainerRepository repo, IMapper mapper) =>
         {
             var affected = await repo.GetAsync(id);
 
-            if (affected is null) 
+            if (affected is null)
                 return Results.NotFound();
-            
+
             mapper.Map(maintainerDto, affected);
             await repo.UpdateAsync(maintainerDto.Id);
 
             return Results.NoContent();
         })
+        .WithTags(nameof(Maintainer))
         .WithName("UpdateMaintainer")
-        .WithOpenApi();
+        .Produces(StatusCodes.Status404NotFound)
+        .Produces(StatusCodes.Status204NoContent);
 
         group.MapPost("/", async (CreateMaintainerDto maintainerDto, IMaintainerRepository repo, IMapper mapper) =>
         {
@@ -57,8 +63,9 @@ public static class MaintainerEndpoints
             await repo.AddAsync(maintainer);
             return TypedResults.Created($"/api/maintainer/{maintainer.Id}", maintainerDto);
         })
+        .WithTags(nameof(Maintainer))
         .WithName("CreateMaintainer")
-        .WithOpenApi();
+        .Produces<Maintainer>(StatusCodes.Status201Created);
 
         group.MapDelete("/{id}", async (int id, IMaintainerRepository repo) =>
         {
