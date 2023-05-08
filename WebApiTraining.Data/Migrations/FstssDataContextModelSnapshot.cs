@@ -40,7 +40,7 @@ namespace WebApiTraining.Data.Migrations
 
                     b.HasIndex("PlatformId");
 
-                    b.ToTable("Lots");
+                    b.ToTable("Lots", (string)null);
 
                     b.HasData(
                         new
@@ -77,7 +77,7 @@ namespace WebApiTraining.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Maintainers");
+                    b.ToTable("Maintainers", (string)null);
 
                     b.HasData(
                         new
@@ -116,7 +116,7 @@ namespace WebApiTraining.Data.Migrations
 
                     b.HasIndex("LotId");
 
-                    b.ToTable("ManModule");
+                    b.ToTable("ManModule", (string)null);
                 });
 
             modelBuilder.Entity("WebApiTraining.Data.Entities.Platform", b =>
@@ -141,7 +141,7 @@ namespace WebApiTraining.Data.Migrations
 
                     b.HasIndex("MaintainerId");
 
-                    b.ToTable("Platforms");
+                    b.ToTable("Platforms", (string)null);
 
                     b.HasData(
                         new
@@ -227,7 +227,7 @@ namespace WebApiTraining.Data.Migrations
 
                     b.HasIndex("PlatformId");
 
-                    b.ToTable("Simulators");
+                    b.ToTable("Simulators", (string)null);
 
                     b.HasData(
                         new
