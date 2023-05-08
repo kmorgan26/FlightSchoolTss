@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
-using WebApiTraining.DTOs.Maintainer;
 using WebApiTraining.DTOs.Platform;
 
 namespace WebApiTraining.Endpoints;
@@ -60,6 +59,15 @@ public static class PlatformEndpoints
         .WithName("GetPlatformsByMaintainerId")
         .Produces<PlatformDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status204NoContent);
+
+        group.MapGet("/GetPlatformsWithSimulatorDetails", async (IPlatformRepository repo, IMapper mapper) =>
+        {
+            var platforms = await repo.GetPlatformsWithSimulatorDetailsAsync();
+            return mapper.Map<List<PlatformDetailsDto>>(platforms);
+        })
+        .WithTags(nameof(Platform))
+        .WithName("GetPlatformsWithSimulatorDetails")
+        .Produces<List<PlatformDetailsDto>>(StatusCodes.Status200OK);
 
         group.MapPost("/", async (CreatePlatformDto createPlatformDto, IPlatformRepository repo, IMapper mapper) =>
         {

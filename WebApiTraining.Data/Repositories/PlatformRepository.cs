@@ -18,4 +18,12 @@ public class PlatformRepository : GenericRepository<Platform>, IPlatformReposito
             .OrderBy(s => s.Name)
             .ToListAsync();
     }
+
+    public async Task<IEnumerable<Platform>> GetPlatformsWithSimulatorDetailsAsync()
+    {
+        return await _context.Platforms
+            .Include(i => i.Simulators)
+            .OrderBy (s => s.Name)
+            .ToListAsync();
+    }
 }
