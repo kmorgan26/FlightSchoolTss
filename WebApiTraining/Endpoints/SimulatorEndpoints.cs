@@ -33,6 +33,19 @@ public static class SimulatorEndpoints
         .Produces<SimulatorDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
+        group.MapGet("/GetByPlatform/{id}", async (int id, ISimulatorRepository repo, IMapper mapper) =>
+        {
+            return await repo.GetAllSimulatorsByPlatformIdAsync(id)
+                is List<Simulator> model
+                    ? Results.Ok(mapper.Map<List<SimulatorDto>>(model))
+                    : Results.NotFound();
+
+        })
+        .WithTags(nameof(Simulator))
+        .WithName("GetSimulatorsByPlatformId")
+        .Produces<SimulatorDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
         group.MapPut("/{id}", async (int id, SimulatorDto simulatorDto, ISimulatorRepository repo, IMapper mapper) =>
         {
             var foundModel = await repo.GetAsync(id);
