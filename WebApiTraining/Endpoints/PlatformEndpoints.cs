@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
+using WebApiTraining.DTOs.Maintainer;
 using WebApiTraining.DTOs.Platform;
 
 namespace WebApiTraining.Endpoints;
@@ -46,6 +47,18 @@ public static class PlatformEndpoints
         .WithTags(nameof(Platform))
         .WithName("UpdatePlatform")
         .Produces(StatusCodes.Status404NotFound)
+        .Produces(StatusCodes.Status204NoContent);
+
+        group.MapGet("/GetByMaintainerId/{id}", async (int id, IPlatformRepository repo, IMapper mapper) =>
+        {
+            return await repo.GetAllPlatformsByMaintainerIdAsync(id)
+                is List<Platform> model
+                    ? Results.Ok(mapper.Map<List<PlatformDto>>(model))
+                    : Results.NotFound();
+        })
+        .WithTags(nameof(Platform))
+        .WithName("GetPlatformsByMaintainerId")
+        .Produces<PlatformDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status204NoContent);
 
         group.MapPost("/", async (CreatePlatformDto createPlatformDto, IPlatformRepository repo, IMapper mapper) =>
