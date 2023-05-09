@@ -10,7 +10,7 @@ internal class MaintainerConfiguration : IEntityTypeConfiguration<Maintainer>
         modelBuilder
             .HasData(
                 new Maintainer { Id=1, Name = "Flight Safety" },
-                new Maintainer { Id=2, Name = "L3Harris" },
+                new Maintainer { Id=2, Name = "CAE" },
                 new Maintainer { Id=3, Name = "AVT" }
             );
     }
