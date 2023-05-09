@@ -1,12 +1,24 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using WebApiTraining.Data.Configurations;
 
 namespace WebApiTraining.Data.Data
 {
     public class FstssIdentityContext : IdentityDbContext<FstssUser>
     {
-        public FstssIdentityContext(DbContextOptions options) : base(options)
+        private readonly IConfiguration _config;
+        public FstssIdentityContext(DbContextOptions options, IConfiguration config) : base(options)
         {
+            _config = config;
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new RoleConfiguration());
+            builder.ApplyConfiguration(new FstssUserConfiguration(_config));
+            builder.ApplyConfiguration(new UserRoleConfiguration());
         }
     }
 }

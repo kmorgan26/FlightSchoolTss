@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WebApiTraining.Configurations;
+using WebApiTraining.Data;
 using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.Data.Repositories;
@@ -11,16 +13,22 @@ var builder = WebApplication.CreateBuilder(args);
 //Connection Strings are stored in the json file in User Secrets on development machines
 
 var connectionString = builder.Configuration.GetConnectionString("FstssDataConnectionString");
+
 builder.Services.AddDbContext<FstssDataContext>(options =>
 {
     options.UseSqlServer(connectionString);
 });
 
 var identityConnectionString = builder.Configuration.GetConnectionString("FstssIdentityConnectionString");
+
 builder.Services.AddDbContext<FstssIdentityContext>(options =>
 {
     options.UseSqlServer(identityConnectionString);
 });
+
+builder.Services.AddIdentityCore<FstssUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<FstssIdentityContext>();
 
 #endregion
 
