@@ -7,7 +7,7 @@ public class Platform : BaseEntity
 
     public bool IsActive { get; set; }
 
-    public virtual Maintainer Maintainer { get; set; }
+    public virtual Maintainer Maintainer { get; set; } = null!;
 
     public virtual ICollection<Simulator>? Simulators { get; set; }
 

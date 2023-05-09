@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using WebApiTraining.Configurations;
 using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Entities.Auth;
@@ -54,7 +54,6 @@ builder.Services.AddAuthentication(options =>
     });
 
 #endregion
-
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

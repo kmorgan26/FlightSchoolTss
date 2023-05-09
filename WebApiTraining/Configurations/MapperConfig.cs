@@ -6,7 +6,6 @@ using WebApiTraining.DTOs.Platform;
 using WebApiTraining.DTOs.Simulator;
 
 namespace WebApiTraining.Configurations;
-
 public class MapperConfig : Profile
 {
     public MapperConfig()

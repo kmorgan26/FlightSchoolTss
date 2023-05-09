@@ -7,10 +7,7 @@ namespace WebApiTraining.Data.Repositories;
 
 public class SimulatorRepository : GenericRepository<Simulator>, ISimulatorRepository
 {
-    public SimulatorRepository(FstssDataContext context) : base(context)
-    {
-
-    }
+    public SimulatorRepository(FstssDataContext context) : base(context){}
     public async Task<IEnumerable<Simulator>> GetAllSimulatorsByPlatformIdAsync(int platformId)
     {
         return await _context.Simulators

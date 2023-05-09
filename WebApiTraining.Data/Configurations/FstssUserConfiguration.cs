@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using WebApiTraining.Data.Entities.Auth;
 
 namespace WebApiTraining.Data.Configurations;
-
 internal class FstssUserConfiguration : IEntityTypeConfiguration<FstssUser>
 {
     private readonly IConfiguration _config;

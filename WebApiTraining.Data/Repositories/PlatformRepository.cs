@@ -6,10 +6,7 @@ using WebApiTraining.Data.Interfaces;
 namespace WebApiTraining.Data.Repositories;
 public class PlatformRepository : GenericRepository<Platform>, IPlatformRepository
 {
-    public PlatformRepository(FstssDataContext context) : base(context)
-    {
-        
-    }
+    public PlatformRepository(FstssDataContext context) : base(context){}
 
     public async Task<IEnumerable<Platform>> GetAllPlatformsByMaintainerIdAsync(int maintainerId)
     {

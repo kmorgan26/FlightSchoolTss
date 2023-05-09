@@ -5,7 +5,6 @@ using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Maintainer;
 
 namespace WebApiTraining.Endpoints;
-
 public static class MaintainerEndpoints
 {
     public static void MapMaintainerEndpoints(this IEndpointRouteBuilder routes)

@@ -30,7 +30,10 @@
     </TypeIdentifier>
   </Class>
   <Class Name="WebApiTraining.Data.Entities.Lot">
-    <Position X="9" Y="5.75" Width="1.5" />
+    <Position X="9.5" Y="5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAQAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Entities\Lot.cs</FileName>
@@ -48,6 +51,13 @@
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Abstractions\BaseEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WebApiTraining.Data.Entities.ManModule">
+    <Position X="12.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entities\ManModule.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

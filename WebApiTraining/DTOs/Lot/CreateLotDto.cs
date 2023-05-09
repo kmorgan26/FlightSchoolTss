@@ -1,5 +1,4 @@
 ﻿namespace WebApiTraining.DTOs.Lot;
-
 public class CreateLotDto
 {
     public string Name { get; set; }

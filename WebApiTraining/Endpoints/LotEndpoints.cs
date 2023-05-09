@@ -4,7 +4,6 @@ using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Lot;
 
 namespace WebApiTraining.Endpoints;
-
 public static class LotEndpoints
 {
     public static void MapLotEndpoints (this IEndpointRouteBuilder routes)

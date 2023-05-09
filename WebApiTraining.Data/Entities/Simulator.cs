@@ -8,7 +8,7 @@ namespace WebApiTraining.Data.Entities
         public int PlatformId { get; set; }
         public bool IsActive { get; set; }
      
-        public virtual Platform Platform { get; set; }
+        public virtual Platform Platform { get; set; } = null!;
 
     }
 }

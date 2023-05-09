@@ -4,7 +4,6 @@ using WebApiTraining.Data.Data;
 using WebApiTraining.Data.Interfaces;
 
 namespace WebApiTraining.Data.Repositories;
-
 public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
 {
     protected readonly FstssDataContext _context;

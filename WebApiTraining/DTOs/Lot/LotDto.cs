@@ -1,7 +1,6 @@
 ﻿using WebApiTraining.DTOs.Platform;
 
 namespace WebApiTraining.DTOs.Lot;
-
 public class LotDto
 {
     public int Id { get; set; }

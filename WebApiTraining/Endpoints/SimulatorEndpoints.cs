@@ -4,7 +4,6 @@ using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Simulator;
 
 namespace WebApiTraining.Endpoints;
-
 public static class SimulatorEndpoints
 {
     public static void MapSimulatorEndpoints(this IEndpointRouteBuilder routes)

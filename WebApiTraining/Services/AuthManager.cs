@@ -7,7 +7,6 @@ using WebApiTraining.Data.Entities.Auth;
 using WebApiTraining.DTOs.Authentication;
 
 namespace WebApiTraining.Services;
-
 public class AuthManager : IAuthManager
 {
     private readonly UserManager<FstssUser> _userManager;
