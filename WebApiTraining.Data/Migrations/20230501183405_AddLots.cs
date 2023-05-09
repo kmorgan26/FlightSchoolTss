@@ -39,7 +39,7 @@ namespace WebApiTraining.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ManModule",
+                name: "ManModules",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -49,9 +49,9 @@ namespace WebApiTraining.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ManModule", x => x.Id);
+                    table.PrimaryKey("PK_ManModules", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ManModule_Lots_LotId",
+                        name: "FK_ManModules_Lots_LotId",
                         column: x => x.LotId,
                         principalTable: "Lots",
                         principalColumn: "Id",
@@ -415,8 +415,8 @@ namespace WebApiTraining.Data.Migrations
                 column: "PlatformId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ManModule_LotId",
-                table: "ManModule",
+                name: "IX_ManModules_LotId",
+                table: "ManModules",
                 column: "LotId");
         }
 
@@ -424,7 +424,7 @@ namespace WebApiTraining.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ManModule");
+                name: "ManModules");
 
             migrationBuilder.DropTable(
                 name: "Lots");
