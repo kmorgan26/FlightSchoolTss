@@ -12,6 +12,7 @@ public class MaintainerRepository : GenericRepository<Maintainer>, IMaintainerRe
     {
         return await _context.Maintainers
             .Include(i => i.Platforms)
+            .ThenInclude(i => i.Simulators)
             .OrderBy(s => s.Name)
             .ToListAsync();
     }

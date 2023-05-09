@@ -4,5 +4,5 @@ namespace WebApiTraining.DTOs.Maintainer;
 
 public class MaintainerDetailsDto : MaintainerDto
 {
-    public virtual List<PlatformDto> Platforms { get; set; } = null!;
+    public virtual List<PlatformDetailsDto> Platforms { get; set; } = null!;
 }
