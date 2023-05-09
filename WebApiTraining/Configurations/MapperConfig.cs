@@ -13,6 +13,8 @@ public class MapperConfig : Profile
     {
         CreateMap<Maintainer, MaintainerDto>().ReverseMap();
         CreateMap<Maintainer, CreateMaintainerDto>().ReverseMap();
+        CreateMap<Maintainer, MaintainerDetailsDto>()
+            .ForMember(i => i.Platforms, x => x.MapFrom(maintainer => maintainer.Platforms));
 
         CreateMap<ManModule, ManModuleDto>().ReverseMap();
         CreateMap<ManModule, CreateManModuleDto>().ReverseMap();
