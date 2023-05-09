@@ -4,6 +4,7 @@ using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Maintainer;
 using WebApiTraining.DTOs.ManModule;
+using WebApiTraining.DTOs.Platform;
 
 namespace WebApiTraining.Endpoints;
 public static class MaintainerEndpoints
@@ -33,6 +34,15 @@ public static class MaintainerEndpoints
         .WithName("GetMaintainerById")
         .Produces<MaintainerDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
+
+        group.MapGet("/GetMaintainersWithPlatformDetails", async (IMaintainerRepository repo, IMapper mapper) =>
+        {
+            var maintainers = await repo.GetMaintainersWithPlatformDetailsAsync();
+            return mapper.Map<List<MaintainerDetailsDto>>(maintainers);
+        })
+        .WithTags(nameof(Maintainer))
+        .WithName("GetMaintainersWithPlatformDetails")
+        .Produces<List<MaintainerDetailsDto>>(StatusCodes.Status200OK);
 
         group.MapPut("/{id}", async (int id, MaintainerDto maintainerDto, IMaintainerRepository repo, IMapper mapper) =>
         {
