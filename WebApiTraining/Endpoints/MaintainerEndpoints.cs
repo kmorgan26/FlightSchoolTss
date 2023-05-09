@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Maintainer;
+using WebApiTraining.DTOs.ManModule;
 
 namespace WebApiTraining.Endpoints;
 public static class MaintainerEndpoints
@@ -20,15 +21,12 @@ public static class MaintainerEndpoints
         .WithName("GetAllMaintainers")
         .Produces<List<MaintainerDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async Task<Results<Ok<MaintainerDto>, NotFound>> (int id, IMaintainerRepository repo, IMapper mapper) =>
+        group.MapGet("/{id}", async (int id, IMaintainerRepository repo, IMapper mapper) =>
         {
-            var maintainer = await repo.GetAsync(id);
-
-            if (maintainer == null) return TypedResults.NotFound();
-
-            var result = mapper.Map<MaintainerDto>(maintainer);
-
-            return TypedResults.Ok(result);
+            return await repo.GetAsync(id)
+                is Maintainer model
+                    ? Results.Ok(mapper.Map<MaintainerDto>(model))
+                    : Results.NotFound();
 
         })
         .WithTags(nameof(Maintainer))
