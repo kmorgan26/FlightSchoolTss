@@ -2,6 +2,7 @@
 using WebApiTraining.Data.Entities;
 using WebApiTraining.DTOs.Lot;
 using WebApiTraining.DTOs.Maintainer;
+using WebApiTraining.DTOs.ManModule;
 using WebApiTraining.DTOs.Platform;
 using WebApiTraining.DTOs.Simulator;
 
@@ -12,6 +13,9 @@ public class MapperConfig : Profile
     {
         CreateMap<Maintainer, MaintainerDto>().ReverseMap();
         CreateMap<Maintainer, CreateMaintainerDto>().ReverseMap();
+
+        CreateMap<ManModule, ManModuleDto>().ReverseMap();
+        CreateMap<ManModule, CreateManModuleDto>().ReverseMap();
 
         CreateMap<Platform, PlatformDto>().ReverseMap();
         CreateMap<Platform, CreatePlatformDto>().ReverseMap();
