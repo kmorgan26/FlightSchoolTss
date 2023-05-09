@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Configuration;
+using WebApiTraining.Data.Entities.Auth;
 
 namespace WebApiTraining.Data.Configurations;
 
