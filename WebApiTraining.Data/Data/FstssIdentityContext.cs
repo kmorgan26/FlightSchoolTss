@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebApiTraining.Data.Data
 {
-    public class FstssIdentityContext : IdentityDbContext
+    public class FstssIdentityContext : IdentityDbContext<FstssUser>
     {
         public FstssIdentityContext(DbContextOptions options) : base(options)
         {
