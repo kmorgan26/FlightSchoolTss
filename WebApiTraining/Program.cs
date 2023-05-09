@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using WebApiTraining.Configurations;
-using WebApiTraining.Data;
 using WebApiTraining.Data.Data;
+using WebApiTraining.Data.Entities.Auth;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.Data.Repositories;
 using WebApiTraining.Endpoints;
+using WebApiTraining.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +34,25 @@ builder.Services.AddIdentityCore<FstssUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<FstssIdentityContext>();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["JwtSettings:Audience"],
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]!)),
+        };
+    });
+
 #endregion
 
 
@@ -41,6 +64,7 @@ builder.Services.AddScoped<ILotRepository, LotRepository>();
 builder.Services.AddScoped<IMaintainerRepository, MaintainerRepository>();
 builder.Services.AddScoped<IPlatformRepository, PlatformRepository>();
 builder.Services.AddScoped<ISimulatorRepository, SimulatorRepository>();
+builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 builder.Services.AddCors(options =>
 {
@@ -68,5 +92,6 @@ app.MapMaintainerEndpoints();
 app.MapPlatformEndpoints();
 app.MapSimulatorEndpoints();
 app.MapLotEndpoints();
+app.MapAuthenticationEndpoints();
 
 app.Run();
