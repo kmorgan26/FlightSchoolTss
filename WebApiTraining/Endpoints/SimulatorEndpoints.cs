@@ -4,6 +4,7 @@ using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Platform;
 using WebApiTraining.DTOs.Simulator;
+using WebApiTraining.Filters;
 
 namespace WebApiTraining.Endpoints;
 public static class SimulatorEndpoints
@@ -64,17 +65,13 @@ public static class SimulatorEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateSimulatorDto createSimulatorDto, ISimulatorRepository repo, IMapper mapper, IValidator<CreateSimulatorDto> validator) =>
+        group.MapPost("/", async (CreateSimulatorDto createSimulatorDto, ISimulatorRepository repo, IMapper mapper) =>
         {
-            var validationResult = await validator.ValidateAsync(createSimulatorDto);
-
-            if (!validationResult.IsValid)
-                return Results.BadRequest(validationResult.ToDictionary());
-
             var simulator = mapper.Map<Simulator>(createSimulatorDto);
             await repo.AddAsync(simulator);
             return Results.Created($"/api/Simulator/{simulator.Id}", simulator);
         })
+        .AddEndpointFilter<ValidationFilter<CreateSimulatorDto>>()
         .WithTags(nameof(Simulator))
         .WithName("CreateSimulator")
         .Produces<Simulator>(StatusCodes.Status201Created);

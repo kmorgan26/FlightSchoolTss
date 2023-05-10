@@ -3,9 +3,7 @@ using FluentValidation;
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Lot;
-using WebApiTraining.DTOs.Maintainer;
-using WebApiTraining.DTOs.ManModule;
-using WebApiTraining.DTOs.Platform;
+using WebApiTraining.Filters;
 
 namespace WebApiTraining.Endpoints;
 public static class LotEndpoints
@@ -66,17 +64,13 @@ public static class LotEndpoints
 
 
 
-        group.MapPost("/", async (CreateLotDto createLotDto, ILotRepository repo, IMapper mapper, IValidator<CreateLotDto> validator) =>
+        group.MapPost("/", async (CreateLotDto createLotDto, ILotRepository repo, IMapper mapper) =>
         {
-            var validationResult = await validator.ValidateAsync(createLotDto);
-
-            if (!validationResult.IsValid)
-                return Results.BadRequest(validationResult.ToDictionary());
-
             var lot = mapper.Map<Lot>(createLotDto);
             await repo.AddAsync(lot);
             return Results.Created($"/api/Lot/{lot.Id}", lot);
         })
+        .AddEndpointFilter<ValidationFilter<CreateLotDto>>()
         .WithTags(nameof(Lot))
         .WithName("CreateLot")
         .Produces<Lot>(StatusCodes.Status201Created);

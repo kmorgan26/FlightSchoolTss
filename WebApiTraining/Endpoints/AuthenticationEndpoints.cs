@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using WebApiTraining.DTOs.Authentication;
+using WebApiTraining.Filters;
 using WebApiTraining.Services;
 
 namespace WebApiTraining.Endpoints;
@@ -26,32 +26,16 @@ public static class AuthenticationEndpoints
         .Produces(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status401Unauthorized);
 
-        routeBuilder.MapPost("/api/register", async (IValidator<RegisterUserDto> validator, RegisterUserDto registerUserDto, IAuthManager authManager) =>
+        routeBuilder.MapPost("/api/register", async (RegisterUserDto registerUserDto, IAuthManager authManager) =>
         {
-            var validationResult = await validator.ValidateAsync(registerUserDto);
-
-            if (!validationResult.IsValid)
-                return Results.BadRequest(validationResult.ToDictionary());
-
             var response = await authManager.Register(registerUserDto);
 
             if (!response.Any())
                 return Results.Ok();
-
-            var errors = new List<ErrorResponseDto>();
             
-            foreach (var error in response)
-            {
-                errors.Add(new ErrorResponseDto
-                {
-                    Code = error.Code,
-                    Description = error.Description
-                });
-            }
-
-            return Results.BadRequest(errors);
-
+            return Results.BadRequest();
         })
+        .AddEndpointFilter<ValidationFilter<RegisterUserDto>>()
         .AllowAnonymous()
         .WithTags("Authentication")
         .WithName("Register")

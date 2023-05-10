@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
-using WebApiTraining.DTOs.Lot;
-using WebApiTraining.DTOs.Maintainer;
 using WebApiTraining.DTOs.ManModule;
-using WebApiTraining.DTOs.Platform;
+using WebApiTraining.Filters;
 
 namespace WebApiTraining.Endpoints;
 
@@ -55,17 +52,13 @@ public static class ManModuleEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateManModuleDto createManModuleDto, IManModuleRepository repo, IMapper mapper, IValidator<CreateManModuleDto> validator) =>
+        group.MapPost("/", async (CreateManModuleDto createManModuleDto, IManModuleRepository repo, IMapper mapper) =>
         {
-            var validationResult = await validator.ValidateAsync(createManModuleDto);
-
-            if (!validationResult.IsValid)
-                return Results.BadRequest(validationResult.ToDictionary());
-
             var manModule = mapper.Map<ManModule>(createManModuleDto);
             await repo.AddAsync(manModule);
             return TypedResults.Created($"/api/manmodule/{manModule.Id}", createManModuleDto);
         })
+        .AddEndpointFilter<ValidationFilter<CreateManModuleDto>>()
         .WithTags(nameof(ManModule))
         .WithName("CreateManModule")
         .Produces<ManModule>(StatusCodes.Status201Created);

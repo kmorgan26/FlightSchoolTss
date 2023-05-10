@@ -11,6 +11,7 @@ using WebApiTraining.Data.Entities.Auth;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.Data.Repositories;
 using WebApiTraining.Endpoints;
+using WebApiTraining.Filters;
 using WebApiTraining.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -78,6 +79,7 @@ builder.Services.AddScoped<IManModuleRepository, ManModuleRepository>();
 builder.Services.AddScoped<IPlatformRepository, PlatformRepository>();
 builder.Services.AddScoped<ISimulatorRepository, SimulatorRepository>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
+
 
 builder.Services.AddCors(options =>
 {

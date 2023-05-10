@@ -4,6 +4,7 @@ using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.ManModule;
 using WebApiTraining.DTOs.Platform;
+using WebApiTraining.Filters;
 
 namespace WebApiTraining.Endpoints;
 
@@ -71,17 +72,13 @@ public static class PlatformEndpoints
         .WithName("GetPlatformsWithSimulatorDetails")
         .Produces<List<PlatformDetailsDto>>(StatusCodes.Status200OK);
 
-        group.MapPost("/", async (CreatePlatformDto createPlatformDto, IPlatformRepository repo, IMapper mapper, IValidator<CreatePlatformDto> validator) =>
+        group.MapPost("/", async (CreatePlatformDto createPlatformDto, IPlatformRepository repo, IMapper mapper) =>
         {
-            var validationResult = await validator.ValidateAsync(createPlatformDto);
-
-            if (!validationResult.IsValid)
-                return Results.BadRequest(validationResult.ToDictionary());
-
             var platform = mapper.Map<Platform>(createPlatformDto);
             await repo.AddAsync(platform);
             return Results.Created($"/api/Platform/{platform.Id}", platform);
         })
+        .AddEndpointFilter<ValidationFilter<CreatePlatformDto>>()
         .WithTags(nameof(Platform))
         .WithName("CreatePlatform")
         .Produces<Platform>(StatusCodes.Status201Created);

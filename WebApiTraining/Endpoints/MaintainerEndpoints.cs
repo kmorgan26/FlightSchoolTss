@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation;
-using Microsoft.AspNetCore.Http.HttpResults;
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
+using WebApiTraining.DTOs.Lot;
 using WebApiTraining.DTOs.Maintainer;
-using WebApiTraining.DTOs.ManModule;
-using WebApiTraining.DTOs.Platform;
+using WebApiTraining.Filters;
 
 namespace WebApiTraining.Endpoints;
 public static class MaintainerEndpoints
@@ -62,17 +61,13 @@ public static class MaintainerEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateMaintainerDto maintainerDto, IMaintainerRepository repo, IMapper mapper, IValidator<CreateMaintainerDto> validator) =>
+        group.MapPost("/", async (CreateMaintainerDto maintainerDto, IMaintainerRepository repo, IMapper mapper) =>
         {
-            var validationResult = await validator.ValidateAsync(maintainerDto);
-
-            if (!validationResult.IsValid)
-                return Results.BadRequest(validationResult.ToDictionary());
-
             var maintainer = mapper.Map<Maintainer>(maintainerDto);
             await repo.AddAsync(maintainer);
             return TypedResults.Created($"/api/maintainer/{maintainer.Id}", maintainerDto);
         })
+        .AddEndpointFilter<ValidationFilter<CreateMaintainerDto>>()
         .WithTags(nameof(Maintainer))
         .WithName("CreateMaintainer")
         .Produces<Maintainer>(StatusCodes.Status201Created);
