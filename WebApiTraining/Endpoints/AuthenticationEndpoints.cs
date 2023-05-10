@@ -22,5 +22,22 @@ public static class AuthenticationEndpoints
         .WithName("Login")
         .Produces(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status401Unauthorized);
+
+        routeBuilder.MapPost("/api/register", async (RegisterUserDto registerUserDto, IAuthManager authManager) =>
+        {
+            var response = await authManager.Register(registerUserDto);
+
+            if (response is null)
+            {
+                return Results.Unauthorized();
+            }
+
+            return Results.Ok(response);
+
+        })
+        .WithTags("Authentication")
+        .WithName("Register")
+        .Produces(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status401Unauthorized);
     }
 }

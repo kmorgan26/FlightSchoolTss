@@ -21,7 +21,7 @@ public class AuthManager : IAuthManager
 
     public async Task<AuthResponseDto> Login(LoginDto loginDto)
     {
-        _user = await _userManager.FindByEmailAsync(loginDto.UserName);
+        _user = await _userManager.FindByEmailAsync(loginDto.EmailAddress);
 
         if (_user is null)
             return default!;
@@ -39,6 +39,24 @@ public class AuthManager : IAuthManager
             Token = token,
             UserId = _user.Id,
         };
+    }
+
+    public async Task<IEnumerable<IdentityError>> Register(RegisterUserDto registerUserDto)
+    {
+        _user = new FstssUser
+        {
+            Email = registerUserDto.EmailAddress,
+            UserName = registerUserDto.EmailAddress,
+            FirstName = registerUserDto.FirstName,
+            LastName = registerUserDto.LastName,
+        };
+
+        var result = await _userManager.CreateAsync(_user, registerUserDto.Password);
+
+        if (result.Succeeded)
+            await _userManager.AddToRoleAsync(_user, "User");
+
+        return result.Errors;
     }
 
     private async Task<string> GenerateTokenAsync()
@@ -70,4 +88,6 @@ public class AuthManager : IAuthManager
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+
+    
 }
