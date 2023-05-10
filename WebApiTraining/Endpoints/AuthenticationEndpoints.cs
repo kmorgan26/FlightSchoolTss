@@ -18,6 +18,7 @@ public static class AuthenticationEndpoints
             return Results.Ok(response);
 
         })
+        .AllowAnonymous()
         .WithTags("Authentication")
         .WithName("Login")
         .Produces(StatusCodes.Status200OK)
@@ -27,17 +28,27 @@ public static class AuthenticationEndpoints
         {
             var response = await authManager.Register(registerUserDto);
 
-            if (response is null)
+            if (!response.Any())
+                return Results.Ok();
+
+            var errors = new List<ErrorResponseDto>();
+            
+            foreach (var error in response)
             {
-                return Results.Unauthorized();
+                errors.Add(new ErrorResponseDto
+                {
+                    Code = error.Code,
+                    Description = error.Description
+                });
             }
 
-            return Results.Ok(response);
+            return Results.BadRequest(errors);
 
         })
+        .AllowAnonymous()
         .WithTags("Authentication")
         .WithName("Register")
         .Produces(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status401Unauthorized);
+        .Produces(StatusCodes.Status400BadRequest);
     }
 }
