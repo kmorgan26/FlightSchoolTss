@@ -2,6 +2,8 @@
 using WebApiTraining.Data.Entities;
 using WebApiTraining.Data.Interfaces;
 using WebApiTraining.DTOs.Lot;
+using WebApiTraining.DTOs.ManModule;
+using WebApiTraining.DTOs.Platform;
 
 namespace WebApiTraining.Endpoints;
 public static class LotEndpoints
@@ -47,6 +49,20 @@ public static class LotEndpoints
         .WithName("UpdateLot")
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
+
+        group.MapGet("/GetManModulesByLotId/{id}", async (int id, ILotRepository repo, IMapper mapper) =>
+        {
+            return await repo.GetLotsWithManModuleDetailsByIdAsync(id)
+                is List<Lot> model
+                    ? Results.Ok(mapper.Map<List<LotDetailsDto>>(model))
+                    : Results.NotFound();
+        })
+        .WithTags(nameof(Lot))
+        .WithName("GetManModulesByLotId")
+        .Produces<LotDetailsDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status204NoContent);
+
+
 
         group.MapPost("/", async (CreateLotDto createLotDto, ILotRepository repo, IMapper mapper) =>
         {
