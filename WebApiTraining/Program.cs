@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -87,6 +88,8 @@ builder.Services.AddCors(options =>
         policy.AllowAnyHeader();
     });
 });
+
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 
