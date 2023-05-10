@@ -8,7 +8,7 @@ public class PlatformRepository : GenericRepository<Platform>, IPlatformReposito
 {
     public PlatformRepository(FstssDataContext context) : base(context){}
 
-    public async Task<IEnumerable<Platform>> GetAllPlatformsByMaintainerIdAsync(int maintainerId)
+    public async Task<IEnumerable<Platform>> GetPlatformsByMaintainerIdAsync(int maintainerId)
     {
         return await _context.Platforms
             .Where(s => s.MaintainerId == maintainerId)

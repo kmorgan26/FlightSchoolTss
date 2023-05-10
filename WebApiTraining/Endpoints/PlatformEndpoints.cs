@@ -50,7 +50,7 @@ public static class PlatformEndpoints
 
         group.MapGet("/GetByMaintainerId/{id}", async (int id, IPlatformRepository repo, IMapper mapper) =>
         {
-            return await repo.GetAllPlatformsByMaintainerIdAsync(id)
+            return await repo.GetPlatformsByMaintainerIdAsync(id)
                 is List<Platform> model
                     ? Results.Ok(mapper.Map<List<PlatformDto>>(model))
                     : Results.NotFound();
