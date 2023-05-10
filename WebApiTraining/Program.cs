@@ -59,6 +59,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Services.AddAuthorization();
 
+//lock down the entire API to Authentication===========================
 //builder.Services.AddAuthorization(options =>
 //{
 //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
