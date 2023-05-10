@@ -29,6 +29,8 @@ public class MapperConfig : Profile
 
         CreateMap<Lot, LotDto>().ReverseMap();
         CreateMap<Lot, CreateLotDto>().ReverseMap();
+        CreateMap<Lot, LotDetailsDto>()
+            .ForMember(i => i.ManModules, x => x.MapFrom(lot => lot.ManModules));
 
     }
 }
