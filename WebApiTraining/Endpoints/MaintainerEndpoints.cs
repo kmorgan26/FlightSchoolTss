@@ -68,6 +68,7 @@ public static class MaintainerEndpoints
             return TypedResults.Created($"/api/maintainer/{maintainer.Id}", maintainerDto);
         })
         .AddEndpointFilter<ValidationFilter<CreateMaintainerDto>>()
+        .AddEndpointFilter<LoggingFilter>()
         .WithTags(nameof(Maintainer))
         .WithName("CreateMaintainer")
         .Produces<Maintainer>(StatusCodes.Status201Created);
