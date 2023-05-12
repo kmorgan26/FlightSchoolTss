@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using FlightSchoolTss.Data.Configurations;
 using FlightSchoolTss.Data.Entities.Auth;
+using FlightSchoolTss.Data.Configurations.Auth;
 
 namespace FlightSchoolTss.Data.Data
 {
