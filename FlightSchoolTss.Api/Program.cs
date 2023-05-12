@@ -59,16 +59,16 @@ builder.Services.AddAuthentication(options =>
 #endregion
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
-builder.Services.AddAuthorization();
+//builder.Services.AddAuthorization();
 
 //lock down the entire API to Authentication===========================
-//builder.Services.AddAuthorization(options =>
-//{
-//    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-//        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-//        .RequireAuthenticatedUser()
-//        .Build();
-//});
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
