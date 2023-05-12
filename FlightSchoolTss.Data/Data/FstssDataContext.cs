@@ -1,8 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using Microsoft.Extensions.Configuration;
-using FlightSchoolTss.Data.Configurations;
+﻿using FlightSchoolTss.Data.Configurations;
 using FlightSchoolTss.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightSchoolTss.Data.Data
 {
@@ -12,7 +10,7 @@ namespace FlightSchoolTss.Data.Data
         {
         }
 
-        override protected void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
