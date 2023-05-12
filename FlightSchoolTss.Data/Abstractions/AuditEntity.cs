@@ -6,5 +6,5 @@ public abstract class AuditEntity
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     public string CreatedBy { get; set; } = null!;
     public DateTime? LastModifiedDate { get; set; }
-    public string LastModifiedBy { get; set; } = null!;
+    public string? LastModifiedBy { get; set; }
 }
