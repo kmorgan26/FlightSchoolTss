@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.DTOs.Lot;
 using FlightSchoolTss.DTOs.Maintainer;
 using FlightSchoolTss.Filters;
+using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FlightSchoolTss.Endpoints;
 public static class MaintainerEndpoints
@@ -13,7 +13,7 @@ public static class MaintainerEndpoints
     {
         var group = routes.MapGroup("/api/maintainer").WithTags(nameof(Maintainer));
 
-        group.MapGet("/", async (IMaintainerRepository repo, IMapper mapper) =>
+        group.MapGet("/", [AllowAnonymous] async (IMaintainerRepository repo, IMapper mapper) =>
         {
             var maintainers = await repo.GetAllAsync();
             return mapper.Map<List<MaintainerDto>>(maintainers);
