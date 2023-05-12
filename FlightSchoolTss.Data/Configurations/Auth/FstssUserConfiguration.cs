@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Configuration;
 using FlightSchoolTss.Data.Entities.Auth;
 
-namespace FlightSchoolTss.Data.Configurations;
+namespace FlightSchoolTss.Data.Configurations.Auth;
 internal class FstssUserConfiguration : IEntityTypeConfiguration<FstssUser>
 {
     private readonly IConfiguration _config;
