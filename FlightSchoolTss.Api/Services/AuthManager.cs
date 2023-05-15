@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using FlightSchoolTss.Data.Entities.Auth;
 using FlightSchoolTss.DTOs.Authentication;
+using System.Security.Cryptography;
 
 namespace FlightSchoolTss.Services;
 public class AuthManager : IAuthManager
@@ -43,19 +44,24 @@ public class AuthManager : IAuthManager
 
     public async Task<IEnumerable<IdentityError>> Register(RegisterUserDto registerUserDto)
     {
-        _user = new FstssUser
+        var userExists = _userManager.FindByEmailAsync(registerUserDto.EmailAddress);
+        var result = new IdentityResult();
+
+        if (userExists is null)
         {
-            Email = registerUserDto.EmailAddress,
-            UserName = registerUserDto.EmailAddress,
-            FirstName = registerUserDto.FirstName,
-            LastName = registerUserDto.LastName,
-        };
+            _user = new FstssUser
+            {
+                Email = registerUserDto.EmailAddress,
+                UserName = registerUserDto.EmailAddress,
+                FirstName = registerUserDto.FirstName,
+                LastName = registerUserDto.LastName,
+            };
 
-        var result = await _userManager.CreateAsync(_user, registerUserDto.Password);
+            result = await _userManager.CreateAsync(_user, registerUserDto.Password);
 
-        if (result.Succeeded)
-            await _userManager.AddToRoleAsync(_user, "User");
-
+            if (result.Succeeded)
+                await _userManager.AddToRoleAsync(_user, "User");
+        }
         return result.Errors;
     }
 
@@ -88,6 +94,22 @@ public class AuthManager : IAuthManager
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+    private string HashedPassword(string plainPassword)
+    {
+        byte[] salt = new byte[16];
+        using (var randomGenerator = RandomNumberGenerator.Create())
+        {
+            randomGenerator.GetBytes(salt);
+        }
+        var rfcPassowrd = new Rfc2898DeriveBytes(plainPassword, salt, 1000, HashAlgorithmName.SHA1);
+        byte[] rfcPasswordHash = rfcPassowrd.GetBytes(20);
 
-    
+        byte[] passwordHash = new byte[36];
+        Array.Copy(salt, 0, passwordHash, 0, 16);
+        Array.Copy(rfcPasswordHash, 0, passwordHash, 16, 20);
+
+        return Convert.ToBase64String(passwordHash);
+    }
+
+
 }

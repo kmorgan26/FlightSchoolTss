@@ -1,0 +1,17 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Color="Color.Primary" Fixed="false">
+        <MudLink Underline="Underline.None" Color="Color.Inherit" Href="/">FSTSS</MudLink>
+        <MudSpacer />
+
+        <MudLink Underline="Underline.None" Color="Color.Inherit" Href="/register">Registration</MudLink>
+    </MudAppBar>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
