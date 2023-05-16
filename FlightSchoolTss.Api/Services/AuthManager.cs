@@ -47,7 +47,7 @@ public class AuthManager : IAuthManager
         var userExists = _userManager.FindByEmailAsync(registerUserDto.EmailAddress);
         var result = new IdentityResult();
 
-        if (userExists is null)
+        if (userExists.Result is null)
         {
             _user = new FstssUser
             {
