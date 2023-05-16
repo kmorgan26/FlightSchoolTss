@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightSchoolTss.Api", "Flig
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightSchoolTss.Data", "FlightSchoolTss.Data\FlightSchoolTss.Data.csproj", "{1312BB4E-31C3-4A68-8023-042343CB3779}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightSchoolTss.UI", "FlightSchoolTss.UI\FlightSchoolTss.UI.csproj", "{BB4DC06D-BB50-46FD-A352-8F8FC072DC3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FlightSchoolTss.UI", "FlightSchoolTss.UI\FlightSchoolTss.UI.csproj", "{9F8344C9-ADB3-44F3-9C55-EEF04F76EF01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,10 @@ Global
 		{1312BB4E-31C3-4A68-8023-042343CB3779}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1312BB4E-31C3-4A68-8023-042343CB3779}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1312BB4E-31C3-4A68-8023-042343CB3779}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BB4DC06D-BB50-46FD-A352-8F8FC072DC3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BB4DC06D-BB50-46FD-A352-8F8FC072DC3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BB4DC06D-BB50-46FD-A352-8F8FC072DC3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BB4DC06D-BB50-46FD-A352-8F8FC072DC3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F8344C9-ADB3-44F3-9C55-EEF04F76EF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F8344C9-ADB3-44F3-9C55-EEF04F76EF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F8344C9-ADB3-44F3-9C55-EEF04F76EF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F8344C9-ADB3-44F3-9C55-EEF04F76EF01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

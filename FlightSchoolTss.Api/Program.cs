@@ -44,6 +44,8 @@ builder.Services.AddAuthentication(options =>
 })
     .AddJwtBearer(options =>
     {
+        options.Authority = "https://localhost:7015";
+        options.Audience = "https://localhost:7187";
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
@@ -85,10 +87,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("https://localhost:7187", "https://localhost:7015")
-            .AllowAnyOrigin()    
-            .AllowAnyHeader()
-            .AllowAnyMethod();
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
     });
 });
 
@@ -104,10 +105,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
-
-app.UseCors("AllowAll");
 
 app.MapMaintainerEndpoints();
 app.MapPlatformEndpoints();
