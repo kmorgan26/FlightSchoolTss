@@ -9,7 +9,7 @@ public class RegistrationValidationVm : AbstractValidator<RegistrationVm>
     {
         RuleFor(_ => _.FirstName).NotEmpty();
         RuleFor(_ => _.LastName).NotEmpty();
-        RuleFor(_ => _.Email).EmailAddress().NotEmpty();
+        RuleFor(_ => _.EmailAddress).EmailAddress().NotEmpty();
         RuleFor(_ => _.Password).NotEmpty().WithMessage("Your password cannot be empty")
                 .MinimumLength(6).WithMessage("Your password length must be at least 6.")
                 .MaximumLength(16).WithMessage("Your password length must not exceed 16.")

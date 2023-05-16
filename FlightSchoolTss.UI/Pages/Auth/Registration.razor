@@ -21,8 +21,8 @@
                               For="@(() => registrationModel.LastName)"
                               Immediate="true"
                               Label="Last Name" InputType="InputType.Email" />
-                <MudTextField @bind-Value="registrationModel.Email"
-                              For="@(() => registrationModel.Email)"
+                <MudTextField @bind-Value="registrationModel.EmailAddress"
+                              For="@(() => registrationModel.EmailAddress)"
                               Immediate="true"
                               Label="Email" />
                 <MudTextField @bind-Value="registrationModel.Password"
@@ -45,24 +45,26 @@
 
     RegistrationValidationVm registrationValidator = new RegistrationValidationVm();
 
-    MudForm form = null!;
+    MudForm? form;
+
     string APIErrorMessage = string.Empty;
 
     private async Task RegisterAsync()
     {
-        await form.Validate();
+        await form!.Validate();
+
         if (form.IsValid)
         {
             // invoke register API call.
             var jsonPayload = JsonSerializer.Serialize(registrationModel);
             var requestContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-
             var response = await _httpClient.PostAsync("/api/register", requestContent);
+
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
                 var errors = await response.Content
-                .ReadFromJsonAsync<Dictionary<string, List<string>>>();
+                    .ReadFromJsonAsync<Dictionary<string, List<string>>>();
+                
                 if (errors.Count > 0)
                 {
                     foreach (var item in errors)
