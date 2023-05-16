@@ -58,7 +58,7 @@
             var requestContent = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
 
-            var response = await _httpClient.PostAsync("/api/user/register", requestContent);
+            var response = await _httpClient.PostAsync("/api/register", requestContent);
             if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
             {
                 var errors = await response.Content
