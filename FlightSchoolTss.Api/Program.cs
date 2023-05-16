@@ -13,6 +13,7 @@ using FlightSchoolTss.Data.Repositories;
 using FlightSchoolTss.Endpoints;
 using FlightSchoolTss.Filters;
 using FlightSchoolTss.Services;
+using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -88,8 +89,8 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll", policy =>
     {
         policy.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
+        .AllowAnyHeader()
+        .AllowAnyMethod();
     });
 });
 
@@ -104,8 +105,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthentication();
-app.UseAuthorization();
+
 app.UseCors("AllowAll");
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
