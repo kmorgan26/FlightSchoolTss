@@ -1,19 +1,17 @@
-﻿using System.Text;
+﻿using FlightSchoolTss.Configurations;
+using FlightSchoolTss.Data.Data;
+using FlightSchoolTss.Data.Entities.Auth;
+using FlightSchoolTss.Data.Interfaces;
+using FlightSchoolTss.Data.Repositories;
+using FlightSchoolTss.Endpoints;
+using FlightSchoolTss.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using FlightSchoolTss.Configurations;
-using FlightSchoolTss.Data.Data;
-using FlightSchoolTss.Data.Entities.Auth;
-using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.Data.Repositories;
-using FlightSchoolTss.Endpoints;
-using FlightSchoolTss.Filters;
-using FlightSchoolTss.Services;
-using Microsoft.Net.Http.Headers;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
