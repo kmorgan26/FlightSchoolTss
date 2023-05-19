@@ -12,8 +12,8 @@ public class RegisterUserValidator : AbstractValidator<RegisterUserDto>
             .EmailAddress();
 
         RuleFor(i => i.Password)
-            .MinimumLength(12)
-            .MaximumLength(20);
+            .MinimumLength(6)
+            .MaximumLength(16);
 
         RuleFor(i => i.FirstName)
             .NotEmpty();
