@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.DTOs.Platform;
 using FlightSchoolTss.DTOs.Simulator;
 using FlightSchoolTss.Filters;
+using FluentValidation;
 
 namespace FlightSchoolTss.Endpoints;
 public static class SimulatorEndpoints
@@ -13,18 +12,18 @@ public static class SimulatorEndpoints
     {
         var group = routes.MapGroup("/api/simulator").WithTags(nameof(Simulator));
 
-        group.MapGet("/", async (ISimulatorRepository repo, IMapper mapper) =>
+        group.MapGet("/", async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var simulators = await repo.GetAllAsync();
+            var simulators = await unitOfWork.Simulators.GetAllAsync();
             return mapper.Map<List<SimulatorDto>>(simulators);
         })
         .WithTags(nameof(Simulator))
         .WithName("GetAllSimulators")
         .Produces<List<SimulatorDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, ISimulatorRepository repo, IMapper mapper) =>
+        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            return await repo.GetAsync(id)
+            return await unitOfWork.Simulators.GetAsync(id)
                 is Simulator model
                     ? Results.Ok(mapper.Map<SimulatorDto>(model))
                     : Results.NotFound();
@@ -35,9 +34,9 @@ public static class SimulatorEndpoints
         .Produces<SimulatorDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapGet("/GetByPlatform/{id}", async (int id, ISimulatorRepository repo, IMapper mapper) =>
+        group.MapGet("/GetByPlatform/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            return await repo.GetAllSimulatorsByPlatformIdAsync(id)
+            return await unitOfWork.Simulators.GetAllSimulatorsByPlatformIdAsync(id)
                 is List<Simulator> model
                     ? Results.Ok(mapper.Map<List<SimulatorDto>>(model))
                     : Results.NotFound();
@@ -48,16 +47,16 @@ public static class SimulatorEndpoints
         .Produces<SimulatorDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, SimulatorDto simulatorDto, ISimulatorRepository repo, IMapper mapper) =>
+        group.MapPut("/{id}", async (int id, SimulatorDto simulatorDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var foundModel = await repo.GetAsync(id);
+            var foundModel = await unitOfWork.Simulators.GetAsync(id);
 
             if (foundModel is null)
                 return Results.NotFound();
 
             mapper.Map(simulatorDto, foundModel);
 
-            await repo.UpdateAsync(foundModel.Id);
+            await unitOfWork.Simulators.UpdateAsync(foundModel.Id);
             return Results.NoContent();
         })
         .WithTags(nameof(Simulator))
@@ -65,10 +64,10 @@ public static class SimulatorEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateSimulatorDto createSimulatorDto, ISimulatorRepository repo, IMapper mapper) =>
+        group.MapPost("/", async (CreateSimulatorDto createSimulatorDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var simulator = mapper.Map<Simulator>(createSimulatorDto);
-            await repo.AddAsync(simulator);
+            await unitOfWork.Simulators.AddAsync(simulator);
             return Results.Created($"/api/Simulator/{simulator.Id}", simulator);
         })
         .AddEndpointFilter<ValidationFilter<CreateSimulatorDto>>()
@@ -76,9 +75,9 @@ public static class SimulatorEndpoints
         .WithName("CreateSimulator")
         .Produces<Simulator>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, ISimulatorRepository repo) =>
+        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
         {
-            return await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
+            return await unitOfWork.Simulators.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
         })
         .WithTags(nameof(Simulator))
         .WithName("DeleteSimulator")
