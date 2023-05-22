@@ -13,18 +13,18 @@ public static class ManModuleEndpoints
     {
         var group = routes.MapGroup("/api/manmodule").WithTags(nameof(ManModule));
 
-        group.MapGet("/", async (IManModuleRepository repo, IMapper mapper) =>
+        group.MapGet("/", async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var manModules = await repo.GetAllAsync();
+            var manModules = await unitOfWork.ManModules.GetAllAsync();
             return mapper.Map<List<ManModuleDto>>(manModules);
         })
         .WithTags(nameof(ManModule))
         .WithName("GetAllManModules")
         .Produces<List<ManModuleDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IManModuleRepository repo, IMapper mapper) =>
+        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            return await repo.GetAsync(id)
+            return await unitOfWork.ManModules.GetAsync(id)
                 is ManModule model
                     ? Results.Ok(mapper.Map<ManModuleDto>(model))
                     : Results.NotFound();
@@ -35,15 +35,15 @@ public static class ManModuleEndpoints
         .Produces<ManModuleDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, ManModuleDto manModuleDto, IManModuleRepository repo, IMapper mapper) =>
+        group.MapPut("/{id}", async (int id, ManModuleDto manModuleDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var affected = await repo.GetAsync(id);
+            var affected = await unitOfWork.ManModules.GetAsync(id);
 
             if (affected is null)
                 return Results.NotFound();
 
             mapper.Map(manModuleDto, affected);
-            await repo.UpdateAsync(manModuleDto.Id);
+            await unitOfWork.ManModules.UpdateAsync(manModuleDto.Id);
 
             return Results.NoContent();
         })
@@ -52,10 +52,10 @@ public static class ManModuleEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateManModuleDto createManModuleDto, IManModuleRepository repo, IMapper mapper) =>
+        group.MapPost("/", async (CreateManModuleDto createManModuleDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var manModule = mapper.Map<ManModule>(createManModuleDto);
-            await repo.AddAsync(manModule);
+            await unitOfWork.ManModules.AddAsync(manModule);
             return TypedResults.Created($"/api/manmodule/{manModule.Id}", createManModuleDto);
         })
         .AddEndpointFilter<ValidationFilter<CreateManModuleDto>>()
@@ -63,9 +63,9 @@ public static class ManModuleEndpoints
         .WithName("CreateManModule")
         .Produces<ManModule>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IManModuleRepository repo) =>
+        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
         {
-            return await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
+            return await unitOfWork.ManModules.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
         })
         .WithTags(nameof(ManModule))
         .WithName("DeleteManModule")

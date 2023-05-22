@@ -13,6 +13,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     public IPlatformRepository Platforms { get; private set; }
     public ILotRepository Lots { get; private set; }
     public ISimulatorRepository Simulators { get; private set; }
+    public IManModuleRepository ManModules { get; private set; }
 
     public UnitOfWork(FstssDataContext dbContext)
     {
@@ -21,6 +22,7 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         Platforms = new PlatformRepository(dbContext);
         Lots = new LotRepository(dbContext);
         Simulators = new SimulatorRepository(dbContext);
+        ManModules = new ManModuleRepository(dbContext);
     }
     public void Commit()
     {
