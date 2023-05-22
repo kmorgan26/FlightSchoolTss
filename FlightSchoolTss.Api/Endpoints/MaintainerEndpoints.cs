@@ -28,7 +28,6 @@ public static class MaintainerEndpoints
                 is Maintainer model
                     ? Results.Ok(mapper.Map<MaintainerDto>(model))
                     : Results.NotFound();
-
         })
         .WithTags(nameof(Maintainer))
         .WithName("GetMaintainerById")

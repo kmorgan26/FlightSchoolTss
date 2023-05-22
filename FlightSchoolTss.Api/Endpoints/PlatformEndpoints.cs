@@ -1,31 +1,31 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.DTOs.ManModule;
 using FlightSchoolTss.DTOs.Platform;
 using FlightSchoolTss.Filters;
+using FluentValidation;
 
 namespace FlightSchoolTss.Endpoints;
 
 public static class PlatformEndpoints
 {
+    
     public static void MapPlatformEndpoints(this IEndpointRouteBuilder routes)
     {
         var group = routes.MapGroup("/api/Platform").WithTags(nameof(Platform));
 
-        group.MapGet("/", async (IPlatformRepository repo, IMapper mapper) =>
+        group.MapGet("/", async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var platforms = await repo.GetAllAsync();
+            var platforms = await unitOfWork.Platforms.GetAllAsync();
             return mapper.Map<List<PlatformDto>>(platforms);
         })
         .WithTags(nameof(Platform))
         .WithName("GetAllPlatforms")
         .Produces<List<PlatformDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IPlatformRepository repo, IMapper mapper) =>
+        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            return await repo.GetAsync(id)
+            return await unitOfWork.Platforms.GetAsync(id)
                 is Platform model
                     ? Results.Ok(mapper.Map<PlatformDto>(model))
                     : Results.NotFound();
@@ -35,15 +35,16 @@ public static class PlatformEndpoints
         .Produces<PlatformDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, PlatformDto platformDto, IPlatformRepository repo, IMapper mapper) =>
+        group.MapPut("/{id}", async (int id, PlatformDto platformDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var foundModel = await repo.GetAsync(id);
+            var affected = await unitOfWork.Platforms.GetAsync(id);
 
-            if (foundModel is null)
+            if (affected is null)
                 return Results.NotFound();
 
-            mapper.Map(platformDto, foundModel);
-            await repo.UpdateAsync(foundModel.Id);
+            mapper.Map(platformDto, affected);
+            await unitOfWork.Platforms.UpdateAsync(platformDto.Id);
+
             return Results.NoContent();
         })
         .WithTags(nameof(Platform))
@@ -51,9 +52,9 @@ public static class PlatformEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapGet("/GetByMaintainerId/{id}", async (int id, IPlatformRepository repo, IMapper mapper) =>
+        group.MapGet("/GetByMaintainerId/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            return await repo.GetPlatformsByMaintainerIdAsync(id)
+            return await unitOfWork.Platforms.GetPlatformsByMaintainerIdAsync(id)
                 is List<Platform> model
                     ? Results.Ok(mapper.Map<List<PlatformDto>>(model))
                     : Results.NotFound();
@@ -63,19 +64,19 @@ public static class PlatformEndpoints
         .Produces<PlatformDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapGet("/GetPlatformsWithSimulatorDetails", async (IPlatformRepository repo, IMapper mapper) =>
+        group.MapGet("/GetPlatformsWithSimulatorDetails", async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var platforms = await repo.GetPlatformsWithSimulatorDetailsAsync();
+            var platforms = await unitOfWork.Platforms.GetPlatformsWithSimulatorDetailsAsync();
             return mapper.Map<List<PlatformDetailsDto>>(platforms);
         })
         .WithTags(nameof(Platform))
         .WithName("GetPlatformsWithSimulatorDetails")
         .Produces<List<PlatformDetailsDto>>(StatusCodes.Status200OK);
 
-        group.MapPost("/", async (CreatePlatformDto createPlatformDto, IPlatformRepository repo, IMapper mapper) =>
+        group.MapPost("/", async (CreatePlatformDto createPlatformDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var platform = mapper.Map<Platform>(createPlatformDto);
-            await repo.AddAsync(platform);
+            await unitOfWork.Platforms.AddAsync(platform);
             return Results.Created($"/api/Platform/{platform.Id}", platform);
         })
         .AddEndpointFilter<ValidationFilter<CreatePlatformDto>>()
@@ -83,9 +84,9 @@ public static class PlatformEndpoints
         .WithName("CreatePlatform")
         .Produces<Platform>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IPlatformRepository repo) =>
+        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
         {
-            return await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
+            return await unitOfWork.Platforms.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
         })
         .WithTags(nameof(Platform))
         .WithName("DeletePlatform")

@@ -13,5 +13,6 @@ public interface IUnitOfWork : IDisposable
     IGenericRepository<TEntity> GenericRepository<TEntity>() where TEntity : BaseEntity;
 
     IMaintainerRepository Maintainers { get; }
+    IPlatformRepository Platforms { get; }
 
 }
