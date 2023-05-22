@@ -77,7 +77,10 @@ public static class SimulatorEndpoints
 
         group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
         {
-            return await unitOfWork.Simulators.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
+            var result = await unitOfWork.Simulators.DeleteAsync(id);
+            await unitOfWork.CommitAsync();
+
+            return result == true ? Results.NoContent() : Results.NotFound();
         })
         .WithTags(nameof(Simulator))
         .WithName("DeleteSimulator")

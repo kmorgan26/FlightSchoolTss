@@ -43,6 +43,8 @@ public static class LotEndpoints
             mapper.Map(lotDto, foundModel);
 
             await unitOfWork.Lots.UpdateAsync(foundModel.Id);
+            await unitOfWork.CommitAsync();
+
             return Results.NoContent();
         })
         .WithTags(nameof(Lot))
@@ -68,6 +70,8 @@ public static class LotEndpoints
         {
             var lot = mapper.Map<Lot>(createLotDto);
             await unitOfWork.Lots.AddAsync(lot);
+            await unitOfWork.CommitAsync();
+
             return Results.Created($"/api/Lot/{lot.Id}", lot);
         })
         .AddEndpointFilter<ValidationFilter<CreateLotDto>>()
@@ -77,7 +81,10 @@ public static class LotEndpoints
 
         group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
         {
-            return await unitOfWork.Lots.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
+            var result = await unitOfWork.Lots.DeleteAsync(id);
+            await unitOfWork.CommitAsync();
+
+            return result == true ? Results.NoContent() : Results.NotFound();
         })
         .WithTags(nameof(Lot))
         .WithName("DeleteLot")

@@ -44,6 +44,7 @@ public static class ManModuleEndpoints
 
             mapper.Map(manModuleDto, affected);
             await unitOfWork.ManModules.UpdateAsync(manModuleDto.Id);
+            await unitOfWork.CommitAsync();
 
             return Results.NoContent();
         })
@@ -56,6 +57,8 @@ public static class ManModuleEndpoints
         {
             var manModule = mapper.Map<ManModule>(createManModuleDto);
             await unitOfWork.ManModules.AddAsync(manModule);
+            await unitOfWork.CommitAsync();
+
             return TypedResults.Created($"/api/manmodule/{manModule.Id}", createManModuleDto);
         })
         .AddEndpointFilter<ValidationFilter<CreateManModuleDto>>()
@@ -65,7 +68,10 @@ public static class ManModuleEndpoints
 
         group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
         {
-            return await unitOfWork.ManModules.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
+            var result = await unitOfWork.ManModules.DeleteAsync(id);
+            await unitOfWork.CommitAsync();
+
+            return result == true ? Results.NoContent() : Results.NotFound();
         })
         .WithTags(nameof(ManModule))
         .WithName("DeleteManModule")

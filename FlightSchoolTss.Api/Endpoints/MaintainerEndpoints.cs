@@ -76,7 +76,10 @@ public static class MaintainerEndpoints
 
         group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
-            return await unitOfWork.Maintainers.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
+            var result = await unitOfWork.Maintainers.DeleteAsync(id);
+            await unitOfWork.CommitAsync();
+            
+            return result == true ? Results.NoContent() : Results.NotFound();
         })
         .WithTags(nameof(Maintainer))
         .WithName("DeleteMaintainer")

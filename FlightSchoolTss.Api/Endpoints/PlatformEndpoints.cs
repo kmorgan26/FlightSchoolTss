@@ -44,6 +44,7 @@ public static class PlatformEndpoints
 
             mapper.Map(platformDto, affected);
             await unitOfWork.Platforms.UpdateAsync(platformDto.Id);
+            await unitOfWork.CommitAsync();
 
             return Results.NoContent();
         })
@@ -77,6 +78,8 @@ public static class PlatformEndpoints
         {
             var platform = mapper.Map<Platform>(createPlatformDto);
             await unitOfWork.Platforms.AddAsync(platform);
+            await unitOfWork.CommitAsync();
+
             return Results.Created($"/api/Platform/{platform.Id}", platform);
         })
         .AddEndpointFilter<ValidationFilter<CreatePlatformDto>>()
@@ -86,7 +89,10 @@ public static class PlatformEndpoints
 
         group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
         {
-            return await unitOfWork.Platforms.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
+            var result = await unitOfWork.Platforms.DeleteAsync(id);
+            await unitOfWork.CommitAsync();
+
+            return result == true ? Results.NoContent() : Results.NotFound();
         })
         .WithTags(nameof(Platform))
         .WithName("DeletePlatform")
