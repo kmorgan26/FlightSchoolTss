@@ -20,6 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("FstssDataConnectionString");
 
+//builder.Services.AddDbContextPool<FstssDataContext>(i => i.UseSqlServer(connectionString));
+
 builder.Services.AddDbContext<FstssDataContext>(options =>
 {
     options.UseSqlServer(connectionString);
@@ -81,6 +83,7 @@ builder.Services.AddScoped<IPlatformRepository, PlatformRepository>();
 builder.Services.AddScoped<ISimulatorRepository, SimulatorRepository>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 
+builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddCors(options =>
 {
