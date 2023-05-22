@@ -22,7 +22,7 @@ public static class MaintainerEndpoints
         .WithName("GetAllMaintainers")
         .Produces<List<MaintainerDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.Maintainers.GetAsync(id)
                 is Maintainer model
@@ -34,7 +34,7 @@ public static class MaintainerEndpoints
         .Produces<MaintainerDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapGet("/GetMaintainersWithPlatformDetails", async (IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/GetMaintainersWithPlatformDetails", [AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var maintainers = await unitOfWork.Maintainers.GetMaintainersWithPlatformDetailsAsync();
             return mapper.Map<List<MaintainerDetailsDto>>(maintainers);
@@ -43,7 +43,7 @@ public static class MaintainerEndpoints
         .WithName("GetMaintainersWithPlatformDetails")
         .Produces<List<MaintainerDetailsDto>>(StatusCodes.Status200OK);
 
-        group.MapPut("/{id}", async (int id, MaintainerDto maintainerDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, MaintainerDto maintainerDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var affected = await unitOfWork.Maintainers.GetAsync(id);
 
@@ -52,6 +52,7 @@ public static class MaintainerEndpoints
 
             mapper.Map(maintainerDto, affected);
             await unitOfWork.Maintainers.UpdateAsync(maintainerDto.Id);
+            await unitOfWork.CommitAsync();
 
             return Results.NoContent();
         })
@@ -60,10 +61,11 @@ public static class MaintainerEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateMaintainerDto maintainerDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (CreateMaintainerDto maintainerDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var maintainer = mapper.Map<Maintainer>(maintainerDto);
             await unitOfWork.Maintainers.AddAsync(maintainer);
+            await unitOfWork.CommitAsync();
             return TypedResults.Created($"/api/maintainer/{maintainer.Id}", maintainerDto);
         })
         .AddEndpointFilter<ValidationFilter<CreateMaintainerDto>>()
@@ -72,7 +74,7 @@ public static class MaintainerEndpoints
         .WithName("CreateMaintainer")
         .Produces<Maintainer>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             return await unitOfWork.Maintainers.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
         })

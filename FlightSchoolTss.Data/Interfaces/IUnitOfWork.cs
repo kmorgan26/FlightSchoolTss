@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace FlightSchoolTss.Data.Interfaces;
 public interface IUnitOfWork : IDisposable
 {
-    void Commit();
+    Task CommitAsync();
     void Rollback();
     IGenericRepository<TEntity> GenericRepository<TEntity>() where TEntity : BaseEntity;
 

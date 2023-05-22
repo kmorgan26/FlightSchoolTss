@@ -24,9 +24,9 @@ public class UnitOfWork : IUnitOfWork, IDisposable
         Simulators = new SimulatorRepository(dbContext);
         ManModules = new ManModuleRepository(dbContext);
     }
-    public void Commit()
+    public async Task CommitAsync()
     {
-        _dbContext.SaveChanges();
+        await _dbContext.SaveChangesAsync();
     }
     public void Rollback()
     {

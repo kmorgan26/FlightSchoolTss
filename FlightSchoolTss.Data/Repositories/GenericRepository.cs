@@ -38,6 +38,9 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
     public async Task UpdateAsync(int id)
     {
         var entity = await _dbSet.FindAsync(id);
+
+        if(entity is null)
+            return;
         _dbSet.Attach(entity);
         _context.Entry(entity).State = EntityState.Modified;
     }
