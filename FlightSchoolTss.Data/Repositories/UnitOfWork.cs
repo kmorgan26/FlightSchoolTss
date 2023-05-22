@@ -11,12 +11,14 @@ public class UnitOfWork : IUnitOfWork, IDisposable
 
     public IMaintainerRepository Maintainers { get;private set; }
     public IPlatformRepository Platforms { get; private set; }
+    public ILotRepository Lots { get; private set; }
 
     public UnitOfWork(FstssDataContext dbContext)
     {
         _dbContext = dbContext;
         Maintainers = new MaintainerRepository(dbContext);
         Platforms = new PlatformRepository(dbContext);
+        Lots = new LotRepository(dbContext);
     }
     public void Commit()
     {

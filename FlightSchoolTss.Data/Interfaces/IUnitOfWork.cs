@@ -14,5 +14,6 @@ public interface IUnitOfWork : IDisposable
 
     IMaintainerRepository Maintainers { get; }
     IPlatformRepository Platforms { get; }
+    ILotRepository Lots { get; }
 
 }

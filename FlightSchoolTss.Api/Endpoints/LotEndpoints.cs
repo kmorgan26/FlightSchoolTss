@@ -12,18 +12,18 @@ public static class LotEndpoints
     {
         var group = routes.MapGroup("/api/lot").WithTags(nameof(Lot));
 
-        group.MapGet("/", async (ILotRepository repo, IMapper mapper) =>
+        group.MapGet("/", async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var lots = await repo.GetAllAsync();
+            var lots = await unitOfWork.Lots.GetAllAsync();
             return mapper.Map<List<LotDto>>(lots);
         })
         .WithTags(nameof(Lot))
         .WithName("GetAllLots")
         .Produces<List<LotDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, ILotRepository repo, IMapper mapper) =>
+        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            return await repo.GetAsync(id)
+            return await unitOfWork.Lots.GetAsync(id)
                 is Lot model
                     ? Results.Ok(mapper.Map<LotDto>(model))
                     : Results.NotFound();
@@ -33,16 +33,16 @@ public static class LotEndpoints
         .Produces<LotDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, LotDto lotDto, ILotRepository repo, IMapper mapper) =>
+        group.MapPut("/{id}", async (int id, LotDto lotDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var foundModel = await repo.GetAsync(id);
+            var foundModel = await unitOfWork.Lots.GetAsync(id);
 
             if (foundModel is null)
                 return Results.NotFound();
 
             mapper.Map(lotDto, foundModel);
 
-            await repo.UpdateAsync(foundModel.Id);
+            await unitOfWork.Lots.UpdateAsync(foundModel.Id);
             return Results.NoContent();
         })
         .WithTags(nameof(Lot))
@@ -50,9 +50,9 @@ public static class LotEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapGet("/GetManModulesByLotId/{id}", async (int id, ILotRepository repo, IMapper mapper) =>
+        group.MapGet("/GetManModulesByLotId/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            return await repo.GetLotsWithManModuleDetailsByIdAsync(id)
+            return await unitOfWork.Lots.GetLotsWithManModuleDetailsByIdAsync(id)
                 is List<Lot> model
                     ? Results.Ok(mapper.Map<List<LotDetailsDto>>(model))
                     : Results.NotFound();
@@ -64,10 +64,10 @@ public static class LotEndpoints
 
 
 
-        group.MapPost("/", async (CreateLotDto createLotDto, ILotRepository repo, IMapper mapper) =>
+        group.MapPost("/", async (CreateLotDto createLotDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var lot = mapper.Map<Lot>(createLotDto);
-            await repo.AddAsync(lot);
+            await unitOfWork.Lots.AddAsync(lot);
             return Results.Created($"/api/Lot/{lot.Id}", lot);
         })
         .AddEndpointFilter<ValidationFilter<CreateLotDto>>()
@@ -75,9 +75,9 @@ public static class LotEndpoints
         .WithName("CreateLot")
         .Produces<Lot>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, ILotRepository repo) =>
+        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
         {
-            return await repo.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
+            return await unitOfWork.Lots.DeleteAsync(id) ? Results.NoContent() : Results.NotFound();
         })
         .WithTags(nameof(Lot))
         .WithName("DeleteLot")
