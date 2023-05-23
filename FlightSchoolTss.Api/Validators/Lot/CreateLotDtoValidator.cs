@@ -25,5 +25,7 @@ public class CreateLotDtoValidator : AbstractValidator<CreateLotDto>
                 return platformExists;
             })
             .WithMessage("You have not provided a valid Platform for this Lot");
+
+        
     }
 }
