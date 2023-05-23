@@ -2,4 +2,7 @@
 using FlightSchoolTss.Data.Interfaces.Generic;
 
 namespace FlightSchoolTss.Data.Interfaces;
-public interface IManModuleRepository : IGenericRepository<ManModule>{}
+
+public interface IHardwareVersionRepository : IGenericRepository<HardwareVersion>
+{
+}

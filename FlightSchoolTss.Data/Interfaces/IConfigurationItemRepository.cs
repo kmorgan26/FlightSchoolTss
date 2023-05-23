@@ -2,7 +2,6 @@
 using FlightSchoolTss.Data.Interfaces.Generic;
 
 namespace FlightSchoolTss.Data.Interfaces;
-public interface ILotRepository : IGenericRepository<Lot>
+public interface IConfigurationItemRepository : IGenericRepository<ConfigurationItem>
 {
-    Task<IEnumerable<Lot>> GetLotsWithManModuleDetailsByIdAsync(int lotId);
 }

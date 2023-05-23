@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using FlightSchoolTss.Data.Abstractions;
 
-namespace FlightSchoolTss.Data.Interfaces;
+namespace FlightSchoolTss.Data.Interfaces.Generic;
 public interface IGenericRepository<TEntity> where TEntity : BaseEntity
 {
     Task<IList<TEntity>> GetAllAsync();

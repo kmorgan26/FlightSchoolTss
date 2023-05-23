@@ -1,9 +1,5 @@
 ﻿using FlightSchoolTss.Data.Abstractions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using FlightSchoolTss.Data.Interfaces.Generic;
 
 namespace FlightSchoolTss.Data.Interfaces;
 public interface IUnitOfWork : IDisposable
