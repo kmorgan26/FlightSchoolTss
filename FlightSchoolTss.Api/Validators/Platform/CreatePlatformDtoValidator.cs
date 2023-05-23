@@ -25,5 +25,8 @@ public class CreatePlatformDtoValidator : AbstractValidator<CreatePlatformDto>
                 return maintainerExists;
             })
             .WithMessage("You have not provided a valid Maintainer for this Platform");
+
+        RuleFor(i => i.IsActive)
+            .NotEmpty();
     }
 }
