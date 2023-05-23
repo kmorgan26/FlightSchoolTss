@@ -3,9 +3,10 @@ using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
 
 namespace FlightSchoolTss.Data.Repositories;
-public class ManModuleRepository : GenericRepository<ManModule>, IManModuleRepository
+
+public class ItemTypeRepository : GenericRepository<ItemType>, IItemTypeRepository
 {
-    public ManModuleRepository(FstssDataContext context) : base(context)
+    public ItemTypeRepository(FstssDataContext context) : base(context)
     {
     }
 }

@@ -2,6 +2,7 @@
 using FlightSchoolTss.Data.Data;
 using FlightSchoolTss.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using FlightSchoolTss.Data.Interfaces.Generic;
 
 namespace FlightSchoolTss.Data.Repositories;
 public class UnitOfWork : IUnitOfWork, IDisposable
@@ -9,20 +10,38 @@ public class UnitOfWork : IUnitOfWork, IDisposable
     private readonly FstssDataContext _dbContext;
     private bool _disposed;
 
-    public IMaintainerRepository Maintainers { get;private set; }
-    public IPlatformRepository Platforms { get; private set; }
+    public IConfigurationItemRepository ConfigurationItems { get; private set; }
+    public IHardwareConfigurationRepository HardwareConfigurations { get; private set; }
+    public IHardwareSystemRepository HardwareSystems { get; private set; }
+    public IHardwareVersionRepository HardwareVersions { get; private set; }
+    public IItemTypeRepository ItemTypes { get; private set; }
     public ILotRepository Lots { get; private set; }
-    public ISimulatorRepository Simulators { get; private set; }
+    public IMaintainerRepository Maintainers { get;private set; }
     public IManModuleRepository ManModules { get; private set; }
+    public IPlatformRepository Platforms { get; private set; }
+    public ISimulatorRepository Simulators { get; private set; }
+    public ISoftwareLoadRepository SoftwareLoads { get; private set; }
+    public ISoftwareSystemRepository SoftwareSystems { get; private set; }
+    public ISoftwareVersionRepository SoftwareVersions { get; private set; }
+
 
     public UnitOfWork(FstssDataContext dbContext)
     {
         _dbContext = dbContext;
-        Maintainers = new MaintainerRepository(dbContext);
-        Platforms = new PlatformRepository(dbContext);
+        ConfigurationItems = new ConfigurationItemRepository(dbContext);
+        HardwareConfigurations = new HardwareConfigurationRepository(dbContext);
+        HardwareSystems = new HardwareSystemRepository(dbContext);
+        HardwareVersions = new HardwareVersionRepository(dbContext);
+        ItemTypes = new ItemTypeRepository(dbContext);
         Lots = new LotRepository(dbContext);
-        Simulators = new SimulatorRepository(dbContext);
+        Maintainers = new MaintainerRepository(dbContext);
         ManModules = new ManModuleRepository(dbContext);
+        Platforms = new PlatformRepository(dbContext);
+        Simulators = new SimulatorRepository(dbContext);
+        SoftwareLoads = new SoftwareLoadRepository(dbContext);
+        SoftwareSystems = new SoftwareSystemRepository(dbContext);
+        SoftwareVersions = new SoftwareVersionRepository(dbContext);
+
     }
     public async Task CommitAsync()
     {

@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using FlightSchoolTss.Data.Abstractions;
+﻿using FlightSchoolTss.Data.Abstractions;
 using FlightSchoolTss.Data.Data;
-using FlightSchoolTss.Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using FlightSchoolTss.Data.Interfaces.Generic;
 
 namespace FlightSchoolTss.Data.Repositories;
 public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
