@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FlightSchoolTss.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace FlightSchoolTss.Data.Entities;
+namespace FlightSchoolTss.Data.Data;
 
 public partial class EntitiesTestDatabaseContext : DbContext
 {

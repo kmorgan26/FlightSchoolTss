@@ -1,6 +1,6 @@
 ﻿using FlightSchoolTss.Data.Data;
 using FlightSchoolTss.Data.Entities;
-using FlightSchoolTss.Data.Interfaces;
+using FlightSchoolTss.Data.Interfaces.Generic;
 using FlightSchoolTss.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
