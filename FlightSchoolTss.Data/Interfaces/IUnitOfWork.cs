@@ -21,6 +21,7 @@ public interface IUnitOfWork : IDisposable
     IManModuleRepository ManModules { get; }
     IPlatformRepository Platforms { get; }
     ISimulatorRepository Simulators { get; }
+    ISoftwareSystemRepository SoftwareSystems { get; }
     ISoftwareLoadRepository SoftwareLoads { get; }
     ISoftwareVersionRepository SoftwareVersions { get; }
     ISoftwareVersionsLoadsRepository SoftwareVersionsLoads { get; }

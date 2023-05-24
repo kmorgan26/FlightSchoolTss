@@ -24,7 +24,7 @@ public partial class EntitiesTestDatabaseContext : DbContext
 
     public virtual DbSet<HardwareVersion> HardwareVersions { get; set; }
 
-    public virtual DbSet<HardwareVersionConfiguration> HardwareVersionsConfigurations { get; set; }
+    public virtual DbSet<HardwareVersionsConfigurations> HardwareVersionsConfigurations { get; set; }
 
     public virtual DbSet<ItemType> ItemTypes { get; set; }
 
@@ -113,7 +113,7 @@ public partial class EntitiesTestDatabaseContext : DbContext
                 .HasConstraintName("FK_HardwareVersions_HardwareSystems");
         });
 
-        modelBuilder.Entity<HardwareVersionConfiguration>(entity =>
+        modelBuilder.Entity<HardwareVersionsConfigurations>(entity =>
         {
             entity.HasOne(d => d.HardwareConfiguration).WithMany(p => p.HardwareVersionsConfigurations)
                 .HasForeignKey(d => d.HardwareConfigurationId)

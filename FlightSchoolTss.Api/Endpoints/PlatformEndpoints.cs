@@ -12,7 +12,7 @@ public static class PlatformEndpoints
     
     public static void MapPlatformEndpoints(this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("/api/Platform").WithTags(nameof(Platform));
+        var group = routes.MapGroup("/api/platform").WithTags(nameof(Platform));
 
         group.MapGet("/", async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {

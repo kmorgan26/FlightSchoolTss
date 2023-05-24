@@ -10,5 +10,5 @@ public partial class HardwareVersion : BaseEntity
 
     public virtual HardwareSystem HardwareSystem { get; set; } = null!;
 
-    public virtual ICollection<HardwareVersionConfiguration> HardwareVersionsConfigurations { get; set; } = new List<HardwareVersionConfiguration>();
+    public virtual ICollection<HardwareVersionsConfigurations> HardwareVersionsConfigurations { get; set; } = new List<HardwareVersionsConfigurations>();
 }

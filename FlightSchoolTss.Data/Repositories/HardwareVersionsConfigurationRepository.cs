@@ -4,7 +4,7 @@ using FlightSchoolTss.Data.Interfaces;
 
 namespace FlightSchoolTss.Data.Repositories;
 
-public class HardwareVersionsConfigurationRepository : AnonymousRepository<HardwareVersionConfiguration> , IHardwareVersionsConfigurationsRepository
+public class HardwareVersionsConfigurationRepository : AnonymousRepository<HardwareVersionsConfigurations> , IHardwareVersionsConfigurationsRepository
 {
     public HardwareVersionsConfigurationRepository(FstssDataContext context) : base(context)
     {

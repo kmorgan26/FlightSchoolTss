@@ -1,6 +1,6 @@
 ﻿namespace FlightSchoolTss.Api.DTOs.HardwareVersionConfiguration;
 
-public class HardwareVersionConfigurationDto
+public class HardwareVersionsConfigurationsDto
 {
     public int Id { get; set; }
     public int HardwareVersionId { get; set; }
