@@ -59,6 +59,11 @@ namespace FlightSchoolTss.Data.Data
                 entity.Property(e => e.Name)
                     .HasMaxLength(20)
                     .IsUnicode(false);
+                entity.HasOne(d => d.Maintainable).WithMany(p => p.HardwareSystems)
+                    .HasForeignKey(d => d.MaintainableId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_HardwareSystems_Maintainables");
+                    
             });
 
             modelBuilder.Entity<HardwareVersion>(entity =>
@@ -189,9 +194,15 @@ namespace FlightSchoolTss.Data.Data
             modelBuilder.Entity<SoftwareSystem>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedNever();
+
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.HasOne(d => d.Maintainable).WithMany(p => p.SoftwareSystems)
+                    .HasForeignKey(d => d.MaintainableId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_SoftwareSystems_Maintainables");
             });
 
             modelBuilder.Entity<SoftwareVersion>(entity =>
