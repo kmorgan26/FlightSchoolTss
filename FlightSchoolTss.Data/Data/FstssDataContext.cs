@@ -20,7 +20,7 @@ namespace FlightSchoolTss.Data.Data
                 entity.HasOne(d => d.ConfigurationItem).WithMany(p => p.Configurations)
                     .HasForeignKey(d => d.ConfigurationItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Configurations_ConfigurationItem");
+                    .HasConstraintName("FK_Configurations_ConfigurationItems");
 
                 entity.HasOne(d => d.Maintainable).WithMany(p => p.Configurations)
                     .HasForeignKey(d => d.MaintainableId)
@@ -30,7 +30,7 @@ namespace FlightSchoolTss.Data.Data
 
             modelBuilder.Entity<ConfigurationItem>(entity =>
             {
-                entity.ToTable("ConfigurationItem");
+                entity.ToTable("ConfigurationItems");
 
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
@@ -39,7 +39,7 @@ namespace FlightSchoolTss.Data.Data
                 entity.HasOne(d => d.ItemType).WithMany(p => p.ConfigurationItems)
                     .HasForeignKey(d => d.ItemTypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_ConfigurationItem_ItemTypes");
+                    .HasConstraintName("FK_ConfigurationItems_ItemTypes");
             });
 
             modelBuilder.Entity<HardwareConfiguration>(entity =>
@@ -51,7 +51,7 @@ namespace FlightSchoolTss.Data.Data
                 entity.HasOne(d => d.ConfigurationItem).WithMany(p => p.HardwareConfigurations)
                     .HasForeignKey(d => d.ConfigurationItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_HardwareConfigurations_ConfigurationItem");
+                    .HasConstraintName("FK_HardwareConfigurations_ConfigurationItems");
             });
 
             modelBuilder.Entity<HardwareSystem>(entity =>
@@ -183,7 +183,7 @@ namespace FlightSchoolTss.Data.Data
                 entity.HasOne(d => d.ConfigurationItem).WithMany(p => p.SoftwareLoads)
                     .HasForeignKey(d => d.ConfigurationItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_SoftwareLoads_ConfigurationItem");
+                    .HasConstraintName("FK_SoftwareLoads_ConfigurationItems");
             });
 
             modelBuilder.Entity<SoftwareSystem>(entity =>
