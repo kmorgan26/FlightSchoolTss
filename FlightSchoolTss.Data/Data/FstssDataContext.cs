@@ -78,7 +78,7 @@ namespace FlightSchoolTss.Data.Data
                     .HasConstraintName("FK_HardwareVersions_HardwareSystems");
             });
 
-            modelBuilder.Entity<HardwareVersionsConfiguration>(entity =>
+            modelBuilder.Entity<HardwareVersionConfiguration>(entity =>
             {
                 entity.HasOne(d => d.HardwareConfiguration).WithMany(p => p.HardwareVersionsConfigurations)
                     .HasForeignKey(d => d.HardwareConfigurationId)
@@ -223,7 +223,7 @@ namespace FlightSchoolTss.Data.Data
                     .HasConstraintName("FK_SoftwareVersions_SoftwareSystems");
             });
 
-            modelBuilder.Entity<SoftwareVersionsLoad>(entity =>
+            modelBuilder.Entity<SoftwareVersionLoad>(entity =>
             {
                 entity.HasOne(d => d.SoftwareLoad).WithMany(p => p.SoftwareVersionsLoads)
                     .HasForeignKey(d => d.SoftwareLoadId)
@@ -250,7 +250,7 @@ namespace FlightSchoolTss.Data.Data
 
         public virtual DbSet<HardwareVersion> HardwareVersions { get; set; }
 
-        public virtual DbSet<HardwareVersionsConfiguration> HardwareVersionsConfigurations { get; set; }
+        public virtual DbSet<HardwareVersionConfiguration> HardwareVersionsConfigurations { get; set; }
 
         public virtual DbSet<ItemType> ItemTypes { get; set; }
 
@@ -272,7 +272,7 @@ namespace FlightSchoolTss.Data.Data
 
         public virtual DbSet<SoftwareVersion> SoftwareVersions { get; set; }
 
-        public virtual DbSet<SoftwareVersionsLoad> SoftwareVersionsLoads { get; set; }
+        public virtual DbSet<SoftwareVersionLoad> SoftwareVersionsLoads { get; set; }
 
     }
 }

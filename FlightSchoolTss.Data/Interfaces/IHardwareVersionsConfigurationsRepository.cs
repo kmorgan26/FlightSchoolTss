@@ -3,4 +3,4 @@ using FlightSchoolTss.Data.Interfaces.Generic;
 
 namespace FlightSchoolTss.Data.Interfaces;
 
-public interface IHardwareVersionsConfigurationsRepository : IAnonymousRepository<HardwareVersionsConfiguration> { }
+public interface IHardwareVersionsConfigurationsRepository : IAnonymousRepository<HardwareVersionConfiguration> { }

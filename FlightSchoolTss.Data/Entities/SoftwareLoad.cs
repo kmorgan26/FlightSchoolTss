@@ -8,5 +8,5 @@ public partial class SoftwareLoad : BaseEntity
 
     public virtual ConfigurationItem ConfigurationItem { get; set; } = null!;
 
-    public virtual ICollection<SoftwareVersionsLoad> SoftwareVersionsLoads { get; set; } = new List<SoftwareVersionsLoad>();
+    public virtual ICollection<SoftwareVersionLoad> SoftwareVersionsLoads { get; set; } = new List<SoftwareVersionLoad>();
 }

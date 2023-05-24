@@ -10,5 +10,5 @@ public partial class SoftwareVersion : BaseEntity
 
     public virtual SoftwareSystem SoftwareSystem { get; set; } = null!;
 
-    public virtual ICollection<SoftwareVersionsLoad> SoftwareVersionsLoads { get; set; } = new List<SoftwareVersionsLoad>();
+    public virtual ICollection<SoftwareVersionLoad> SoftwareVersionsLoads { get; set; } = new List<SoftwareVersionLoad>();
 }

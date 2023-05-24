@@ -1,6 +1,6 @@
 ﻿namespace FlightSchoolTss.Data.Entities;
 
-public partial class SoftwareVersionsLoad
+public partial class SoftwareVersionLoad
 {
     public int Id { get; set; }
 

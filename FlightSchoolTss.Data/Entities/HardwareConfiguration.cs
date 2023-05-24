@@ -8,5 +8,5 @@ public partial class HardwareConfiguration : BaseEntity
 
     public virtual ConfigurationItem ConfigurationItem { get; set; } = null!;
 
-    public virtual ICollection<HardwareVersionsConfiguration> HardwareVersionsConfigurations { get; set; } = new List<HardwareVersionsConfiguration>();
+    public virtual ICollection<HardwareVersionConfiguration> HardwareVersionsConfigurations { get; set; } = new List<HardwareVersionConfiguration>();
 }

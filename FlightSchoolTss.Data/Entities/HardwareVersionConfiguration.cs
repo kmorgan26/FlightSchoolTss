@@ -1,6 +1,6 @@
 ﻿namespace FlightSchoolTss.Data.Entities;
 
-public partial class HardwareVersionsConfiguration
+public partial class HardwareVersionConfiguration
 {
     public int Id { get; set; }
 
