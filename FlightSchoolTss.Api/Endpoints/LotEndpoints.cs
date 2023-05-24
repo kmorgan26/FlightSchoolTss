@@ -64,8 +64,6 @@ public static class LotEndpoints
         .Produces<LotDetailsDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status204NoContent);
 
-
-
         group.MapPost("/", async (CreateLotDto createLotDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var lot = mapper.Map<Lot>(createLotDto);
