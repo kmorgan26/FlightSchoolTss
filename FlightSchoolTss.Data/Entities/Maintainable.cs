@@ -1,9 +1,9 @@
-﻿namespace FlightSchoolTss.Data.Entities;
+﻿using FlightSchoolTss.Data.Abstractions;
 
-public partial class Maintainable
+namespace FlightSchoolTss.Data.Entities;
+
+public partial class Maintainable : BaseEntity
 {
-    public int Id { get; set; }
-
     public virtual ICollection<Configuration> Configurations { get; set; } = new List<Configuration>();
 
     public virtual ICollection<HardwareSystem> HardwareSystems { get; set; } = new List<HardwareSystem>();

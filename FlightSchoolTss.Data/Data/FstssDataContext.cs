@@ -5,16 +5,14 @@ namespace FlightSchoolTss.Data.Data
 {
     public partial class FstssDataContext : DbContext
     {
-        public FstssDataContext()
-        {
-            
-        }
         public FstssDataContext(DbContextOptions<FstssDataContext> options) : base(options)
         {
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Configuration>(entity =>
             {
                 entity.HasOne(d => d.ConfigurationItem).WithMany(p => p.Configurations)
@@ -63,7 +61,7 @@ namespace FlightSchoolTss.Data.Data
                     .HasForeignKey(d => d.MaintainableId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_HardwareSystems_Maintainables");
-                    
+
             });
 
             modelBuilder.Entity<HardwareVersion>(entity =>
@@ -116,6 +114,13 @@ namespace FlightSchoolTss.Data.Data
                     .HasForeignKey(d => d.PlatformId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Lots_Platforms");
+            });
+
+            modelBuilder.Entity<Maintainable>(entity =>
+            {
+                entity.Property(e => e.Name)
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Maintainer>(entity =>
