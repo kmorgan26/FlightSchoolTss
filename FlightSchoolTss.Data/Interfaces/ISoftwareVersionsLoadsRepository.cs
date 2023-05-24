@@ -2,6 +2,5 @@
 using FlightSchoolTss.Data.Interfaces.Generic;
 
 namespace FlightSchoolTss.Data.Interfaces;
-public interface IConfigurationItemRepository : IGenericRepository<ConfigurationItem>
-{
-}
+
+public interface ISoftwareVersionsLoadsRepository : IAnonymousRepository<SoftwareVersionsLoad> { }

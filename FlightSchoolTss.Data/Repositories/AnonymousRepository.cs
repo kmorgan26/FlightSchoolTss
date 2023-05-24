@@ -3,7 +3,7 @@ using FlightSchoolTss.Data.Interfaces.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlightSchoolTss.Data.Repositories;
-internal class AnonymousRepository<TEntity> : IAnonymousRepository<TEntity> where TEntity : class
+public class AnonymousRepository<TEntity> : IAnonymousRepository<TEntity> where TEntity : class
 {
     protected readonly FstssDataContext _context;
     private readonly DbSet<TEntity> _dbSet;
