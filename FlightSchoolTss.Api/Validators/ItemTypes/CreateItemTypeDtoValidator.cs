@@ -1,11 +1,11 @@
-﻿using FluentValidation;
-using FlightSchoolTss.DTOs.Maintainer;
+﻿using FlightSchoolTss.Api.DTOs.ItemTypes;
+using FluentValidation;
 
-namespace FlightSchoolTss.Validators.Lot;
+namespace FlightSchoolTss.Api.Validators.ItemTypes;
 
-public class CreateMaintainerDtoValidator : AbstractValidator<CreateMaintainerDto>
+public class CreateItemTypeDtoValidator : AbstractValidator<CreateItemTypeDto>
 {
-    public CreateMaintainerDtoValidator()
+    public CreateItemTypeDtoValidator()
     {
         RuleFor(i => i.Name)
             .NotEmpty()
