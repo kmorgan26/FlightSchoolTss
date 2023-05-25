@@ -11,7 +11,7 @@ public static class ItemTypeEndpoints
 {
     public static void MapItemTypeEndpoints(this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("/api/itemtypes").WithTags(nameof(ItemType));
+        var group = routes.MapGroup("/api/itemtype").WithTags(nameof(ItemType));
 
         group.MapGet("/", [AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {

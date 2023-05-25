@@ -11,7 +11,7 @@ public static class MaintainableEndpoints
 {
     public static void MapMaintainableEndpoints(this IEndpointRouteBuilder routes)
     {
-        var group = routes.MapGroup("/api/itemtypes").WithTags(nameof(Maintainable));
+        var group = routes.MapGroup("/api/maintainable").WithTags(nameof(Maintainable));
 
         group.MapGet("/", [AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
