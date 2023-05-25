@@ -12,6 +12,6 @@ internal class LotConfiguration : IEntityTypeConfiguration<Lot>
                 new Lot { Id = 1, Name = "Lot 1", PlatformId = 8 },
                 new Lot { Id = 2, Name = "Lot 2", PlatformId = 8 },
                 new Lot { Id = 3, Name = "Lot 3", PlatformId = 8 }
-                );
+            );
     }
 }
