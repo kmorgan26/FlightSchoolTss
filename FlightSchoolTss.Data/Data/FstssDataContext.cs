@@ -93,7 +93,6 @@ namespace FlightSchoolTss.Data.Data
 
             modelBuilder.Entity<ItemType>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .IsUnicode(false);

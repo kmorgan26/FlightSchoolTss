@@ -141,7 +141,7 @@ namespace FlightSchoolTss.Data.Migrations
                     b.ToTable("HardwareVersions");
                 });
 
-            modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareVersionsConfiguration", b =>
+            modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareVersionsConfigurations", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,7 +167,10 @@ namespace FlightSchoolTss.Data.Migrations
             modelBuilder.Entity("FlightSchoolTss.Data.Entities.ItemType", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -417,7 +420,7 @@ namespace FlightSchoolTss.Data.Migrations
                     b.ToTable("SoftwareVersions");
                 });
 
-            modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareVersionsLoad", b =>
+            modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareVersionLoad", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -503,7 +506,7 @@ namespace FlightSchoolTss.Data.Migrations
                     b.Navigation("HardwareSystem");
                 });
 
-            modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareVersionsConfiguration", b =>
+            modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareVersionsConfigurations", b =>
                 {
                     b.HasOne("FlightSchoolTss.Data.Entities.HardwareConfiguration", "HardwareConfiguration")
                         .WithMany("HardwareVersionsConfigurations")
@@ -631,7 +634,7 @@ namespace FlightSchoolTss.Data.Migrations
                     b.Navigation("SoftwareSystem");
                 });
 
-            modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareVersionsLoad", b =>
+            modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareVersionLoad", b =>
                 {
                     b.HasOne("FlightSchoolTss.Data.Entities.SoftwareLoad", "SoftwareLoad")
                         .WithMany("SoftwareVersionsLoads")

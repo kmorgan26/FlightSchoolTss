@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlightSchoolTss.Data.Migrations
 {
     [DbContext(typeof(FstssDataContext))]
-    [Migration("20230523220548_AddConfigurationTables")]
-    partial class AddConfigurationTables
+    [Migration("20230525164453_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,7 +69,7 @@ namespace FlightSchoolTss.Data.Migrations
 
                     b.HasIndex("ItemTypeId");
 
-                    b.ToTable("ConfigurationItem", (string)null);
+                    b.ToTable("ConfigurationItems", (string)null);
                 });
 
             modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareConfiguration", b =>
@@ -104,6 +104,9 @@ namespace FlightSchoolTss.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("MaintainableId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -111,6 +114,8 @@ namespace FlightSchoolTss.Data.Migrations
                         .HasColumnType("varchar(20)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MaintainableId");
 
                     b.ToTable("HardwareSystems");
                 });
@@ -139,7 +144,7 @@ namespace FlightSchoolTss.Data.Migrations
                     b.ToTable("HardwareVersions");
                 });
 
-            modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareVersionsConfiguration", b =>
+            modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareVersionsConfigurations", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -165,7 +170,10 @@ namespace FlightSchoolTss.Data.Migrations
             modelBuilder.Entity("FlightSchoolTss.Data.Entities.ItemType", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -214,6 +222,12 @@ namespace FlightSchoolTss.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(150)");
 
                     b.HasKey("Id");
 
@@ -366,6 +380,9 @@ namespace FlightSchoolTss.Data.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int");
 
+                    b.Property<int>("MaintainableId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -373,6 +390,8 @@ namespace FlightSchoolTss.Data.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MaintainableId");
 
                     b.ToTable("SoftwareSystems");
                 });
@@ -404,7 +423,7 @@ namespace FlightSchoolTss.Data.Migrations
                     b.ToTable("SoftwareVersions");
                 });
 
-            modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareVersionsLoad", b =>
+            modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareVersionLoad", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -433,7 +452,7 @@ namespace FlightSchoolTss.Data.Migrations
                         .WithMany("Configurations")
                         .HasForeignKey("ConfigurationItemId")
                         .IsRequired()
-                        .HasConstraintName("FK_Configurations_ConfigurationItem");
+                        .HasConstraintName("FK_Configurations_ConfigurationItems");
 
                     b.HasOne("FlightSchoolTss.Data.Entities.Maintainable", "Maintainable")
                         .WithMany("Configurations")
@@ -452,7 +471,7 @@ namespace FlightSchoolTss.Data.Migrations
                         .WithMany("ConfigurationItems")
                         .HasForeignKey("ItemTypeId")
                         .IsRequired()
-                        .HasConstraintName("FK_ConfigurationItem_ItemTypes");
+                        .HasConstraintName("FK_ConfigurationItems_ItemTypes");
 
                     b.Navigation("ItemType");
                 });
@@ -463,9 +482,20 @@ namespace FlightSchoolTss.Data.Migrations
                         .WithMany("HardwareConfigurations")
                         .HasForeignKey("ConfigurationItemId")
                         .IsRequired()
-                        .HasConstraintName("FK_HardwareConfigurations_ConfigurationItem");
+                        .HasConstraintName("FK_HardwareConfigurations_ConfigurationItems");
 
                     b.Navigation("ConfigurationItem");
+                });
+
+            modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareSystem", b =>
+                {
+                    b.HasOne("FlightSchoolTss.Data.Entities.Maintainable", "Maintainable")
+                        .WithMany("HardwareSystems")
+                        .HasForeignKey("MaintainableId")
+                        .IsRequired()
+                        .HasConstraintName("FK_HardwareSystems_Maintainables");
+
+                    b.Navigation("Maintainable");
                 });
 
             modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareVersion", b =>
@@ -479,7 +509,7 @@ namespace FlightSchoolTss.Data.Migrations
                     b.Navigation("HardwareSystem");
                 });
 
-            modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareVersionsConfiguration", b =>
+            modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareVersionsConfigurations", b =>
                 {
                     b.HasOne("FlightSchoolTss.Data.Entities.HardwareConfiguration", "HardwareConfiguration")
                         .WithMany("HardwareVersionsConfigurations")
@@ -580,9 +610,20 @@ namespace FlightSchoolTss.Data.Migrations
                         .WithMany("SoftwareLoads")
                         .HasForeignKey("ConfigurationItemId")
                         .IsRequired()
-                        .HasConstraintName("FK_SoftwareLoads_ConfigurationItem");
+                        .HasConstraintName("FK_SoftwareLoads_ConfigurationItems");
 
                     b.Navigation("ConfigurationItem");
+                });
+
+            modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareSystem", b =>
+                {
+                    b.HasOne("FlightSchoolTss.Data.Entities.Maintainable", "Maintainable")
+                        .WithMany("SoftwareSystems")
+                        .HasForeignKey("MaintainableId")
+                        .IsRequired()
+                        .HasConstraintName("FK_SoftwareSystems_Maintainables");
+
+                    b.Navigation("Maintainable");
                 });
 
             modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareVersion", b =>
@@ -596,7 +637,7 @@ namespace FlightSchoolTss.Data.Migrations
                     b.Navigation("SoftwareSystem");
                 });
 
-            modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareVersionsLoad", b =>
+            modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareVersionLoad", b =>
                 {
                     b.HasOne("FlightSchoolTss.Data.Entities.SoftwareLoad", "SoftwareLoad")
                         .WithMany("SoftwareVersionsLoads")
@@ -653,6 +694,8 @@ namespace FlightSchoolTss.Data.Migrations
                 {
                     b.Navigation("Configurations");
 
+                    b.Navigation("HardwareSystems");
+
                     b.Navigation("Lots");
 
                     b.Navigation("ManModules");
@@ -660,6 +703,8 @@ namespace FlightSchoolTss.Data.Migrations
                     b.Navigation("Platforms");
 
                     b.Navigation("Simulators");
+
+                    b.Navigation("SoftwareSystems");
                 });
 
             modelBuilder.Entity("FlightSchoolTss.Data.Entities.Maintainer", b =>
