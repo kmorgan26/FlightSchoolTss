@@ -92,7 +92,8 @@ namespace FlightSchoolTss.Data.Migrations
                 name: "SoftwareSystems",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     MaintainableId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
                 },
@@ -198,7 +199,8 @@ namespace FlightSchoolTss.Data.Migrations
                 name: "HardwareVersions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     HardwareSystemId = table.Column<int>(type: "int", nullable: false),
                     VersionDate = table.Column<DateTime>(type: "smalldatetime", nullable: false),
                     Name = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)

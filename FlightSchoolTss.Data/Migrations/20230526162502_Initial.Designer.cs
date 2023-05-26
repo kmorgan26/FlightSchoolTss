@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FlightSchoolTss.Data.Migrations
 {
     [DbContext(typeof(FstssDataContext))]
-    [Migration("20230525164453_Initial")]
+    [Migration("20230526162502_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -123,7 +123,10 @@ namespace FlightSchoolTss.Data.Migrations
             modelBuilder.Entity("FlightSchoolTss.Data.Entities.HardwareVersion", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("HardwareSystemId")
                         .HasColumnType("int");
@@ -378,7 +381,10 @@ namespace FlightSchoolTss.Data.Migrations
             modelBuilder.Entity("FlightSchoolTss.Data.Entities.SoftwareSystem", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("MaintainableId")
                         .HasColumnType("int");
