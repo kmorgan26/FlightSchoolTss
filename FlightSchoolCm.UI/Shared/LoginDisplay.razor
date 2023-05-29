@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation
+
+<AuthorizeView>
+    <Authorized>
+        <MudLink Href="Identity/Account/Manage/Index" Color="@Color.Default">
+            <MudAlert Severity="Severity.Warning">
+               @* Hello, @context.User.Identity.Name!*@
+            </MudAlert>
+        </MudLink>
+        <form action="/Identity/Account/Logout?returnUrl=%2F" method="post">
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Logout" ButtonType="@ButtonType.Submit" Size="Size.Small" Color="Color.Warning">Log Out</MudButton>
+            @*<input name="__RequestVerificationToken" type="hidden" value="@TokenProvider.XsfrToken" />*@
+        </form>
+    </Authorized>
+    <NotAuthorized>
+        <MudLink Href="Identity/Account/Register" Color="@Color.Success" Class="pa-4">
+            Register
+        </MudLink>
+        <MudLink Href="Identity/Account/Login" Color="@Color.Success">
+            Login
+        </MudLink>
+    </NotAuthorized>
+</AuthorizeView>
