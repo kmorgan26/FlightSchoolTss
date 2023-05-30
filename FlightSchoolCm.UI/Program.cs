@@ -1,4 +1,5 @@
 using FlightSchoolCm.UI;
+using FlightSchoolCm.UI.Interfaces;
 using FlightSchoolCm.UI.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -12,7 +13,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 // Host and port where the API is hosted
 var apiBaseAddress = "https://localhost:7015";
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseAddress) });
-builder.Services.AddScoped<MaintainersApiClient>();
+builder.Services.AddScoped<IMaintainersApiClient, MaintainersApiClient>();
 
 builder.Services.AddMudServices();
 

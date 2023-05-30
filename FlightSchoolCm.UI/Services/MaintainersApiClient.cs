@@ -1,9 +1,10 @@
 ﻿using System.Net.Http.Json;
-using FlightSchoolCm.UI.ViewModels.Maintainables;
+using FlightSchoolCm.UI.Interfaces;
+using FlightSchoolCm.UI.ViewModels.Maintainer;
 
 namespace FlightSchoolCm.UI.Services;
 
-public class MaintainersApiClient
+public class MaintainersApiClient : IMaintainersApiClient
 {
     private readonly HttpClient _httpClient;
 
@@ -30,5 +31,10 @@ public class MaintainersApiClient
             throw;
         }
         return new List<MaintainerVm>();
+    }
+
+    public async Task CreateMaintainerAsync(AddMaintainerVm maintainerVm)
+    {
+        await _httpClient.PostAsync("/api/maintainer", JsonContent.Create(maintainerVm));
     }
 }

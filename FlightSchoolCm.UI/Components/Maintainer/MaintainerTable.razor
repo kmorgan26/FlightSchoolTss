@@ -1,6 +1,5 @@
-﻿@page "/maintainer"
-@using FlightSchoolCm.UI.Services;
-@inject MaintainersApiClient maintainerApi
+﻿@using FlightSchoolCm.UI.Services;
+@inject IMaintainersApiClient MaintainersApiClient
 
 <PageTitle>Maintainers</PageTitle>
 
@@ -10,7 +9,7 @@
 }
 else
 {
-    <MudTable Items="@_maintainers" Hover="true" Breakpoint="Breakpoint.Sm" LoadingProgressColor="Color.Info">
+    <MudTable Items="@_maintainers" Hover="true" Breakpoint="Breakpoint.Sm" Class="mt-4" LoadingProgressColor="Color.Info">
         <HeaderContent>
             <MudTh>Id</MudTh>
             <MudTh>Name</MudTh>
@@ -27,6 +26,6 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _maintainers = await maintainerApi.GetMaintainersAsync();
+        _maintainers = await MaintainersApiClient.GetMaintainersAsync();
     }
 }

@@ -1,0 +1,34 @@
+﻿@inject ISnackbar Snackbar
+@inject IMaintainersApiClient MaintainersApiClient 
+@inject NavigationManager navigation
+
+<MudItem xs="12" sm="12" md="4" lg="3">
+    <EditForm Model="_maintainerVm" OnValidSubmit="@CreateMaintainer">
+
+        <FluentValidationValidator DisableAssemblyScanning="true" />
+
+        <MudTextField @bind-Value="_maintainerVm.Name"
+                      Variant="Variant.Outlined"
+                      For="(() => _maintainerVm.Name)"
+                      Label="Platform"
+                      Class="my-6" />
+
+        <MudPaper Elevation="0">
+            <SubmitButton ButtonText="Insert" />
+            <CancelButton Url="maintainers" />
+        </MudPaper>
+    </EditForm>
+</MudItem>
+
+@code {
+    private AddMaintainerVm _maintainerVm { get; set; } = new();
+
+    private async Task CreateMaintainer()
+    {
+        await MaintainersApiClient.CreateMaintainerAsync(_maintainerVm);
+
+        Snackbar.Add($"The new Maintainer was Added!", Severity.Success);
+
+        navigation.NavigateTo("/maintainer");
+    }
+}
