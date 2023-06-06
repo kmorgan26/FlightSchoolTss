@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Json;
 using FlightSchoolCm.UI.Interfaces;
-using FlightSchoolCm.UI.ViewModels.Maintainer;
+using FlightSchoolTss.Data.ViewModels.Maintainer;
 
 namespace FlightSchoolCm.UI.Services;
 

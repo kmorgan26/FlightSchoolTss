@@ -1,33 +1,29 @@
-﻿@inject ISnackbar Snackbar
+﻿@using FlightSchoolTss.Data.Validation;
+
+@inject ISnackbar Snackbar
 @inject IMaintainersApiClient MaintainersApiClient 
 @inject NavigationManager navigation
 
-<MudItem xs="12" sm="12" md="4" lg="3">
-    <EditForm Model="_maintainerVm" OnValidSubmit="@CreateMaintainer">
+<MudForm Model="@_maintainerVm" @ref="@_mudForm" Validation="@(_validator.ValidateValue)">
+    
+    <MudTextField @bind-Value="_maintainerVm.Name"
+                  Variant="Variant.Outlined"
+                  For="(() => _maintainerVm.Name)"
+                  Label="Maintainer Name"
+                  Class="my-6" />
 
-        <FluentValidationValidator DisableAssemblyScanning="true" />
-
-        <MudTextField @bind-Value="_maintainerVm.Name"
-                      Variant="Variant.Outlined"
-                      For="(() => _maintainerVm.Name)"
-                      Label="Platform"
-                      Class="my-6" />
-
-        <MudPaper Elevation="0">
-            <SubmitButton ButtonText="Insert" />
-            <CancelButton Url="maintainers" />
-        </MudPaper>
-    </EditForm>
-</MudItem>
+</MudForm>
 
 @code {
+    private MudForm _mudForm;
     private AddMaintainerVm _maintainerVm { get; set; } = new();
+    private MaintainerAddVmValidator _validator = new MaintainerAddVmValidator();
 
     private async Task CreateMaintainer()
     {
         await MaintainersApiClient.CreateMaintainerAsync(_maintainerVm);
 
-        Snackbar.Add($"The new Maintainer was Added!", Severity.Success);
+        Snackbar.Add($"The new Maintainer was Added!", MudBlazor.Severity.Success);
 
         navigation.NavigateTo("/maintainer");
     }

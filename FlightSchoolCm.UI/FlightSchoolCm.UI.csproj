@@ -22,6 +22,16 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.5" PrivateAssets="all" />
 		<PackageReference Include="MudBlazor" Version="6.3.1" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\FlightSchoolTss.Data\FlightSchoolTss.Data.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Validation\Auth\" />
+	  <Folder Include="Validation\Maintainer\" />
+	  <Folder Include="ViewModels\Auth\" />
+	</ItemGroup>
 	
 	
 </Project>

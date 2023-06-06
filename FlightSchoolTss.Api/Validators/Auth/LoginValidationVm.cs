@@ -1,7 +1,7 @@
-﻿using FlightSchoolCm.UI.ViewModels.Auth;
+﻿using FlightSchoolTss.Data.ViewModels.Auth;
 using FluentValidation;
 
-namespace FlightSchoolCm.UI.Validation.Auth;
+namespace FlightSchoolTss.Data.ViewModels.Auth;
 
 public class LoginValidationVm : AbstractValidator<LoginVm>
 {

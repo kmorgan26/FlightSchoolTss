@@ -1,4 +1,4 @@
-﻿using FlightSchoolCm.UI.ViewModels.Maintainer;
+﻿using FlightSchoolTss.Data.ViewModels.Maintainer;
 
 namespace FlightSchoolCm.UI.Interfaces;
 public interface IMaintainersApiClient

@@ -1,4 +1,4 @@
-﻿namespace FlightSchoolCm.UI.ViewModels.Maintainer;
+﻿namespace FlightSchoolTss.Data.ViewModels.Maintainer;
 
 public class AddMaintainerVm
 {

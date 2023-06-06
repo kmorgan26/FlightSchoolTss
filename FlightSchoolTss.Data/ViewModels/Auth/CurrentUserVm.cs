@@ -1,4 +1,4 @@
-﻿namespace FlightSchoolCm.UI.ViewModels.Auth;
+﻿namespace FlightSchoolTss.Data.ViewModels.Auth;
 
 public class CurrentUserVm
 {

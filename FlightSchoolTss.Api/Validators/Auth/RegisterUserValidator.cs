@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FlightSchoolTss.DTOs.Authentication;
 
-namespace FlightSchoolTss.Validators.Authentication;
+namespace FlightSchoolTss.Data.ViewModels.Auth;
 
 public class RegisterUserValidator : AbstractValidator<RegisterUserDto>
 {
