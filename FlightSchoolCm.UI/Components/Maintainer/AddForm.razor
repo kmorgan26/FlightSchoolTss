@@ -4,7 +4,7 @@
 @inject IMaintainersApiClient MaintainersApiClient 
 @inject NavigationManager navigation
 
-<MudForm Model="@_maintainerVm" @ref="@_mudForm" Validation="@(_validator.ValidateValue)">
+<MudForm Model="@_maintainerVm" @ref="@_mudForm">
     
     <MudTextField @bind-Value="_maintainerVm.Name"
                   Variant="Variant.Outlined"
@@ -17,7 +17,6 @@
 @code {
     private MudForm _mudForm;
     private AddMaintainerVm _maintainerVm { get; set; } = new();
-    private MaintainerAddVmValidator _validator = new MaintainerAddVmValidator();
 
     private async Task CreateMaintainer()
     {
