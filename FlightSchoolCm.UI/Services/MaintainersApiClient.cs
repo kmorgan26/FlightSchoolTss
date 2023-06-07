@@ -1,6 +1,9 @@
 ﻿using System.Net.Http.Json;
 using FlightSchoolCm.UI.Interfaces;
 using FlightSchoolTss.Data.ViewModels.Maintainer;
+using FlightSchoolTss.DTOs.Maintainer;
+using FlightSchoolTss.DTOs.ManModule;
+using MudBlazor;
 
 namespace FlightSchoolCm.UI.Services;
 
@@ -49,9 +52,18 @@ public class MaintainersApiClient : IMaintainersApiClient
         return new MaintainerVm();
     }
 
-    public async Task CreateMaintainerAsync(AddMaintainerVm maintainerVm)
+    public async Task CreateMaintainerAsync(CreateMaintainerDto dto)
     {
-        await _httpClient.PostAsync("/api/maintainer", JsonContent.Create(maintainerVm));
+        try
+        {
+            var content = JsonContent.Create(dto);
+            await _httpClient.PostAsync("/api/maintainer", content);
+        }
+        catch (Exception ex)
+        {
+            var msg = ex.Message;
+            throw;
+        }
     }
 
     public async Task<int> UpdateMaintainerAsync(MaintainerVm maintainerVm)
