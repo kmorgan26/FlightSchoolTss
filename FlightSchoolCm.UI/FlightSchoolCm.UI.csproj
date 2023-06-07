@@ -7,6 +7,17 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Validation\**" />
+	  <Compile Remove="ViewModels\**" />
+	  <Content Remove="Validation\**" />
+	  <Content Remove="ViewModels\**" />
+	  <EmbeddedResource Remove="Validation\**" />
+	  <EmbeddedResource Remove="ViewModels\**" />
+	  <None Remove="Validation\**" />
+	  <None Remove="ViewModels\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Content Remove="Pages\Auth\RegistrationConfirmation.razor" />
 	</ItemGroup>
 
@@ -25,12 +36,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\FlightSchoolTss.Data\FlightSchoolTss.Data.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Validation\Auth\" />
-	  <Folder Include="Validation\Maintainer\" />
-	  <Folder Include="ViewModels\Auth\" />
 	</ItemGroup>
 	
 	
