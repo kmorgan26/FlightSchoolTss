@@ -3,7 +3,7 @@ using FluentValidation;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.Filters;
-using FlightSchoolTss.Api.DTOs.Configuration;
+using FlightSchoolTss.Data.DTOs.Configuration;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FlightSchoolTss.Endpoints;
