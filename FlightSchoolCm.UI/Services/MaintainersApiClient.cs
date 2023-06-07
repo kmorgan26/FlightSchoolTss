@@ -27,14 +27,45 @@ public class MaintainersApiClient : IMaintainersApiClient
         }
         catch (Exception)
         {
-
             throw;
         }
         return new List<MaintainerVm>();
+    }
+    public async Task<MaintainerVm> GetMaintainerVmByIdAsync(int id)
+    {
+        try
+        {
+            var response = await _httpClient.GetAsync($"/api/maintainer/{id}");
+            if (response.IsSuccessStatusCode)
+            {
+                var maintainer = await response.Content.ReadFromJsonAsync<MaintainerVm>();
+                return maintainer is not null ? maintainer : new MaintainerVm();
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        return new MaintainerVm();
     }
 
     public async Task CreateMaintainerAsync(AddMaintainerVm maintainerVm)
     {
         await _httpClient.PostAsync("/api/maintainer", JsonContent.Create(maintainerVm));
+    }
+
+    public async Task<int> UpdateMaintainerAsync(MaintainerVm maintainerVm)
+    {
+        try
+        {
+            var result = await _httpClient.PutAsync($"/api/maintainer/{maintainerVm.Id}", JsonContent.Create(maintainerVm));
+            return result.IsSuccessStatusCode ? 1 : 0;
+        }
+        catch (Exception ex)
+        {
+            var msg = ex.Message;
+            return 0;
+            throw;
+        }
     }
 }
