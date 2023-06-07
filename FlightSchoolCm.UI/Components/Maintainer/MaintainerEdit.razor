@@ -1,0 +1,40 @@
+﻿@inject NavigationManager navigation
+@inject IMaintainersApiClient MaintainersApiClient
+
+<MudItem xs="12" sm="12" md="4" lg="3">
+
+    <EditForm Model="@_maintainerVm" OnValidSubmit="@UpdateMaintainer">
+
+        <FluentValidationValidator DisableAssemblyScanning="true" />
+
+        <MudTextField @bind-Value="_maintainerVm.Name"
+                      Variant="Variant.Outlined"
+                      For="(() => _maintainerVm.Name)"
+                      Label="Maintainer Name"
+                      Class="my-6" />
+
+        <MudPaper Elevation="0">
+            <SubmitButton ButtonText="UpdateMaintainer" />
+            <CancelButton Url="maintainers" />
+        </MudPaper>
+
+    </EditForm>
+</MudItem>
+
+@code {
+
+    [Parameter]
+    public int MaintainerId { get; set; }
+
+    private MaintainerVm _maintainerVm = new();
+
+    protected async Task UpdateMaintainer()
+    {
+        var result = await MaintainersApiClient.UpdateMaintainerAsync(_maintainerVm);
+        navigation.NavigateTo("/maintainer");
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        _maintainerVm = await MaintainersApiClient.GetMaintainerVmByIdAsync(MaintainerId);
+    }
+}

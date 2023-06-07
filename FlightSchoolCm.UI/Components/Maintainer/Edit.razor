@@ -1,0 +1,10 @@
+﻿@page "/maintainer/edit/{MaintainerId:int}"
+
+<MaintainerEdit MaintainerId="@MaintainerId" />
+
+@code {
+
+    [Parameter]
+    public int MaintainerId { get; set; }
+
+}
