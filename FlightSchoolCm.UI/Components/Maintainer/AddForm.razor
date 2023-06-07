@@ -1,30 +1,40 @@
-﻿@using FlightSchoolTss.Data.Validation;
+﻿@using FlightSchoolTss.DTOs.Maintainer;
+@using FlightSchoolTss.Data.Validation;
+@using FlightSchoolTss.Validators.Maintainer;
 @using FluentValidation
 
 @inject ISnackbar Snackbar
-@inject IMaintainersApiClient MaintainersApiClient 
+@inject IMaintainersApiClient MaintainersApiClient
 @inject NavigationManager navigation
 
-<MudForm Model="@_maintainerVm" @ref="@_mudForm">
-    
-    <MudTextField @bind-Value="_maintainerVm.Name"
+<MudForm Model="@_dto" @ref="@_mudForm" Validation="_validator.ValidateValue" ValidationDelay="0">
+
+    <MudTextField @bind-Value="_dto.Name"
                   Variant="Variant.Outlined"
-                  For="(() => _maintainerVm.Name)"
+                  For="(() => _dto.Name)"
                   Label="Maintainer Name"
                   Class="my-6" />
 
 </MudForm>
 
-@code {
-    private MudForm _mudForm;
+<MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto" OnClick="@(async () => await CreateMaintainer())">Order</MudButton>
 
-    private AddMaintainerVm _maintainerVm { get; set; } = new();
+@code {
+    private MudForm? _mudForm;
+
+    private CreateMaintainerDto _dto { get; set; } = new();
+
+    CreateMaintainerDtoValidator _validator = new();
 
     private async Task CreateMaintainer()
     {
-        await MaintainersApiClient.CreateMaintainerAsync(_maintainerVm);
+        await _mudForm!.Validate();
 
-        Snackbar.Add($"The new Maintainer was Added!", MudBlazor.Severity.Success);
+        if (_mudForm.IsValid)
+        {
+            await MaintainersApiClient.CreateMaintainerAsync(_dto);
+            Snackbar.Add($"The new Maintainer was Added!", MudBlazor.Severity.Success);
+        }
 
         navigation.NavigateTo("/maintainer");
     }
