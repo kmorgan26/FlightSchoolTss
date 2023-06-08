@@ -3,6 +3,7 @@ using FlightSchoolTss.Data.Data;
 using FlightSchoolTss.Data.Entities.Auth;
 using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.Data.Repositories;
+using FlightSchoolTss.DTOs.Maintainer;
 using FlightSchoolTss.Endpoints;
 using FlightSchoolTss.Services;
 using FluentValidation;
@@ -106,7 +107,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddValidatorsFromAssemblyContaining<MaintainerDto>();
 
 var app = builder.Build();
 
