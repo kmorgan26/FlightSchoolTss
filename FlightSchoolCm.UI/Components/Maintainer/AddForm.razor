@@ -26,9 +26,14 @@
 
 
 @code {
-    private MudForm? _mudForm;
 
-    private CreateMaintainerDto _dto { get; set; } = new();
+    [Parameter]
+    public EventCallback OnMaintainerAdd { get; set; }
+
+    [Parameter]
+    public CreateMaintainerDto _dto { get; set; } = new();
+
+    private MudForm? _mudForm;
 
     CreateMaintainerDtoValidator _validator = new();
 
@@ -39,9 +44,9 @@
         if (_mudForm.IsValid)
         {
             await MaintainersApiClient.CreateMaintainerAsync(_dto);
+            await OnMaintainerAdd.InvokeAsync();
+            await _mudForm.ResetAsync();
             Snackbar.Add($"The new Maintainer was Added!", MudBlazor.Severity.Success);
         }
-
-        navigation.NavigateTo("/maintainer");
     }
 }
