@@ -1,5 +1,13 @@
 ﻿@page "/maintainer"
 
-<MudText Typo="Typo.h3">Maintainers</MudText>
-<AddForm />
-<MaintainerTable />
+<MudGrid>
+    <MudItem xs="12">
+        <MudText Typo="Typo.h3">Maintainers</MudText>
+    </MudItem>
+    <MudItem sm="8">
+        <AddForm />
+    </MudItem>
+    <MudItem xs="12">
+        <MaintainerTable />
+    </MudItem>
+</MudGrid>
