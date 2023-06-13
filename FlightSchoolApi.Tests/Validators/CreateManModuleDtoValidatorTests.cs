@@ -1,6 +1,6 @@
 ﻿using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.DTOs.ManModule;
-using FlightSchoolTss.Validators.ManModule;
+using FlightSchoolTss.Data.Validators.ManModule;
 using Moq;
 
 namespace FlightSchoolTss.Tests.Validators;

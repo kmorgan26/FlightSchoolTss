@@ -7,27 +7,29 @@
         <MudText Typo="Typo.h3">Maintainers</MudText>
     </MudItem>
     <MudItem sm="8">
-        <AddForm OnMaintainerAdd="RefreshMaintainers" _dto="_createMaintainerDto" />
+        <AddForm OnMaintainerAdd="RefreshMaintainers" _dto="_maintainerDto" ButtonText=@_buttonText />
     </MudItem>
     <MudItem xs="12">
-        <MaintainerTable MaintainerName="BindMaintainerDto" MaintainerVms="_maintainers" />
+        <MaintainerTable MaintainerVm="BindMaintainerDto" MaintainerVms="_maintainers" OnMaintainerDelete="RefreshMaintainers" />
     </MudItem>
 </MudGrid>
 
 @code {
 
     private List<MaintainerVm>? _maintainers;
-    private CreateMaintainerDto _createMaintainerDto = new();
+    private MaintainerDto _maintainerDto = new();
+    private string _buttonText = "ADD";
 
     private async Task RefreshMaintainers()
     {
+        _buttonText = "ADD";
         _maintainers = await MaintainersApiClient.GetMaintainersAsync();
     }
-    private void BindMaintainerDto(string name)
+    private void BindMaintainerDto(MaintainerVm vm)
     {
-        _createMaintainerDto = new CreateMaintainerDto() { Name = name };
+        _buttonText = "UPDATE";
+        _maintainerDto = new MaintainerDto() { Name = vm.Name, Id = vm.Id };
     }
-
     protected override async Task OnInitializedAsync()
     {
         await RefreshMaintainers();

@@ -1,5 +1,7 @@
 ﻿@using FlightSchoolCm.UI.Services;
 @inject IMaintainersApiClient MaintainersApiClient
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
 
 <PageTitle>Maintainers</PageTitle>
 
@@ -18,8 +20,8 @@ else
         <RowTemplate>
             <MudTd DataLabel="ID">@context.Id</MudTd>
             <MudTd DataLabel="Name">@context.Name</MudTd>
-            <MudTd DataLabel="SELECT">
-                <MudIcon Icon="@Icons.Material.Filled.Edit" Color="Color.Warning"></MudIcon>
+            <MudTd DataLabel="DELETE">
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" />
             </MudTd>
         </RowTemplate>
     </MudTable>
@@ -31,10 +33,27 @@ else
     public List<MaintainerVm>? MaintainerVms { get; set; }
 
     [Parameter]
-    public EventCallback<string> MaintainerName { get; set; }
+    public EventCallback<MaintainerVm> MaintainerVm { get; set; }
+
+    [Parameter]
+    public EventCallback OnMaintainerDelete { get; set; }
 
     public void OnRowClick(TableRowClickEventArgs<MaintainerVm> row)
     {
-        MaintainerName.InvokeAsync(row.Item.Name);
+        MaintainerVm.InvokeAsync(row.Item);
+    }
+    public async void OnButtonClick(MaintainerVm vm)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialog = await DialogService.ShowAsync<MaintainerDialog>("Delete Maintainer?", options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            var deleted = await MaintainersApiClient.DeleteMaintainerAsync(vm.Id);
+
+            if (deleted)
+                await OnMaintainerDelete.InvokeAsync();
+            Snackbar.Add($"The Maintainer has been deleted!", MudBlazor.Severity.Success);
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using FlightSchoolTss.Data.DTOs.SoftwareSystem;
 using FluentValidation;
 
-namespace FlightSchoolTss.Api.Validators.SoftwareSystem;
+namespace FlightSchoolTss.Data.Validators.SoftwareSystem;
 
 public class CreateSoftwareSystemDtoValidator : AbstractValidator<CreateSoftwareSystemDto>
 {

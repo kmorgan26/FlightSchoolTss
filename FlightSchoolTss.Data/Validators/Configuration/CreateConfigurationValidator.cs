@@ -1,7 +1,7 @@
 ﻿using FlightSchoolTss.Data.DTOs.Configuration;
 using FluentValidation;
 
-namespace FlightSchoolTss.Api.Validators.Configuration;
+namespace FlightSchoolTss.Data.Validators.Configuration;
 
 public class CreateConfigurationDtoValidator : AbstractValidator<CreateConfigurationDto>
 {

@@ -1,8 +1,7 @@
 ﻿using Moq;
 using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.Validators.Lot;
+using FlightSchoolTss.Data.Validators.Lot;
 using FlightSchoolTss.DTOs.Lot;
-using System.Threading.Tasks;
 
 namespace FlightSchoolTss.Tests.Validators;
 public class CreateLotDtoValidatorTests

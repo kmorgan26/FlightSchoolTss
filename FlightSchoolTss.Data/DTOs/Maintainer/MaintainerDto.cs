@@ -1,6 +1,9 @@
-﻿namespace FlightSchoolTss.DTOs.Maintainer;
-public class MaintainerDto
+﻿using FlightSchoolTss.Data.Abstractions;
+using FlightSchoolTss.Data.DTOs.Abstractions;
+
+namespace FlightSchoolTss.DTOs.Maintainer;
+public class MaintainerDto : BaseDtoViewModel
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = null!;
+    private int _id;
+    public override int Id { get => Id = _id; set => _id = value; }
 }

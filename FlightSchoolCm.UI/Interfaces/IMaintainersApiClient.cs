@@ -8,4 +8,5 @@ public interface IMaintainersApiClient
     Task<MaintainerVm> GetMaintainerVmByIdAsync(int id);
     Task CreateMaintainerAsync(CreateMaintainerDto dto);
     Task<int> UpdateMaintainerAsync(MaintainerVm maintainerVm);
+    Task<bool> DeleteMaintainerAsync(int id);
 }

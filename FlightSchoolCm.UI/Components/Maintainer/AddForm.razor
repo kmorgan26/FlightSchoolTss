@@ -1,8 +1,11 @@
-﻿@using FlightSchoolTss.DTOs.Maintainer;
+﻿@using AutoMapper;
+@using FlightSchoolTss.DTOs.Maintainer;
+@using FlightSchoolTss.Data.DTOs.Abstractions;
 @using FlightSchoolTss.Data.Validation;
-@using FlightSchoolTss.Validators.Maintainer;
-@using FluentValidation
+@using FlightSchoolTss.Data.Validators.Maintainer;
+@using FluentValidation;
 
+@inject IMapper Mapper
 @inject ISnackbar Snackbar
 @inject IMaintainersApiClient MaintainersApiClient
 @inject NavigationManager navigation
@@ -19,11 +22,9 @@
         </MudForm>
     </MudItem>
     <MudItem xs="2">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await CreateMaintainer())">Add</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await CreateOrInsertAsync())">@ButtonText</MudButton>
     </MudItem>
 </MudGrid>
-
-
 
 @code {
 
@@ -31,22 +32,37 @@
     public EventCallback OnMaintainerAdd { get; set; }
 
     [Parameter]
-    public CreateMaintainerDto _dto { get; set; } = new();
+    public MaintainerDto _dto { get; set; } = new();
+
+    [Parameter]
+    public string ButtonText { get; set; } = "ADD";
 
     private MudForm? _mudForm;
 
-    CreateMaintainerDtoValidator _validator = new();
+    MaintainerDtoValidator _validator = new();
 
-    private async Task CreateMaintainer()
+    private async Task CreateOrInsertAsync()
     {
         await _mudForm!.Validate();
-
         if (_mudForm.IsValid)
         {
-            await MaintainersApiClient.CreateMaintainerAsync(_dto);
+            string operation = string.Empty;
+            if (_dto.Id == 0)
+            {
+                operation = "added";
+                var dto = Mapper.Map(_dto, new CreateMaintainerDto());
+                await MaintainersApiClient.CreateMaintainerAsync(dto);
+            }
+            else
+            {
+                operation = "updated";
+                var vm = Mapper.Map(_dto, new MaintainerVm());
+                await MaintainersApiClient.UpdateMaintainerAsync(vm);
+            }
             await OnMaintainerAdd.InvokeAsync();
             await _mudForm.ResetAsync();
-            Snackbar.Add($"The new Maintainer was Added!", MudBlazor.Severity.Success);
+            _dto = new();
+            Snackbar.Add($"The Maintainer was Successfully {operation}!", MudBlazor.Severity.Success);
         }
     }
 }

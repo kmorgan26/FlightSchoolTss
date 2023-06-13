@@ -26,4 +26,8 @@
     <ProjectReference Include="..\FlightSchoolTss.Data\FlightSchoolTss.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configurations\" />
+  </ItemGroup>
+
 </Project>

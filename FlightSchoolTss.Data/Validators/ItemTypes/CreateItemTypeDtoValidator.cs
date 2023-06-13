@@ -1,7 +1,7 @@
 ﻿using FlightSchoolTss.Data.DTOs.ItemTypes;
 using FluentValidation;
 
-namespace FlightSchoolTss.Api.Validators.ItemTypes;
+namespace FlightSchoolTss.Data.Validators.ItemTypes;
 
 public class CreateItemTypeDtoValidator : AbstractValidator<CreateItemTypeDto>
 {

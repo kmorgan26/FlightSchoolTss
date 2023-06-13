@@ -2,7 +2,7 @@
 using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.DTOs.Lot;
 
-namespace FlightSchoolTss.Validators.Lot;
+namespace FlightSchoolTss.Data.Validators.Lot;
 
 public class CreateLotDtoValidator : AbstractValidator<CreateLotDto>
 {

@@ -80,4 +80,18 @@ public class MaintainersApiClient : IMaintainersApiClient
             throw;
         }
     }
+
+    public async Task<bool> DeleteMaintainerAsync(int id)
+    {
+        try
+        {
+            var result = await _httpClient.DeleteAsync($"/api/maintainer/{id}");
+            return result.IsSuccessStatusCode ? true : false;
+        }
+        catch (Exception ex)
+        {
+            var msg = ex.Message;
+            return false; 
+        }
+    }
 }

@@ -1,6 +1,8 @@
-﻿namespace FlightSchoolTss.Data.ViewModels.Maintainer;
+﻿using FlightSchoolTss.Data.Abstractions;
 
-public class AddMaintainerVm
+namespace FlightSchoolTss.Data.ViewModels.Maintainer;
+
+public class AddMaintainerVm : BaseDtoViewModel
 {
-    public string Name { get; set; } = null!;
+    public override int Id { get => Id = 0; set => throw new NotImplementedException(); }
 }

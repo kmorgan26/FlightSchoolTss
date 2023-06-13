@@ -2,7 +2,7 @@
 using FlightSchoolTss.DTOs.Maintainer;
 using FluentValidation;
 
-namespace FlightSchoolTss.Api.Validators.Maintainable;
+namespace FlightSchoolTss.Data.Validators.Maintainable;
 
 public class CreateMaintainableDtoValidator : AbstractValidator<CreateMaintainableDto>
 {

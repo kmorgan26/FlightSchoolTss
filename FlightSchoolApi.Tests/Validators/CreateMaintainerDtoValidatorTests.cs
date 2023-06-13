@@ -1,8 +1,5 @@
-﻿using Xunit;
-using FlightSchoolTss.Validators.Lot;
+﻿using FlightSchoolTss.Data.Validators.Maintainer;
 using FlightSchoolTss.DTOs.Maintainer;
-using FluentValidation.TestHelper;
-using System.Threading.Tasks;
 
 namespace FlightSchoolTss.Tests.Validators;
 public class CreateMaintainerDtoValidatorTests

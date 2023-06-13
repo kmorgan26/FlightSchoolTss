@@ -2,7 +2,7 @@
 using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.DTOs.Platform;
 
-namespace FlightSchoolTss.Validators.Platform;
+namespace FlightSchoolTss.Data.Validators.Platform;
 
 public class CreatePlatformDtoValidator : AbstractValidator<CreatePlatformDto>
 {

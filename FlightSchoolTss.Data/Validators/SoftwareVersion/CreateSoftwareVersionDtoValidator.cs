@@ -1,7 +1,7 @@
 ﻿using FlightSchoolTss.Data.DTOs.SoftwareVersion;
 using FluentValidation;
 
-namespace FlightSchoolTss.Api.Validators.SoftwareVersion;
+namespace FlightSchoolTss.Data.Validators.SoftwareVersion;
 
 public class CreateSoftwareVersionDtoValidator : AbstractValidator<CreateSoftwareVersionDto>
 {

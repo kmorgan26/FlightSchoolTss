@@ -1,7 +1,7 @@
 ﻿using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.DTOs.Platform;
-using FlightSchoolTss.Validators.Platform;
+using FlightSchoolTss.Data.Validators.Platform;
 using FluentValidation;
 using Moq;
 

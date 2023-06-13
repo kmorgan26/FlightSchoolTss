@@ -1,7 +1,7 @@
 ﻿using FlightSchoolTss.Data.DTOs.HardwareSystem;
 using FluentValidation;
 
-namespace FlightSchoolTss.Api.Validators.HardwareSystem;
+namespace FlightSchoolTss.Data.Validators.HardwareSystem;
 public class CreateHardwareSystemDtoValidator : AbstractValidator<CreateHardwareSystemDto>
 {
     public CreateHardwareSystemDtoValidator()

@@ -1,7 +1,7 @@
 ﻿using FlightSchoolTss.Data.DTOs.ConfigurationItem;
 using FluentValidation;
 
-namespace FlightSchoolTss.Api.Validators.ConfigurationItem;
+namespace FlightSchoolTss.Data.Validators.ConfigurationItem;
 
 public class CreateConfigurationItemDtoValidator : AbstractValidator<CreateConfigurationItemDto>
 {

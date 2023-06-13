@@ -2,7 +2,7 @@
 using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.DTOs.ManModule;
 
-namespace FlightSchoolTss.Validators.ManModule;
+namespace FlightSchoolTss.Data.Validators.ManModule;
 
 public class CreateManModuleDtoValidator : AbstractValidator<CreateManModuleDto>
 {

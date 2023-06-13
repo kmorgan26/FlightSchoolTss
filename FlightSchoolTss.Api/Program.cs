@@ -1,4 +1,4 @@
-﻿using FlightSchoolTss.Configurations;
+﻿using FlightSchoolTss.Data.Configurations;
 using FlightSchoolTss.Data.Data;
 using FlightSchoolTss.Data.Entities.Auth;
 using FlightSchoolTss.Data.Interfaces;

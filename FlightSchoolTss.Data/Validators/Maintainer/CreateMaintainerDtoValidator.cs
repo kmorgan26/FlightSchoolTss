@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using FlightSchoolTss.DTOs.Maintainer;
 
-namespace FlightSchoolTss.Validators.Maintainer;
+namespace FlightSchoolTss.Data.Validators.Maintainer;
 
 public class CreateMaintainerDtoValidator : AbstractValidator<CreateMaintainerDto>
 {

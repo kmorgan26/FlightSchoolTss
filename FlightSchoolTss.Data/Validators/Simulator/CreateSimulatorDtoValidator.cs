@@ -2,7 +2,7 @@
 using FlightSchoolTss.DTOs.Simulator;
 using FluentValidation;
 
-namespace FlightSchoolTss.Validators.Simulator;
+namespace FlightSchoolTss.Data.Validators.Simulator;
 
 public class CreateSimulatorDtoValidator : AbstractValidator<CreateSimulatorDto>
 {

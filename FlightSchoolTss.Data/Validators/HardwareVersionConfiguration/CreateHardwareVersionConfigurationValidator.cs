@@ -1,7 +1,7 @@
 ﻿using FlightSchoolTss.Data.DTOs.HardwareVersionConfiguration;
 using FluentValidation;
 
-namespace FlightSchoolTss.Api.Validators.HardwareVersionConfiguration;
+namespace FlightSchoolTss.Data.Validators.HardwareVersionConfiguration;
 
 public class CreateHardwareVersionConfigurationDtoValidator : AbstractValidator<CreateHardwareVersionConfigurationDto>
 {

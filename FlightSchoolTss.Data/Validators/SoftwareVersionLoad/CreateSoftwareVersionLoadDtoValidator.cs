@@ -2,7 +2,7 @@
 using FluentValidation;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace FlightSchoolTss.Api.Validators.SoftwareVersionLoad;
+namespace FlightSchoolTss.Data.Validators.SoftwareVersionLoad;
 
 public class CreateSoftwareVersionLoadDtoValidator : AbstractValidator<CreateSoftwareVersionLoadDto>
 {

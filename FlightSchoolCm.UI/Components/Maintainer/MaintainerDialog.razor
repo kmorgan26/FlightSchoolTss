@@ -1,0 +1,19 @@
+﻿
+<MudDialog>
+    <DialogContent>
+        Confirm Delete!
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">DELETE</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+
+    [CascadingParameter]
+    MudDialogInstance MudDialogConfirm { get; set; } = null!;
+
+    void Submit() => MudDialogConfirm.Close(DialogResult.Ok(true));
+    void Cancel() => MudDialogConfirm.Cancel();
+}

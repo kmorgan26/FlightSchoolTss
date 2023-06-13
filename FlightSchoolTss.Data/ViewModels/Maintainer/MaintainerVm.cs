@@ -1,6 +1,9 @@
-﻿namespace FlightSchoolTss.Data.ViewModels.Maintainer;
+﻿using FlightSchoolTss.Data.Abstractions;
 
-public class MaintainerVm : AddMaintainerVm
+namespace FlightSchoolTss.Data.ViewModels.Maintainer;
+
+public class MaintainerVm : BaseDtoViewModel
 {
-    public int Id { get; set; }
+    private int _id;
+    public override int Id { get => Id = _id; set => _id = value; }
 }

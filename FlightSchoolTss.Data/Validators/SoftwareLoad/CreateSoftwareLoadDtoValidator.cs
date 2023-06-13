@@ -1,7 +1,7 @@
 ﻿using FlightSchoolTss.Data.DTOs.SoftwareLoad;
 using FluentValidation;
 
-namespace FlightSchoolTss.Api.Validators.SoftwareLoad;
+namespace FlightSchoolTss.Data.Validators.SoftwareLoad;
 
 public class CreateSoftwareLoadDtoValidator : AbstractValidator<CreateSoftwareLoadDto>
 {
