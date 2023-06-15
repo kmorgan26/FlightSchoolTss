@@ -1,3 +1,4 @@
+using Fluxor;
 using FlightSchoolCm.UI;
 using FlightSchoolCm.UI.Interfaces;
 using FlightSchoolCm.UI.Services;
@@ -18,5 +19,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseA
 builder.Services.AddScoped<IMaintainersApiClient, MaintainersApiClient>();
 
 builder.Services.AddMudServices();
+builder.Services.AddFluxor(o => o.ScanAssemblies(typeof(Program).Assembly));
 
 await builder.Build().RunAsync();
