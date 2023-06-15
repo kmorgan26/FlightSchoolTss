@@ -1,0 +1,22 @@
+﻿@page "/mode"
+@inherits FluxorComponent
+
+@using FlightSchoolCm.UI.Features.MaintainerMode.Store
+@inject IDispatcher Dispatcher
+@inject IState<MaintainerModeState> MaintainerModeState
+
+<h1>Maintainer Mode</h1>
+
+<p>Current Mode: @MaintainerModeState.Value.MaintainerModeId</p>
+
+<button class="btn btn-primary" @onclick="IncrementMode">Click me</button>
+
+
+@code {
+
+    private void IncrementMode()
+    {
+        Dispatcher.Dispatch(new MaintainerModeChangeAction());
+    }
+    //https://dev.to/mr_eking/advanced-blazor-state-management-using-fluxor-part-2-io7
+}
