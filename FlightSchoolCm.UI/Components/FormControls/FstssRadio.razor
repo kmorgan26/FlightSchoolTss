@@ -1,0 +1,28 @@
+﻿<MudForm>
+    <MudRadioGroup T="int" SelectedOptionChanged="@((int newValue) => SetOption(newValue))" SelectedOption="SelectedOption">
+        <MudRadio Option="0" Color="Color.Primary">None</MudRadio>
+        @foreach(var option in RadioItems)
+        {
+            <MudRadio Option="@option.Id" Color="Color.Primary">@option.Name</MudRadio>
+        }
+    </MudRadioGroup>
+</MudForm>
+
+@code {
+
+    [CascadingParameter]
+    public int SelectedOption { get; set; }
+
+    [Parameter]
+    public List<MaintainerVm> RadioItems { get; set; } = new();
+
+    [Parameter]
+    public EventCallback<int> OnSelectedOptionChanged { get; set; }
+
+    private Task SetOption(int option)
+    {
+        OnSelectedOptionChanged.InvokeAsync(option);
+        
+        return Task.CompletedTask;
+    }
+}

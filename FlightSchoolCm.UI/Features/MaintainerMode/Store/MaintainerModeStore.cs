@@ -21,16 +21,19 @@ public class MaintainerModeFeature : Feature<MaintainerModeState>
     }
 }
 
-public class MaintainerModeChangeAction { }
+public class MaintainerModeChangeAction 
+{
+    public int Value { get; set; }
+}
 
 public static class MaintainerModeReducers
 {
-    [ReducerMethod(typeof(MaintainerModeChangeAction))]
-    public static MaintainerModeState OnChange(MaintainerModeState state)
+    [ReducerMethod]
+    public static MaintainerModeState OnChange(MaintainerModeState state, MaintainerModeChangeAction action)
     {
         return state with
         {
-            MaintainerModeId = state.MaintainerModeId + 1
+            MaintainerModeId = action.Value
         };
     }
 }

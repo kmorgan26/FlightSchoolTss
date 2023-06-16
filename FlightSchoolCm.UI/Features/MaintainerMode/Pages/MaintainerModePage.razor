@@ -1,22 +1,43 @@
 ﻿@page "/mode"
 @inherits FluxorComponent
-
+@using FlightSchoolCm.UI.Components.FormControls
 @using FlightSchoolCm.UI.Features.MaintainerMode.Store
 @inject IDispatcher Dispatcher
 @inject IState<MaintainerModeState> MaintainerModeState
+@inject IMaintainersApiClient MaintainersApiClient
 
 <h1>Maintainer Mode</h1>
 
 <p>Current Mode: @MaintainerModeState.Value.MaintainerModeId</p>
 
-<button class="btn btn-primary" @onclick="IncrementMode">Click me</button>
-
+@if (MaintainerVms is not null && SelectedOption > -1)
+{
+    <CascadingValue Value="@SelectedOption">
+        <FstssRadio RadioItems="MaintainerVms" OnSelectedOptionChanged="ChangeMode"/>
+    </CascadingValue>
+}
 
 @code {
 
-    private void IncrementMode()
+    [Parameter]
+    public List<MaintainerVm>? MaintainerVms { get; set; }
+
+    public int SelectedOption { get; set; }
+
+    private void ChangeMode(int mode)
     {
-        Dispatcher.Dispatch(new MaintainerModeChangeAction());
+        SelectedOption = mode;
+        var action = new MaintainerModeChangeAction { Value = mode };
+        Dispatcher.Dispatch(action);
     }
-    //https://dev.to/mr_eking/advanced-blazor-state-management-using-fluxor-part-2-io7
+    private async Task RefreshMaintainers()
+    {
+        MaintainerVms = await MaintainersApiClient.GetMaintainersAsync();
+        SelectedOption = MaintainerModeState.Value.MaintainerModeId;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshMaintainers();
+    }
+
 }
