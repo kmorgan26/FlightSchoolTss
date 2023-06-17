@@ -1,19 +1,19 @@
 ﻿@page "/mode"
-@inherits FluxorComponent
 @using FlightSchoolCm.UI.Components.FormControls
 @using FlightSchoolCm.UI.Features.MaintainerMode.Store
+@inherits FluxorComponent
 @inject IDispatcher Dispatcher
 @inject IState<MaintainerModeState> MaintainerModeState
 @inject IMaintainersApiClient MaintainersApiClient
 
-<h1>Maintainer Mode</h1>
-
-<p>Current Mode: @MaintainerModeState.Value.MaintainerModeId</p>
-
 @if (MaintainerVms is not null && SelectedOption > -1)
 {
     <CascadingValue Value="@SelectedOption">
-        <FstssRadio RadioItems="MaintainerVms" OnSelectedOptionChanged="ChangeMode"/>
+        <FstssRadio TItem="MaintainerVm" RadioItems="@MaintainerVms" Context="context" OnSelectedOptionChanged="ChangeMode">
+            <RadioButtons>
+                <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
+            </RadioButtons>
+        </FstssRadio>
     </CascadingValue>
 }
 
