@@ -1,9 +1,12 @@
-﻿<MudForm>
+﻿@using FlightSchoolTss.Data.Abstractions;
+@typeparam TItem
+
+<MudForm>
     <MudRadioGroup T="int" SelectedOptionChanged="@((int newValue) => SetOption(newValue))" SelectedOption="SelectedOption">
-        <MudRadio Option="0" Color="Color.Primary">None</MudRadio>
+        <MudRadio Option="0" Color="Color.Default" Size="Size.Small">None</MudRadio>
         @foreach(var option in RadioItems)
         {
-            <MudRadio Option="@option.Id" Color="Color.Primary">@option.Name</MudRadio>
+            @RadioButtons(option)
         }
     </MudRadioGroup>
 </MudForm>
@@ -14,7 +17,10 @@
     public int SelectedOption { get; set; }
 
     [Parameter]
-    public List<MaintainerVm> RadioItems { get; set; } = new();
+    public List<TItem> RadioItems { get; set; } = new();
+
+    [Parameter]
+    public RenderFragment<TItem> RadioButtons { get; set; } =null!;
 
     [Parameter]
     public EventCallback<int> OnSelectedOptionChanged { get; set; }
