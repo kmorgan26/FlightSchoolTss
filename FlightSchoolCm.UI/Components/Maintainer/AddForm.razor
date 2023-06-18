@@ -19,7 +19,7 @@
         </MudForm>
     </MudItem>
     <MudItem xs="2">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await CreateOrInsertAsync())">@ButtonText</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
     </MudItem>
 </MudGrid>
 
@@ -37,13 +37,12 @@
     [Parameter]
     public string ButtonText { get; set; } = "ADD";
 
-
     [Parameter]
     public MudForm? MudForm { get; set; } = new();
 
     MaintainerDtoValidator _validator = new();
 
-    private async Task CreateOrInsertAsync()
+    private async Task SubmitForm()
     {
         await OnSubmitForm.InvokeAsync(MudForm);
     }
