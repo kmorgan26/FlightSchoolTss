@@ -1,6 +1,6 @@
 ﻿@using FlightSchoolTss.DTOs.Maintainer;
-@inject IMaintainersApiClient MaintainersApiClient
-
+@inject IGenericApiClient<MaintainerDto> ApiClient
+@inject IMapper Mapper
 
 <MudGrid>
     <MudItem xs="12">
@@ -23,12 +23,13 @@
     private async Task RefreshMaintainers()
     {
         _buttonText = "ADD";
-        _maintainers = await MaintainersApiClient.GetMaintainersAsync();
+        var maintainerDTOs = await ApiClient.GetAllAsync();
+        _maintainers = Mapper.Map<List<MaintainerVm>>(maintainerDTOs);
     }
     private void BindMaintainerDto(MaintainerVm vm)
     {
         _buttonText = "UPDATE";
-        _maintainerDto = new MaintainerDto() { Name = vm.Name, Id = vm.Id };
+        _maintainerDto = Mapper.Map<MaintainerDto>(vm);
     }
     protected override async Task OnInitializedAsync()
     {

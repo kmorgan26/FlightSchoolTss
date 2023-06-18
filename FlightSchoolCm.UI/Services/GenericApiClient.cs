@@ -13,7 +13,7 @@ public class GenericApiClient<TEntity> : HttpClient, IGenericApiClient<TEntity> 
     public GenericApiClient(string basePath, string baseAddress)
     {
         BaseAddress = new Uri(baseAddress);
-        _basePath = basePath;
+        _basePath = basePath + baseAddress;
     }
     public async Task<List<TEntity>?> GetAllAsync()
     {
@@ -21,6 +21,7 @@ public class GenericApiClient<TEntity> : HttpClient, IGenericApiClient<TEntity> 
         {
             SetupHeaders();
 
+            var testme = BaseAddress;
             var response = await GetAsync(_basePath);
 
             if (response.IsSuccessStatusCode)

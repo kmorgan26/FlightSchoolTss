@@ -1,5 +1,6 @@
 ﻿@using FlightSchoolCm.UI.Services;
-@inject IMaintainersApiClient MaintainersApiClient
+@using FlightSchoolTss.DTOs.Maintainer;
+@inject IGenericApiClient<MaintainerDto> ApiClient
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
@@ -49,10 +50,9 @@ else
         var result = await dialog.Result;
         if (!result.Canceled)
         {
-            var deleted = await MaintainersApiClient.DeleteMaintainerAsync(vm.Id);
-
-            if (deleted)
-                await OnMaintainerDelete.InvokeAsync();
+            await ApiClient.DeleteAsync(vm.Id);
+            await OnMaintainerDelete.InvokeAsync();
+            
             Snackbar.Add($"The Maintainer has been deleted!", MudBlazor.Severity.Success);
         }
     }

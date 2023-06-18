@@ -17,10 +17,9 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 // Host and port where the API is hosted
 var apiBaseAddress = "https://localhost:7015";
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseAddress) });
-builder.Services.AddScoped<IMaintainersApiClient, MaintainersApiClient>();
 
 builder.Services.AddScoped<IGenericApiClient<MaintainerDto>>
-    (c => new GenericApiClient<MaintainerDto>(apiBaseAddress, "/api/"));
+    (c => new GenericApiClient<MaintainerDto>(apiBaseAddress, "/api/maintainer"));
 
 builder.Services.AddMudServices();
 builder.Services.AddFluxor(o => o.ScanAssemblies(typeof(Program).Assembly));

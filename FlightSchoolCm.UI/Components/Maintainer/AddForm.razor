@@ -1,13 +1,11 @@
-﻿@using AutoMapper;
-@using FlightSchoolTss.DTOs.Maintainer;
+﻿@using FlightSchoolTss.DTOs.Maintainer;
 @using FlightSchoolTss.Data.DTOs.Abstractions;
 @using FlightSchoolTss.Data.Validation;
 @using FlightSchoolTss.Data.Validators.Maintainer;
 
-
 @inject IMapper Mapper
 @inject ISnackbar Snackbar
-@inject IMaintainersApiClient MaintainersApiClient
+@inject IGenericApiClient<MaintainerDto> ApiClient
 @inject NavigationManager navigation
 
 <MudGrid Style="align-items: center">
@@ -47,17 +45,17 @@
         if (_mudForm.IsValid)
         {
             string operation = string.Empty;
+            var dto = Mapper.Map(_dto, new MaintainerDto());
+
             if (_dto.Id == 0)
             {
                 operation = "added";
-                var dto = Mapper.Map(_dto, new CreateMaintainerDto());
-                await MaintainersApiClient.CreateMaintainerAsync(dto);
+                await ApiClient.CreateAsync(dto);
             }
             else
             {
                 operation = "updated";
-                var vm = Mapper.Map(_dto, new MaintainerVm());
-                await MaintainersApiClient.UpdateMaintainerAsync(vm);
+                await ApiClient.UpdateAsync(_dto.Id, dto);
             }
             await OnMaintainerAdd.InvokeAsync();
             await _mudForm.ResetAsync();

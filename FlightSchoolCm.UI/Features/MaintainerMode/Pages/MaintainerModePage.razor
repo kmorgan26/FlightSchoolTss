@@ -1,10 +1,15 @@
 ﻿@page "/mode"
+
+@inherits FluxorComponent
+
 @using FlightSchoolCm.UI.Components.FormControls
 @using FlightSchoolCm.UI.Features.MaintainerMode.Store
-@inherits FluxorComponent
+@using FlightSchoolTss.DTOs.Maintainer;
+
 @inject IDispatcher Dispatcher
 @inject IState<MaintainerModeState> MaintainerModeState
-@inject IMaintainersApiClient MaintainersApiClient
+@inject IMapper Mapper
+@inject IGenericApiClient<MaintainerDto> ApiClient
 
 @if (MaintainerVms is not null && SelectedOption > -1)
 {
@@ -32,7 +37,8 @@
     }
     private async Task RefreshMaintainers()
     {
-        MaintainerVms = await MaintainersApiClient.GetMaintainersAsync();
+        var maintainerDtos = await ApiClient.GetAllAsync();
+        MaintainerVms = Mapper.Map<List<MaintainerVm>>(maintainerDtos);
         SelectedOption = MaintainerModeState.Value.MaintainerModeId;
     }
     protected override async Task OnInitializedAsync()
