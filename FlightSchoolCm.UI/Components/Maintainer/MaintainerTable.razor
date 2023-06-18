@@ -1,10 +1,4 @@
-﻿@using FlightSchoolCm.UI.Services;
-@using FlightSchoolTss.DTOs.Maintainer;
-@inject IGenericApiClient<MaintainerDto> ApiClient
-@inject IDialogService DialogService
-@inject ISnackbar Snackbar
-
-<PageTitle>Maintainers</PageTitle>
+﻿<PageTitle>Maintainers</PageTitle>
 
 @if (MaintainerVms is null)
 {
@@ -37,7 +31,7 @@ else
     public EventCallback<MaintainerVm> MaintainerVm { get; set; }
 
     [Parameter]
-    public EventCallback OnMaintainerDelete { get; set; }
+    public EventCallback<MaintainerVm> OnMaintainerDelete { get; set; }
 
     public void OnRowClick(TableRowClickEventArgs<MaintainerVm> row)
     {
@@ -45,15 +39,6 @@ else
     }
     public async void OnButtonClick(MaintainerVm vm)
     {
-        var options = new DialogOptions { CloseOnEscapeKey = true };
-        var dialog = await DialogService.ShowAsync<MaintainerDialog>("Delete Maintainer?", options);
-        var result = await dialog.Result;
-        if (!result.Canceled)
-        {
-            await ApiClient.DeleteAsync(vm.Id);
-            await OnMaintainerDelete.InvokeAsync();
-            
-            Snackbar.Add($"The Maintainer has been deleted!", MudBlazor.Severity.Success);
-        }
+        await OnMaintainerDelete.InvokeAsync(vm);
     }
 }

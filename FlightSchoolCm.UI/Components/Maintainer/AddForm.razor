@@ -1,12 +1,4 @@
-﻿@using FlightSchoolTss.DTOs.Maintainer;
-@using FlightSchoolTss.Data.DTOs.Abstractions;
-@using FlightSchoolTss.Data.Validation;
-@using FlightSchoolTss.Data.Validators.Maintainer;
-
-@inject IMapper Mapper
-@inject ISnackbar Snackbar
-@inject NavigationManager navigation
-
+﻿
 <MudGrid Style="align-items: center">
     <MudItem xs="6">
         <MudForm Model="@_dto" @ref="@MudForm" Validation="_validator.ValidateValue" ValidationDelay="0">

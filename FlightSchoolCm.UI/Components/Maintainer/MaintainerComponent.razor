@@ -1,7 +1,7 @@
-﻿@using FlightSchoolTss.DTOs.Maintainer;
-@inject IGenericApiClient<MaintainerDto> ApiClient
+﻿@inject IGenericApiClient<MaintainerDto> ApiClient
 @inject IMapper Mapper
 @inject ISnackbar Snackbar
+@inject IDialogService DialogService
 
 <MudGrid>
     <MudItem xs="12">
@@ -11,7 +11,7 @@
         <AddForm OnMaintainerAdd="RefreshMaintainers" OnSubmitForm="CreateOrInsertAsync" _dto="_maintainerDto" ButtonText=@_buttonText />
     </MudItem>
     <MudItem xs="12">
-        <MaintainerTable MaintainerVm="BindMaintainerDto" MaintainerVms="_maintainers" OnMaintainerDelete="RefreshMaintainers" />
+        <MaintainerTable MaintainerVm="BindMaintainerDto" MaintainerVms="_maintainers" OnMaintainerDelete="DeleteMaintainer" />
     </MudItem>
 </MudGrid>
 
@@ -56,6 +56,21 @@
             Snackbar.Add($"The Maintainer was Successfully {operation}!", MudBlazor.Severity.Success);
         }
     }
+
+    public async Task DeleteMaintainer(MaintainerVm vm)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialog = await DialogService.ShowAsync<MaintainerDialog>("Delete Maintainer?", options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await ApiClient.DeleteAsync(vm.Id);
+            await RefreshMaintainers();
+
+            Snackbar.Add($"The Maintainer has been deleted!", MudBlazor.Severity.Success);
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await RefreshMaintainers();
