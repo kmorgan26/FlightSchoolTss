@@ -1,5 +1,5 @@
 ﻿using FlightSchoolTss.Data.Validators.Maintainer;
-using FlightSchoolTss.DTOs.Maintainer;
+using FlightSchoolTss.Data.DTOs.Maintainer;
 
 namespace FlightSchoolTss.Tests.Validators;
 public class CreateMaintainerDtoValidatorTests

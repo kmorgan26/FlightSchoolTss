@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.DTOs.Maintainer;
+using FlightSchoolTss.Data.DTOs.Maintainer;
 using FlightSchoolTss.Filters;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;

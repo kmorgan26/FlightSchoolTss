@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using FlightSchoolTss.DTOs.Maintainer;
+using FlightSchoolTss.Data.DTOs.Maintainer;
 
 namespace FlightSchoolTss.Data.Validators.Maintainer;
 
