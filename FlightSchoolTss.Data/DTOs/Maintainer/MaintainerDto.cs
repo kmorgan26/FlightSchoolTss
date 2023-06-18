@@ -1,7 +1,6 @@
 ﻿using FlightSchoolTss.Data.Abstractions;
-using FlightSchoolTss.Data.DTOs.Abstractions;
 
-namespace FlightSchoolTss.DTOs.Maintainer;
+namespace FlightSchoolTss.Data.DTOs.Maintainer;
 public class MaintainerDto : BaseDtoViewModel
 {
     private int _id;

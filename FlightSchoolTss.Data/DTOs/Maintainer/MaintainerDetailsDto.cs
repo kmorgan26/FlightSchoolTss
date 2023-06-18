@@ -1,6 +1,6 @@
 ﻿using FlightSchoolTss.DTOs.Platform;
 
-namespace FlightSchoolTss.DTOs.Maintainer;
+namespace FlightSchoolTss.Data.DTOs.Maintainer;
 
 public class MaintainerDetailsDto : MaintainerDto
 {
