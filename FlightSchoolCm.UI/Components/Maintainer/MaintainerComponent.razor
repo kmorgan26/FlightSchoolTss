@@ -1,13 +1,14 @@
 ﻿@using FlightSchoolTss.DTOs.Maintainer;
 @inject IGenericApiClient<MaintainerDto> ApiClient
 @inject IMapper Mapper
+@inject ISnackbar Snackbar
 
 <MudGrid>
     <MudItem xs="12">
         <MudText Typo="Typo.h3">Maintainers</MudText>
     </MudItem>
     <MudItem sm="8">
-        <AddForm OnMaintainerAdd="RefreshMaintainers" _dto="_maintainerDto" ButtonText=@_buttonText />
+        <AddForm OnMaintainerAdd="RefreshMaintainers" OnSubmitForm="CreateOrInsertAsync" _dto="_maintainerDto" ButtonText=@_buttonText />
     </MudItem>
     <MudItem xs="12">
         <MaintainerTable MaintainerVm="BindMaintainerDto" MaintainerVms="_maintainers" OnMaintainerDelete="RefreshMaintainers" />
@@ -31,8 +32,33 @@
         _buttonText = "UPDATE";
         _maintainerDto = Mapper.Map<MaintainerDto>(vm);
     }
+    private async Task CreateOrInsertAsync(MudForm _mudForm)
+    {
+        await _mudForm!.Validate();
+        if (_mudForm.IsValid)
+        {
+            string operation = string.Empty;
+            var dto = Mapper.Map(_maintainerDto, new MaintainerDto());
+
+            if (_maintainerDto.Id == 0)
+            {
+                operation = "added";
+                await ApiClient.CreateAsync(dto);
+            }
+            else
+            {
+                operation = "updated";
+                await ApiClient.UpdateAsync(_maintainerDto.Id, dto);
+            }
+            await RefreshMaintainers();
+            await _mudForm.ResetAsync();
+            _maintainerDto = new();
+            Snackbar.Add($"The Maintainer was Successfully {operation}!", MudBlazor.Severity.Success);
+        }
+    }
     protected override async Task OnInitializedAsync()
     {
         await RefreshMaintainers();
     }
+
 }

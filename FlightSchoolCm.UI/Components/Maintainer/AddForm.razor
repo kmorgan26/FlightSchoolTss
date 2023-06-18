@@ -5,12 +5,11 @@
 
 @inject IMapper Mapper
 @inject ISnackbar Snackbar
-@inject IGenericApiClient<MaintainerDto> ApiClient
 @inject NavigationManager navigation
 
 <MudGrid Style="align-items: center">
     <MudItem xs="6">
-        <MudForm Model="@_dto" @ref="@_mudForm" Validation="_validator.ValidateValue" ValidationDelay="0">
+        <MudForm Model="@_dto" @ref="@MudForm" Validation="_validator.ValidateValue" ValidationDelay="0">
 
             <MudTextField @bind-Value="_dto.Name"
                           Variant="Variant.Outlined"
@@ -30,37 +29,22 @@
     public EventCallback OnMaintainerAdd { get; set; }
 
     [Parameter]
+    public EventCallback<MudForm> OnSubmitForm { get; set; }
+
+    [Parameter]
     public MaintainerDto _dto { get; set; } = new();
 
     [Parameter]
     public string ButtonText { get; set; } = "ADD";
 
-    private MudForm? _mudForm;
+
+    [Parameter]
+    public MudForm? MudForm { get; set; } = new();
 
     MaintainerDtoValidator _validator = new();
 
     private async Task CreateOrInsertAsync()
     {
-        await _mudForm!.Validate();
-        if (_mudForm.IsValid)
-        {
-            string operation = string.Empty;
-            var dto = Mapper.Map(_dto, new MaintainerDto());
-
-            if (_dto.Id == 0)
-            {
-                operation = "added";
-                await ApiClient.CreateAsync(dto);
-            }
-            else
-            {
-                operation = "updated";
-                await ApiClient.UpdateAsync(_dto.Id, dto);
-            }
-            await OnMaintainerAdd.InvokeAsync();
-            await _mudForm.ResetAsync();
-            _dto = new();
-            Snackbar.Add($"The Maintainer was Successfully {operation}!", MudBlazor.Severity.Success);
-        }
+        await OnSubmitForm.InvokeAsync(MudForm);
     }
 }
