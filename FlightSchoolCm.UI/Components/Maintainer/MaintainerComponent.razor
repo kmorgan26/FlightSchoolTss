@@ -3,15 +3,17 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 
+<PageTitle>Maintainers</PageTitle>
+
 <MudGrid>
     <MudItem xs="12">
         <MudText Typo="Typo.h3">Maintainers</MudText>
     </MudItem>
     <MudItem sm="8">
-        <AddForm OnMaintainerAdd="RefreshMaintainers" OnSubmitForm="CreateOrInsertAsync" _dto="_maintainerDto" ButtonText=@_buttonText />
+        <FormComponent OnMaintainerAdd="RefreshMaintainers" OnSubmitForm="CreateOrInsertAsync" ButtonText=@_buttonText _dto="_maintainerDto" />
     </MudItem>
     <MudItem xs="12">
-        <MaintainerTable MaintainerVm="BindMaintainerDto" MaintainerVms="_maintainers" OnMaintainerDelete="DeleteMaintainer" />
+        <MaintainerTable MaintainerVms="_maintainers" MaintainerVm="BindMaintainerDto" OnMaintainerDelete="DeleteMaintainer" />
     </MudItem>
 </MudGrid>
 

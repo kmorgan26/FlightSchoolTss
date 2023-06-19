@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using FlightSchoolTss.Data.DTOs.Maintainer;
+using FlightSchoolTss.DTOs.Platform;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -20,6 +21,11 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(apiBaseA
 
 builder.Services.AddScoped<IGenericApiClient<MaintainerDto>>
     (c => new GenericApiClient<MaintainerDto>(apiBaseAddress, "/api/maintainer"));
+
+builder.Services.AddScoped<IGenericApiClient<PlatformDto>>
+    (c => new GenericApiClient<PlatformDto>(apiBaseAddress, "/api/platform"));
+
+builder.Services.AddScoped<IPlatformApiClient, PlatformApiClient>();
 
 builder.Services.AddMudServices();
 builder.Services.AddFluxor(o => o.ScanAssemblies(typeof(Program).Assembly));
