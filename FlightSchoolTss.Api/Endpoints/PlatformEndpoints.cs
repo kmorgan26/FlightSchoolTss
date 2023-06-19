@@ -4,6 +4,7 @@ using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.DTOs.Platform;
 using FlightSchoolTss.Filters;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FlightSchoolTss.Endpoints;
 
@@ -14,7 +15,7 @@ public static class PlatformEndpoints
     {
         var group = routes.MapGroup("/api/platform").WithTags(nameof(Platform));
 
-        group.MapGet("/", async (IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/", [AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var platforms = await unitOfWork.Platforms.GetAllAsync();
             return mapper.Map<List<PlatformDto>>(platforms);
@@ -23,7 +24,7 @@ public static class PlatformEndpoints
         .WithName("GetAllPlatforms")
         .Produces<List<PlatformDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.Platforms.GetAsync(id)
                 is Platform model
@@ -35,7 +36,7 @@ public static class PlatformEndpoints
         .Produces<PlatformDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, PlatformDto platformDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, PlatformDto platformDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var affected = await unitOfWork.Platforms.GetAsync(id);
 
@@ -53,7 +54,7 @@ public static class PlatformEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapGet("/GetByMaintainerId/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/GetByMaintainerId/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.Platforms.GetPlatformsByMaintainerIdAsync(id)
                 is List<Platform> model
@@ -65,7 +66,7 @@ public static class PlatformEndpoints
         .Produces<PlatformDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapGet("/GetPlatformsWithSimulatorDetails", async (IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/GetPlatformsWithSimulatorDetails", [AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var platforms = await unitOfWork.Platforms.GetPlatformsWithSimulatorDetailsAsync();
             return mapper.Map<List<PlatformDetailsDto>>(platforms);
@@ -74,7 +75,16 @@ public static class PlatformEndpoints
         .WithName("GetPlatformsWithSimulatorDetails")
         .Produces<List<PlatformDetailsDto>>(StatusCodes.Status200OK);
 
-        group.MapPost("/", async (CreatePlatformDto createPlatformDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/GetPlatformTableRowVms", [AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
+        {
+            var platforms = await unitOfWork.Platforms.GetPlatformTableRowVms();
+            return mapper.Map<List<PlatformDetailsDto>>(platforms);
+        })
+        .WithTags(nameof(Platform))
+        .WithName("GetPlatformTableRowVms")
+        .Produces<List<PlatformDetailsDto>>(StatusCodes.Status200OK);
+
+        group.MapPost("/", [AllowAnonymous] async (CreatePlatformDto createPlatformDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var platform = mapper.Map<Platform>(createPlatformDto);
             await unitOfWork.Platforms.AddAsync(platform);
@@ -87,7 +97,7 @@ public static class PlatformEndpoints
         .WithName("CreatePlatform")
         .Produces<Platform>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.Platforms.DeleteAsync(id);
             await unitOfWork.CommitAsync();
