@@ -1,0 +1,39 @@
+﻿@using FlightSchoolTss.Data.Abstractions;
+@typeparam TItem
+
+<MudForm>
+    <MudSelect T="int" 
+            SelectedValuesChanged="@((IEnumerable<int> newValue) => SetOption(newValue))" 
+            AnchorOrigin="Origin.BottomCenter" 
+            MultiSelection="false" 
+            SelectedValues="SelectedOption">
+    
+            <MudSelectItem Value="@(0)" />
+                @foreach(var item in Items)
+                {
+                    @SelectItems(item)
+                })
+    </MudSelect>
+</MudForm>
+
+@code {
+
+    [CascadingParameter]
+    public IEnumerable<int>? SelectedOption { get; set; }
+
+    [Parameter]
+    public List<TItem> Items { get; set; } = new();
+
+    [Parameter]
+    public RenderFragment<TItem> SelectItems { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback<IEnumerable<int>> OnSelectedOptionChanged { get; set; }
+
+    private Task SetOption(IEnumerable<int> option)
+    {
+        OnSelectedOptionChanged.InvokeAsync(option);
+
+        return Task.CompletedTask;
+    }
+}
