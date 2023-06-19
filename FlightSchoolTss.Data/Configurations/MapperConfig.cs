@@ -18,6 +18,7 @@ using FlightSchoolTss.Data.DTOs.Maintainer;
 using FlightSchoolTss.DTOs.ManModule;
 using FlightSchoolTss.DTOs.Platform;
 using FlightSchoolTss.DTOs.Simulator;
+using FlightSchoolTss.Data.ViewModels.Platform;
 
 namespace FlightSchoolTss.Data.Configurations;
 public class MapperConfig : Profile
@@ -66,6 +67,11 @@ public class MapperConfig : Profile
         CreateMap<Platform, CreatePlatformDto>().ReverseMap();
         CreateMap<Platform, PlatformDetailsDto>()
             .ForMember(i => i.Simulators, x => x.MapFrom(platform => platform.Simulators));
+
+        CreateMap<PlatformDetailsDto, PlatformTableRowVm>()
+            .ForMember(i => i.Maintainer, x => x.MapFrom(dto => dto.Maintainer.Name))
+            .ForMember(i => i.MaintainerId, x => x.MapFrom(dto => dto.Maintainer.Id))
+            .ReverseMap();
 
         CreateMap<Simulator, SimulatorDto>().ReverseMap();
         CreateMap<Simulator, CreateSimulatorDto>().ReverseMap();

@@ -24,10 +24,9 @@ public class PlatformRepository : GenericRepository<Platform>, IPlatformReposito
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Platform>> GetPlatformWithSimulatorMaintainerDetailsAsync()
+    public async Task<IEnumerable<Platform>> GetPlatformTableRowVms()
     {
         return await _context.Platforms
-            .Include(i => i.Simulators)
             .Include(i => i.Maintainer)
             .OrderBy(s => s.Name)
             .ToListAsync();

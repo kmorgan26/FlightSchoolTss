@@ -1,0 +1,45 @@
+﻿@using FlightSchoolTss.Data.ViewModels.Platform;
+@if (PlatformVms is null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <MudTable Items="@PlatformVms" T="PlatformTableRowVm" Hover="true" Breakpoint="Breakpoint.Sm" Class="mt-4" LoadingProgressColor="Color.Info" OnRowClick="@OnRowClick">
+        <HeaderContent>
+            <MudTh>Id</MudTh>
+            <MudTh>Name</MudTh>
+            <MudTh>Maintainer</MudTh>
+            <MudTh></MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="ID">@context.Id</MudTd>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Maintainer">@context.Maintainer</MudTd>
+            <MudTd DataLabel="DELETE">
+                <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" />
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+}
+
+@code {
+
+    [Parameter]
+    public List<PlatformTableRowVm>? PlatformVms { get; set; }
+
+    [Parameter]
+    public EventCallback<PlatformTableRowVm> PlatformVm { get; set; }
+
+    [Parameter]
+    public EventCallback<PlatformTableRowVm> OnPlatformDelete { get; set; }
+
+    public void OnRowClick(TableRowClickEventArgs<PlatformTableRowVm> row)
+    {
+        PlatformVm.InvokeAsync(row.Item);
+    }
+    public async void OnButtonClick(PlatformTableRowVm vm)
+    {
+        await OnPlatformDelete.InvokeAsync(vm);
+    }
+}

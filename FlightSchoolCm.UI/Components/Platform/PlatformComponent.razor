@@ -1,15 +1,78 @@
-﻿
+﻿@using FlightSchoolTss.DTOs.Platform;
+@using FlightSchoolTss.Data.ViewModels.Platform;
+@using static FlightSchoolCm.UI.Components.Platform.FormComponent;
+
+@inject IPlatformApiClient PlatformApiClient
+@inject IMapper Mapper
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
 <MudGrid>
     <MudItem xs="12">
         <MudText Typo="Typo.h3">Platforms</MudText>
     </MudItem>
     <MudItem sm="8">
+        @*<FormComponent OnPlatformAdd="RefreshMaintainers" OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto"></FormComponent>*@
     </MudItem>
     <MudItem xs="12">
+        <PlatformTable PlatformVms="@_platforms" PlatformVm="BindPlatformDto" OnPlatformDelete="RefreshPlatforms"></PlatformTable>
     </MudItem>
 </MudGrid>
 
 
 @code {
 
+    private string _buttonText = "ADD";
+    private List<PlatformTableRowVm>? _platforms;
+    //private PlatformDto _platformDto = new();
+    private PlatformDetailsDto _platformDto = new();
+    private List<MaintainerVm>? _maintainers;
+
+    private async Task RefreshPlatforms()
+    {
+        _buttonText = "ADD";
+        var _platformDtos = await PlatformApiClient.GetPlatformDetailsAsync();
+        _platforms = Mapper.Map<List<PlatformTableRowVm>>(_platformDtos);
+    }
+    private void BindPlatformDto(PlatformTableRowVm vm)
+    {
+        _buttonText = "UPDATE";
+        _platformDto = Mapper.Map<PlatformDetailsDto>(vm);
+    }
+    //private async Task RefreshMaintainers()
+    //{
+    //    var _maintainerDtos = await MaintainerApiClient.GetAllAsync();
+    //    _maintainers = Mapper.Map<List<MaintainerVm>>(_maintainerDtos);
+    //}
+
+    //private async Task CreateOrInsertAsync(MudForm _mudForm)
+    //{
+    //    await _mudForm!.Validate();
+
+    //    if (_mudForm.IsValid)
+    //    {
+    //        string operation = string.Empty;
+    //        var dto = Mapper.Map(_platformDto, new PlatformDto());
+
+    //        if (_platformDto.Id == 0)
+    //        {
+    //            operation = "added";
+    //            await ApiClient.CreateAsync(dto);
+    //        }
+    //        else
+    //        {
+    //            operation = "updated";
+    //            await ApiClient.UpdateAsync(_platformDto.Id, dto);
+    //        }
+    //        await RefreshPlatforms();
+    //        await _mudForm.ResetAsync();
+    //        _platformDto = new();
+    //        Snackbar.Add($"The Platform was Successfully {operation}!", MudBlazor.Severity.Success);
+    //    }
+    //}
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshPlatforms();
+       // await RefreshMaintainers();
+    }
 }
