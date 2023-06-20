@@ -41,17 +41,16 @@
         if (_mudForm.IsValid)
         {
             string operation = string.Empty;
-            var dto = Mapper.Map(_maintainerDto, new MaintainerDto());
 
             if (_maintainerDto.Id == 0)
             {
                 operation = "added";
-                await ApiClient.CreateAsync(dto);
+                await ApiClient.CreateAsync(_maintainerDto);
             }
             else
             {
                 operation = "updated";
-                await ApiClient.UpdateAsync(_maintainerDto.Id, dto);
+                await ApiClient.UpdateAsync(_maintainerDto.Id, _maintainerDto);
             }
             await RefreshMaintainers();
             await _mudForm.ResetAsync();
