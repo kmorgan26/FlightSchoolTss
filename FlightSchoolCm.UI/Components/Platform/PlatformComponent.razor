@@ -1,7 +1,9 @@
-﻿@using static FlightSchoolCm.UI.Components.Platform.FormComponent;
+﻿@using FlightSchoolTss.Data.DTOs.Maintainable;
+@using static FlightSchoolCm.UI.Components.Platform.FormComponent;
 
 @inject IPlatformApiClient PlatformApiClient
 @inject IGenericApiClient<PlatformDto> ApiClient
+@inject IGenericApiClient<MaintainableDto> MaintainableApiClient
 @inject IGenericApiClient<MaintainerDto> MaintainerApiClient
 @inject IMapper Mapper
 @inject ISnackbar Snackbar
@@ -14,14 +16,13 @@
             <MudText Typo="Typo.h3">Platforms</MudText>
         </MudItem>
         <MudItem sm="8">
-            <FormComponent OnPlatformAdd="RefreshPlatforms" OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto"></FormComponent>
+            <FormComponent OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto" MaintainerVms="_maintainers"></FormComponent>
         </MudItem>
         <MudItem xs="12">
             <PlatformTable PlatformVms="@_platforms" PlatformVm="BindPlatformDto" OnPlatformDelete="DeletePlatform"></PlatformTable>
         </MudItem>
     </MudGrid>
 }
-
 
 @code {
 
@@ -59,6 +60,8 @@
             if (_platformDto.Id == 0)
             {
                 operation = "added";
+                //Insert Maintainable Row
+                await MaintainableApiClient.CreateAsync(new MaintainableDto() { Name = _platformDto.Name });
                 await ApiClient.CreateAsync(dto);
             }
             else

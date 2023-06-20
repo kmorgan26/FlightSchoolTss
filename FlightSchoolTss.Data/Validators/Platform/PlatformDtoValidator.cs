@@ -5,11 +5,8 @@ using FluentValidation;
 namespace FlightSchoolTss.Data.Validators.Platform;
 public class PlatformDtoValidator : AbstractValidator<PlatformDto>
 {
-    private readonly IPlatformRepository _repository;
-    public PlatformDtoValidator(IPlatformRepository repository)
+    public PlatformDtoValidator()
     {
-        _repository = repository;
-
         RuleFor(i => i.Name)
            .NotEmpty()
            .NotNull()
@@ -21,12 +18,7 @@ public class PlatformDtoValidator : AbstractValidator<PlatformDto>
             .GreaterThan(0).WithMessage("MaintainableId must be greater than 0.");
 
         RuleFor(i => i.MaintainerId)
-            .MustAsync(async (id, token) =>
-            {
-                var maintainerExists = await _repository!.Exists(id);
-                return maintainerExists;
-            })
-            .WithMessage("You have not provided a valid Maintainer for this Platform");
+            .GreaterThan(0);
 
         RuleFor(i => i.IsActive)
             .NotEmpty();

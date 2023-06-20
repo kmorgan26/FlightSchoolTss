@@ -1,5 +1,6 @@
 ﻿using FlightSchoolCm.UI.Interfaces;
 using Newtonsoft.Json;
+using System.ComponentModel.Design.Serialization;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -43,7 +44,7 @@ public class GenericApiClient<TEntity> : HttpClient, IGenericApiClient<TEntity> 
         }
     }
 
-    public async Task CreateAsync(TEntity item)
+    public async Task<TEntity> CreateAsync(TEntity item)
     {
         try
         {
@@ -58,6 +59,7 @@ public class GenericApiClient<TEntity> : HttpClient, IGenericApiClient<TEntity> 
                 throw new Exception
                     ($"Failed to create item returned  { response.StatusCode }");
             }
+            return response;
         }
         catch (Exception ex)
         {

@@ -7,12 +7,16 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Components\Simulator\**" />
 	  <Compile Remove="Validation\**" />
 	  <Compile Remove="ViewModels\**" />
+	  <Content Remove="Components\Simulator\**" />
 	  <Content Remove="Validation\**" />
 	  <Content Remove="ViewModels\**" />
+	  <EmbeddedResource Remove="Components\Simulator\**" />
 	  <EmbeddedResource Remove="Validation\**" />
 	  <EmbeddedResource Remove="ViewModels\**" />
+	  <None Remove="Components\Simulator\**" />
 	  <None Remove="Validation\**" />
 	  <None Remove="ViewModels\**" />
 	</ItemGroup>
@@ -37,10 +41,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\FlightSchoolTss.Data\FlightSchoolTss.Data.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Components\Simulator\" />
 	</ItemGroup>
 	
 	
