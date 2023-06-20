@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 using FlightSchoolTss.Data.DTOs.Maintainer;
-using FlightSchoolTss.DTOs.Platform;
+using FlightSchoolTss.Data.DTOs.Platform;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");

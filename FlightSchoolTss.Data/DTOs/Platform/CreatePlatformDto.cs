@@ -1,4 +1,4 @@
-﻿namespace FlightSchoolTss.DTOs.Platform;
+﻿namespace FlightSchoolTss.Data.DTOs.Platform;
 public class CreatePlatformDto
 {
     public int MaintainerId { get; set; }

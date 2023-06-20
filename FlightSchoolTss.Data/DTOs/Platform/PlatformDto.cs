@@ -1,6 +1,6 @@
 ﻿using FlightSchoolTss.Data.DTOs.Maintainer;
 
-namespace FlightSchoolTss.DTOs.Platform;
+namespace FlightSchoolTss.Data.DTOs.Platform;
 public class PlatformDto
 {
     public int Id { get; set; }

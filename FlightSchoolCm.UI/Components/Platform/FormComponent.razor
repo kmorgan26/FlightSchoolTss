@@ -1,8 +1,4 @@
-﻿@using FlightSchoolTss.DTOs.Platform;
-@using FlightSchoolTss.Data.Entities;
-@using FlightSchoolTss.Data.Validators.Platform;
-@using FlightSchoolCm.UI.Components.FormControls;
-
+﻿
 <MudGrid Style="align-items: center">
     <MudItem xs="6">
         <MudForm Model="@_dto" @ref="@MudForm" Validation="_validator.ValidateValue" ValidationDelay="0">
@@ -13,14 +9,30 @@
                           Label="Maintainer Name"
                           Class="my-6" />
 
-            <FstssSelect OnSelectedOptionChanged="SubmitForm" Context="context" Items="MaintainerVms">
-                <SelectItems>
-                    @foreach (var item in MaintainerVms)
-                    {
-                        <MudSelectItem Value="@(item.Id)" />
-                    }
-                </SelectItems>
-            </FstssSelect>
+            <MudTextField @bind-Value="_dto.MaintainerId"
+                          Variant="Variant.Outlined"
+                          For="(() => _dto.MaintainerId)"
+                          Label="Maintainer ID"
+                          Class="my-6" />
+
+            <MudTextField @bind-Value="_dto.MaintainableId"
+                          Variant="Variant.Outlined"
+                          For="(() => _dto.MaintainableId)"
+                          Label="MaintainableId ID"
+                          Class="my-6" />
+
+            @*<FstssSelect OnSelectedOptionChanged="SubmitForm" Context="context" Items="MaintainerVms" @bind-Value="_dto.MaintainerId" >
+            <SelectItems>
+            @foreach (var item in MaintainerVms)
+            {
+            <MudSelectItem Value="@(item.Id)" />
+            }
+            </SelectItems>
+            </FstssSelect>*@
+
+            <MudCheckBox @bind-Checked="_dto.IsActive"
+                         Label="Is Active?" />
+
 
         </MudForm>
     </MudItem>
@@ -45,8 +57,8 @@
     [Parameter]
     public MudForm? MudForm { get; set; } = new();
 
-    [Parameter]
-    public List<MaintainerVm> MaintainerVms { get; set; } = null!;
+    //[Parameter]
+    //public List<MaintainerVm> MaintainerVms { get; set; } = null!;
 
     PlatformDtoValidator _validator = null!;
 
@@ -54,9 +66,4 @@
     {
         await OnSubmitForm.InvokeAsync(MudForm);
     }
-
-
-
-    
 }
-

@@ -1,4 +1,4 @@
-﻿using FlightSchoolTss.DTOs.Platform;
+﻿using FlightSchoolTss.Data.DTOs.Platform;
 
 namespace FlightSchoolTss.Data.DTOs.Maintainer;
 

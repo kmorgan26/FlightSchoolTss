@@ -1,12 +1,6 @@
-﻿using FlightSchoolTss.Data.DTOs.Maintainer;
-using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.DTOs.Platform;
+﻿using FlightSchoolTss.Data.Interfaces;
+using FlightSchoolTss.Data.DTOs.Platform;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FlightSchoolTss.Data.Validators.Platform;
 public class PlatformDtoValidator : AbstractValidator<PlatformDto>

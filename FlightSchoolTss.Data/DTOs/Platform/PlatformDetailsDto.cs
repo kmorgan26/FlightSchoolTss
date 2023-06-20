@@ -3,7 +3,7 @@ using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.DTOs.Lot;
 using FlightSchoolTss.DTOs.Simulator;
 
-namespace FlightSchoolTss.DTOs.Platform;
+namespace FlightSchoolTss.Data.DTOs.Platform;
 public class PlatformDetailsDto : PlatformDto
 {
     public List<SimulatorDto>? Simulators { get; set; }

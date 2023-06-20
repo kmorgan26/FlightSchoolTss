@@ -1,4 +1,5 @@
-﻿@inject IGenericApiClient<MaintainerDto> ApiClient
+﻿@using FlightSchoolCm.UI.Components.FormControls;
+@inject IGenericApiClient<MaintainerDto> ApiClient
 @inject IMapper Mapper
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
@@ -62,7 +63,7 @@
     public async Task DeleteMaintainer(MaintainerVm vm)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        var dialog = await DialogService.ShowAsync<MaintainerDialog>("Delete Maintainer?", options);
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Delete Maintainer?", options);
         var result = await dialog.Result;
         if (!result.Canceled)
         {

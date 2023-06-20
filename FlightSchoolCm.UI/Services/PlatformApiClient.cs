@@ -1,5 +1,5 @@
 ﻿using FlightSchoolCm.UI.Interfaces;
-using FlightSchoolTss.DTOs.Platform;
+using FlightSchoolTss.Data.DTOs.Platform;
 using Newtonsoft.Json;
 
 namespace FlightSchoolCm.UI.Services;
