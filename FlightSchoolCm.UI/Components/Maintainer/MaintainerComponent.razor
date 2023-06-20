@@ -11,7 +11,7 @@
         <MudText Typo="Typo.h3">Maintainers</MudText>
     </MudItem>
     <MudItem sm="8">
-        <FormComponent OnMaintainerAdd="RefreshMaintainers" OnSubmitForm="CreateOrInsertAsync" ButtonText=@_buttonText _dto="_maintainerDto" />
+        <FormComponent OnSubmitForm="CreateOrInsertAsync" ButtonText=@_buttonText _dto="_maintainerDto" />
     </MudItem>
     <MudItem xs="12">
         <MaintainerTable MaintainerVms="_maintainers" MaintainerVm="BindMaintainerDto" OnMaintainerDelete="DeleteMaintainer" />
