@@ -82,6 +82,7 @@
         if (!result.Canceled)
         {
             await ApiClient.DeleteAsync(vm.Id);
+            await MaintainableApiClient.DeleteAsync(vm.MaintainableId);
             await RefreshPlatforms();
             
             Snackbar.Add($"The Platform has been deleted!", MudBlazor.Severity.Success);
