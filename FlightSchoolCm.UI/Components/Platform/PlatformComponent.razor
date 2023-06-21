@@ -60,8 +60,8 @@
             if (_platformDto.Id == 0)
             {
                 operation = "added";
-                //Insert Maintainable Row
-                await MaintainableApiClient.CreateAsync(new MaintainableDto() { Name = _platformDto.Name });
+                var maintainableDto = await MaintainableApiClient.CreateAsync(new MaintainableDto() { Name = _platformDto.Name });
+                dto.MaintainableId = maintainableDto.Id;
                 await ApiClient.CreateAsync(dto);
             }
             else
