@@ -61,14 +61,14 @@ public static class MaintainerEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", [AllowAnonymous] async (CreateMaintainerDto maintainerDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (MaintainerDto maintainerDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var maintainer = mapper.Map<Maintainer>(maintainerDto);
             await unitOfWork.Maintainers.AddAsync(maintainer);
             await unitOfWork.CommitAsync();
             return TypedResults.Created($"/api/maintainer/{maintainer.Id}", maintainerDto);
         })
-        .AddEndpointFilter<ValidationFilter<CreateMaintainerDto>>()
+        .AddEndpointFilter<ValidationFilter<MaintainerDto>>()
         .AddEndpointFilter<LoggingFilter>()
         .WithTags(nameof(Maintainer))
         .WithName("CreateMaintainer")

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.ComponentModel.Design.Serialization;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace FlightSchoolCm.UI.Services;
@@ -59,12 +60,14 @@ public class GenericApiClient<TEntity> : HttpClient, IGenericApiClient<TEntity> 
                 throw new Exception
                     ($"Failed to create item returned  { response.StatusCode }");
             }
-            return response;
+            var result = response.Content.ReadFromJsonAsync<TEntity>();
+            return await result;
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
         }
+        
     }
 
     public async Task DeleteAsync(int id)

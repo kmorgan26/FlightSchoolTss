@@ -53,7 +53,7 @@ public static class MaintainableEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateMaintainableDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (CreateMaintainableDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var maintainable = mapper.Map<Maintainable>(dto);
             await unitOfWork.Maintainables.AddAsync(maintainable);

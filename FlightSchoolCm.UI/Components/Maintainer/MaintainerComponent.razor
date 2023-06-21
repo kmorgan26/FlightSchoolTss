@@ -45,7 +45,8 @@
             if (_maintainerDto.Id == 0)
             {
                 operation = "added";
-                await ApiClient.CreateAsync(_maintainerDto);
+                var testval = await ApiClient.CreateAsync(_maintainerDto);
+                var id = testval.Id;
             }
             else
             {
