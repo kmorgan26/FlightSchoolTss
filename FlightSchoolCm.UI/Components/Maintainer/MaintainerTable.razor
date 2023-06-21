@@ -5,7 +5,8 @@
 }
 else
 {
-    <MudTable Items="@MaintainerVms" T="MaintainerVm" Hover="true" Breakpoint="Breakpoint.Sm" Class="mt-4" LoadingProgressColor="Color.Info" OnRowClick="@OnRowClick">
+    <MudTable Items="@MaintainerVms" T="MaintainerVm" Hover="true" Breakpoint="Breakpoint.Sm" Class="mt-4" 
+            LoadingProgressColor="Color.Info" OnRowClick="@OnRowClick">
         <HeaderContent>
             <MudTh>Id</MudTh>
             <MudTh>Name</MudTh>
@@ -19,6 +20,8 @@ else
             </MudTd>
         </RowTemplate>
     </MudTable>
+
+
 }
 
 @code {

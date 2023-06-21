@@ -1,13 +1,12 @@
-﻿@using FlightSchoolTss.Data.DTOs.Maintainable;
-@using static FlightSchoolCm.UI.Components.Platform.FormComponent;
-
-@inject IPlatformApiClient PlatformApiClient
+﻿@inject IPlatformApiClient PlatformApiClient
 @inject IGenericApiClient<PlatformDto> ApiClient
 @inject IGenericApiClient<MaintainableDto> MaintainableApiClient
 @inject IGenericApiClient<MaintainerDto> MaintainerApiClient
 @inject IMapper Mapper
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+
+<PageTitle>Platforms</PageTitle>
 
 @if (_platforms is not null)
 {
@@ -16,7 +15,7 @@
             <MudText Typo="Typo.h3">Platforms</MudText>
         </MudItem>
         <MudItem sm="8">
-            <FormComponent OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto" MaintainerVms="_maintainers"></FormComponent>
+            <FormComponent OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto" MaintainerVms="_maintainers" />
         </MudItem>
         <MudItem xs="12">
             <PlatformTable PlatformVms="@_platforms" PlatformVm="BindPlatformDto" OnPlatformDelete="DeletePlatform"></PlatformTable>
@@ -83,7 +82,8 @@
         if (!result.Canceled)
         {
             await ApiClient.DeleteAsync(vm.Id);
-            await RefreshMaintainers();
+            await RefreshPlatforms();
+            //await RefreshMaintainers();
 
             Snackbar.Add($"The Platform has been deleted!", MudBlazor.Severity.Success);
         }
