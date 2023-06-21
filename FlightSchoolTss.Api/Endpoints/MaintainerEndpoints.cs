@@ -66,7 +66,7 @@ public static class MaintainerEndpoints
             var maintainer = mapper.Map<Maintainer>(maintainerDto);
             await unitOfWork.Maintainers.AddAsync(maintainer);
             await unitOfWork.CommitAsync();
-            return TypedResults.Created($"/api/maintainer/{maintainer.Id}", maintainerDto);
+            return TypedResults.Created($"/api/maintainer/{maintainer.Id}", maintainer);
         })
         .AddEndpointFilter<ValidationFilter<MaintainerDto>>()
         .AddEndpointFilter<LoggingFilter>()
