@@ -5,5 +5,6 @@ public class PlatformTableRowVm
     public string Name { get; set; } = null!;
     public string Maintainer { get; set; } = null!;
     public int MaintainerId { get; set; }
+    public int MaintainableId { get; set; }
     public bool IsActive { get; set; }
 }

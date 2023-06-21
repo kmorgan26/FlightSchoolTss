@@ -121,6 +121,7 @@ public class GenericApiClient<TEntity> : HttpClient, IGenericApiClient<TEntity> 
     public async Task UpdateAsync(int? id, TEntity item)
     {
         try
+        
         {
             SetupHeaders();
             var serializedJson = GetSerializedObject(item);

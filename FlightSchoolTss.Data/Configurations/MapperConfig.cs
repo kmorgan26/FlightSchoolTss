@@ -73,8 +73,7 @@ public class MapperConfig : Profile
             .ForMember(i => i.MaintainerId, x => x.MapFrom(dto => dto.Maintainer.Id))
             .ReverseMap();
 
-        CreateMap<PlatformTableRowVm, PlatformDto>()
-            .ForMember(i => i.MaintainerId, x => x.MapFrom(dto => dto.Maintainer));
+        CreateMap<PlatformTableRowVm, PlatformDto>().ReverseMap();
 
         CreateMap<Simulator, SimulatorDto>().ReverseMap();
         CreateMap<Simulator, CreateSimulatorDto>().ReverseMap();
