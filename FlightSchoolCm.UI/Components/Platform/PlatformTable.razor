@@ -1,12 +1,24 @@
-﻿
+﻿<style>
+    .selected {
+        background-color: #1E88E5 !important;
+    }
+
+        .selected > td {
+            color: white !important;
+        }
+
+            .selected > td .mud-input {
+                color: white !important;
+            }
+</style>
 @if (PlatformVms is null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    <MudTable Items="@PlatformVms" T="PlatformTableRowVm" Hover="true" Breakpoint="Breakpoint.Sm" Class="mt-4" 
-            LoadingProgressColor="Color.Info" OnRowClick="@OnRowClick">
+    <MudTable Dense Hover Items="@PlatformVms" @ref="_mudTable" RowClassFunc="@SelectedRowClassFunc" T="PlatformTableRowVm" Breakpoint="Breakpoint.Sm" Class="mt-4"
+              LoadingProgressColor="Color.Info" OnRowClick="@OnRowClick">
         <HeaderContent>
             <MudTh>Id</MudTh>
             <MudTh>Name</MudTh>
@@ -44,5 +56,25 @@ else
     public async void OnButtonClick(PlatformTableRowVm vm)
     {
         await OnPlatformDelete.InvokeAsync(vm);
+    }
+
+    private int selectedRowNumber = -1;
+
+    private MudTable<PlatformTableRowVm>? _mudTable;
+
+    private string SelectedRowClassFunc(PlatformTableRowVm element, int rowNumber)
+    {
+        if (selectedRowNumber == rowNumber)
+        {
+            selectedRowNumber = -1;
+            return string.Empty;
+        }
+        else if (_mudTable!.SelectedItem != null && _mudTable.SelectedItem.Id == element.Id)
+        {
+            selectedRowNumber = rowNumber;
+            return "selected";
+        }
+
+        return string.Empty;
     }
 }

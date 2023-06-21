@@ -66,7 +66,7 @@ public static class MaintainableEndpoints
         .WithName("CreateMaintainable")
         .Produces<Maintainable>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.Maintainables.DeleteAsync(id);
             await unitOfWork.CommitAsync();
