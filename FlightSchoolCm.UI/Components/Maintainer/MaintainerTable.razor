@@ -14,11 +14,10 @@
     </FstssRowTemplate>
 </FstssTable>
 
-
 @code {
 
     [Parameter]
-    public EventCallback<MaintainerVm> MaintainerVm { get; set; }
+    public EventCallback<MaintainerVm> OnMaintainerSelect { get; set; }
 
     [Parameter]
     public EventCallback<MaintainerVm> OnMaintainerDelete { get; set; }
@@ -29,6 +28,6 @@
     }
     private void BindMaintainerDto(MaintainerVm vm)
     {
-        MaintainerVm.InvokeAsync(vm);
+        OnMaintainerSelect.InvokeAsync(vm);
     }
 }

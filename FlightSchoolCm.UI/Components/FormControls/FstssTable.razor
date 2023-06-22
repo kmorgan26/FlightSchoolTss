@@ -42,12 +42,12 @@ else
     [Parameter]
     public RenderFragment<TItem> FstssRowTemplate { get; set; } = null!;
 
+    [Parameter]
+    public RenderFragment FstssHeaderTemplate { get; set; } = null!;
+
     private int selectedRowNumber = -1;
 
     private MudTable<TItem> _mudTable = null!;
-
-    [Parameter]
-    public RenderFragment FstssHeaderTemplate { get; set; } = null!;
 
     private void RowClickEvent(TableRowClickEventArgs<TItem> row)
     {
