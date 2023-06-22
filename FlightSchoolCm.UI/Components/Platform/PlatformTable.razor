@@ -18,7 +18,7 @@
 else
 {
     <MudTable Dense Hover Items="@PlatformVms" @ref="_mudTable" RowClassFunc="@SelectedRowClassFunc" T="PlatformTableRowVm" Breakpoint="Breakpoint.Sm" Class="mt-4"
-              LoadingProgressColor="Color.Info" OnRowClick="@OnRowClick">
+              LoadingProgressColor="Color.Info" OnRowClick="@RowClickEvent">
         <HeaderContent>
             <MudTh>Id</MudTh>
             <MudTh>Name</MudTh>
@@ -49,7 +49,7 @@ else
     [Parameter]
     public EventCallback<PlatformTableRowVm> OnPlatformDelete { get; set; }
 
-    public void OnRowClick(TableRowClickEventArgs<PlatformTableRowVm> row)
+    public void RowClickEvent(TableRowClickEventArgs<PlatformTableRowVm> row)
     {
         PlatformVm.InvokeAsync(row.Item);
     }
