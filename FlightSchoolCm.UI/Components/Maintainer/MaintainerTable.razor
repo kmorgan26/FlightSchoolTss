@@ -1,33 +1,21 @@
 ﻿
-@if (MaintainerVms is null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <MudTable Items="@MaintainerVms" T="MaintainerVm" Hover="true" Breakpoint="Breakpoint.Sm" Class="mt-4" 
-            LoadingProgressColor="Color.Info" OnRowClick="@OnRowClick">
-        <HeaderContent>
-            <MudTh>Id</MudTh>
-            <MudTh>Name</MudTh>
-            <MudTh></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="ID">@context.Id</MudTd>
-            <MudTd DataLabel="Name">@context.Name</MudTd>
-            <MudTd DataLabel="DELETE">
-                <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" />
-            </MudTd>
-        </RowTemplate>
-    </MudTable>
+<FstssTable TItem="MaintainerVm" FstssItem="BindMaintainerDto">
+    <FstssHeaderTemplate>
+        <MudTh>Id</MudTh>
+        <MudTh>Name</MudTh>
+        <MudTh></MudTh>
+    </FstssHeaderTemplate>
+    <FstssRowTemplate>
+        <MudTd DataLabel="ID">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="DELETE">
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" />
+        </MudTd>
+    </FstssRowTemplate>
+</FstssTable>
 
-
-}
 
 @code {
-
-    [Parameter]
-    public List<MaintainerVm>? MaintainerVms { get; set; }
 
     [Parameter]
     public EventCallback<MaintainerVm> MaintainerVm { get; set; }
@@ -35,12 +23,12 @@ else
     [Parameter]
     public EventCallback<MaintainerVm> OnMaintainerDelete { get; set; }
 
-    public void OnRowClick(TableRowClickEventArgs<MaintainerVm> row)
-    {
-        MaintainerVm.InvokeAsync(row.Item);
-    }
     public async void OnButtonClick(MaintainerVm vm)
     {
         await OnMaintainerDelete.InvokeAsync(vm);
+    }
+    private void BindMaintainerDto(MaintainerVm vm)
+    {
+        MaintainerVm.InvokeAsync(vm);
     }
 }

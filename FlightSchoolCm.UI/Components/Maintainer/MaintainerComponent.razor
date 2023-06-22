@@ -3,9 +3,6 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 
-
-
-
 <PageTitle>Maintainers</PageTitle>
 
 <MudGrid>
@@ -16,14 +13,18 @@
         <FormComponent OnSubmitForm="CreateOrInsertAsync" ButtonText=@_buttonText _dto="_maintainerDto" />
     </MudItem>
     <MudItem xs="12">
-        <MaintainerTable MaintainerVms="_maintainers" MaintainerVm="BindMaintainerDto" OnMaintainerDelete="DeleteMaintainer" />
+        <CascadingValue Value="_maintainers">
+                <MaintainerTable OnMaintainerDelete="DeleteMaintainer" MaintainerVm="BindMaintainerDto"/>
+        </CascadingValue>
     </MudItem>
 </MudGrid>
 
 @code {
 
     private List<MaintainerVm>? _maintainers;
+
     private MaintainerDto _maintainerDto = new();
+
     private string _buttonText = "ADD";
 
     private async Task RefreshMaintainers()
