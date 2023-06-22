@@ -1,5 +1,4 @@
-﻿@using System.Net.Http.Json
-@inject HttpClient httpClient
+﻿@typeparam TItem
 
 <style>
     .selected {
@@ -15,47 +14,48 @@
             }
 </style>
 
-<MudTable Items="@Elements.Take(4)" Hover="true" Breakpoint="Breakpoint.Sm" @ref="mudTable" Dense
-        RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="Element">
+<MudTable Items="@Items" @ref="_mudTable" Breakpoint="Breakpoint.Sm" 
+        RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="TItem">
     <HeaderContent>
-        <MudTh>Nr</MudTh>
-        <MudTh>Sign</MudTh>
-        <MudTh>Name</MudTh>
-        <MudTh>Position</MudTh>
-        <MudTh>Molar mass</MudTh>
+        @HeaderContent
     </HeaderContent>
     <RowTemplate>
-        <MudTd DataLabel="Nr">@context.Number</MudTd>
-        <MudTd DataLabel="Sign">@context.Sign</MudTd>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Position">@context.Position</MudTd>
-        <MudTd DataLabel="Molar mass">@context.Molar</MudTd>
+        @Items
     </RowTemplate>
 </MudTable>
 
 @code {
-    private int selectedRowNumber = -1;
-    private MudTable<Element> mudTable;
-    private IEnumerable<Element> Elements = new List<Element>()
-    {
-        new Element() { Number = 1, Sign = "H", Name = "Hydrogen", Position = 0, Molar = 1.00794 },
-        new Element() { Number = 2, Sign = "He", Name = "Helium", Position = 17, Molar = 4.002602 },
-        new Element() { Number = 3, Sign = "Li", Name = "Lithium", Position = 0, Molar = 6.941 }
-    };
 
-    private void RowClickEvent(TableRowClickEventArgs<Element> tableRowClickEventArgs)
+    private int selectedRowNumber = -1;
+
+    private MudTable<TItem> _mudTable = null!;
+
+    [Parameter]
+    public RenderFragment HeaderContent { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment<TItem> RowTemplate { get; set; } = null!;
+
+    [Parameter]
+    public IEnumerable<TItem> Items { get; set; } = null!;
+
+    [Parameter]
+    public EventCallback<TItem> Item { get; set; }
+
+
+    private void RowClickEvent(TableRowClickEventArgs<TItem> row)
     {
-        //clickedEvents.Add("Row has been clicked");
+        Item.InvokeAsync(row.Item);
     }
 
-    private string SelectedRowClassFunc(Element element, int rowNumber)
+    private string SelectedRowClassFunc(TItem item, int rowNumber)
     {
         if (selectedRowNumber == rowNumber)
         {
             selectedRowNumber = -1;
             return string.Empty;
         }
-        else if (mudTable.SelectedItem != null && mudTable.SelectedItem.Equals(element))
+        else if (_mudTable.SelectedItem != null && _mudTable.SelectedItem.Equals(item))
         {
             selectedRowNumber = rowNumber;
             return "selected";
@@ -64,14 +64,5 @@
         {
             return string.Empty;
         }
-    }
-    public class Element
-    {
-        public int Number { get; set; }
-        public string Sign { get; set; }
-        public string Name { get; set; }
-        public int Position { get; set; }
-        public double Molar { get; set; }
-
     }
 }
