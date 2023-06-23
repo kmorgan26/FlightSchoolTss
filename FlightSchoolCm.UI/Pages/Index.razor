@@ -9,29 +9,3 @@
 <MudText Typo="Typo.h3" GutterBottom="true">Welcome.</MudText>
 
 <MudText Typo="Typo.h5">@MaintainerModeState.Value.MaintainerModeId</MudText>
-
-
-
-
-@*@code {
-
-    public FstssFormOptions<MaintainerDto>? FormOptions { get; set; }
-
-    private async Task SubmitForm(MudForm form)
-    {
-        await OnSubmitForm.InvokeAsync(form);
-    }
-
-    public EventCallback<MudForm> OnSubmitForm { get; set; }
-
-    protected FstssFormOptions<MaintainerDto> SetFormOptions()
-    {
-        var options = new FstssFormOptions<MaintainerDto>();
-        options.ButtonText = "Inherited!";
-        options.ButtonVariant = Variant.Filled;
-        options.ButtonColor = Color.Success;
-        options.ButtonSize = Size.Large;
-        options.FormModel = new MaintainerDto();
-        return options;
-    }
-}*@
