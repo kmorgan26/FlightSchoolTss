@@ -1,0 +1,24 @@
+﻿@typeparam TItem
+
+
+<MudItem xs="12" sm="9" md="7" lg="4">
+    <MudForm>
+    </MudForm>
+</MudItem>
+
+<MudItem xs="2">
+    <MudButton ></MudButton>
+</MudItem>
+
+@code {
+
+    [Parameter]
+    public EventCallback<MudForm> OnSubmitForm { get; set; }
+
+    [Parameter]
+    public FstssFormOptions<TItem>? Options { get; set; } = new();
+
+    [Parameter]
+    public RenderFragment FormItem { get; set; }
+
+}
