@@ -1,0 +1,35 @@
+﻿@typeparam TItem
+@inherits MudForm
+
+<MudGrid Style="align-items: center">
+    <MudItem xs="12" sm="9" md="7" lg="4">
+        <MudForm Model="@DTOItem" @ref="@MudForm">
+            @FormControls(DTOItem)
+        </MudForm>
+    </MudItem>
+    <MudItem xs="2">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public EventCallback<MudForm> OnSubmitForm { get; set; }
+
+    [Parameter]
+    public TItem? DTOItem { get; set; }
+
+    [Parameter]
+    public string ButtonText { get; set; } = "ADD";
+
+    [Parameter]
+    public RenderFragment<TItem>? FormControls { get; set; }
+
+    private MudForm? MudForm { get; set; } = new();
+    
+    private async Task SubmitForm()
+    {
+        await OnSubmitForm.InvokeAsync(MudForm);
+    }
+}
