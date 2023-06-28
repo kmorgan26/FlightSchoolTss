@@ -1,5 +1,5 @@
 ﻿using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.DTOs.Simulator;
+using FlightSchoolTss.Data.DTOs.Simulator;
 using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.Simulator;

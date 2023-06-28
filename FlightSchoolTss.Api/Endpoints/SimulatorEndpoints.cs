@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using FlightSchoolTss.Data.DTOs.Simulator;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.DTOs.Simulator;
 using FlightSchoolTss.Filters;
 using FluentValidation;
 

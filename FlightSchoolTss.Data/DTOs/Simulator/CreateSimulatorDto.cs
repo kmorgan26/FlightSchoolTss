@@ -1,4 +1,4 @@
-﻿namespace FlightSchoolTss.DTOs.Simulator;
+﻿namespace FlightSchoolTss.Data.DTOs.Simulator;
 public class CreateSimulatorDto
 {
     public string Name { get; set; } = null!;
