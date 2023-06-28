@@ -11,7 +11,9 @@
     </MudItem>
     <MudItem sm="8">
         <CascadingValue Value="_maintainerDto">
-            <FormComponent OnSubmitForm="CreateOrInsertAsync" ButtonText=@_buttonText/>
+            <CascadingValue Value="_buttonText">
+                <FormComponent OnSubmitForm="CreateOrInsertAsync" />
+            </CascadingValue>
         </CascadingValue>
     </MudItem>
     <MudItem xs="12">
@@ -35,11 +37,13 @@
         var maintainerDTOs = await ApiClient.GetAllAsync();
         _maintainers = Mapper.Map<List<MaintainerVm>>(maintainerDTOs);
     }
+
     private void BindMaintainerDto(MaintainerVm vm)
     {
         _buttonText = "UPDATE";
         _maintainerDto = Mapper.Map<MaintainerDto>(vm);
     }
+
     private async Task CreateOrInsertAsync(MudForm _mudForm)
     {
         await _mudForm!.Validate();
