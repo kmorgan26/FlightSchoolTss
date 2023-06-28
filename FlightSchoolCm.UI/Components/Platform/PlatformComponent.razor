@@ -15,7 +15,7 @@
             <MudText Typo="Typo.h3">Platforms</MudText>
         </MudItem>
         <MudItem sm="8">
-            <FormComponent OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto" MaintainerVms="_maintainers" />
+            <PlatformForm OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto" MaintainerVms="_maintainers" />
         </MudItem>
         <MudItem xs="12">
             <PlatformTable PlatformVms="@_platforms" PlatformVm="BindPlatformDto" OnPlatformDelete="DeletePlatform"></PlatformTable>
