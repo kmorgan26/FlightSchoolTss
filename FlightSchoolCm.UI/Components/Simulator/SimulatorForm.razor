@@ -1,5 +1,22 @@
-﻿<h3>SimulatorForm</h3>
+﻿
+<h3>SimulatorForm</h3>
 
 @code {
+
+    [Parameter]
+    public EventCallback<MudForm> OnSubmitForm { get; set; }
+
+    [Parameter]
+    public MudForm? MudForm { get; set; } = new();
+
+    [CascadingParameter]
+    public SimulatorDto _dto { get; set; } = new();
+
+    MaintainerDtoValidator _validator = new();
+
+    private async Task SubmitForm()
+    {
+        await OnSubmitForm.InvokeAsync(MudForm);
+    }
 
 }
