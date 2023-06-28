@@ -6,6 +6,7 @@
                           Variant="Variant.Outlined"
                           For="(() => _dto.Name)"
                           Label="Platform Name"
+                          OnlyValidateIfDirty="true"
                           Class="my-6" />
 
             <MudSelect T="int" Label="Maintainer" MultiSelection="false" @bind-Value="@_dto.MaintainerId">
