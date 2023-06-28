@@ -17,7 +17,7 @@
     [Parameter]
     public EventCallback<MudForm> OnSubmitForm { get; set; }
 
-    [Parameter]
+    [CascadingParameter]
     public TItem? DTOItem { get; set; }
 
     [Parameter]
