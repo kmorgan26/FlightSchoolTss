@@ -1,27 +1,20 @@
 ﻿
-<MudGrid Style="align-items: center">
-    <MudItem xs="12" sm="9" md="7" lg="4">
-        <MudForm Model="@_dto" @ref="@MudForm" Validation="_validator.ValidateValue" ValidationDelay="0">
+<FSForm OnSubmitForm="SubmitForm" TItem="MaintainerDto" Validation="_validator.ValidateValue">
+    <FormControls>
 
-            <MudTextField @bind-Value="_dto.Name"
-                          Variant="Variant.Outlined"
-                          For="(() => _dto.Name)"
-                          Label="Maintainer Name"
-                          Class="my-6" />
-        </MudForm>
-    </MudItem>
-    <MudItem xs="2">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
-    </MudItem>
-</MudGrid>
+        <MudTextField @bind-Value="_dto.Name"
+                      Variant="Variant.Outlined"
+                      For="(() => _dto.Name)"
+                      Label="Maintainer Name"
+                      OnlyValidateIfDirty = "true"
+                      Class="my-6" />
+    </FormControls>
+</FSForm>
 
 @code {
 
     [Parameter]
     public EventCallback<MudForm> OnSubmitForm { get; set; }
-
-    [Parameter]
-    public string ButtonText { get; set; } = "ADD";
 
     [Parameter]
     public MudForm? MudForm { get; set; } = new();
