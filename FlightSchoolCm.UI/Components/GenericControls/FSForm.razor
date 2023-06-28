@@ -1,16 +1,14 @@
 ﻿@typeparam TItem
 @inherits MudForm
 
-<MudGrid Style="align-items: center">
-    <MudItem xs="12" sm="9" md="7" lg="4">
-        <MudForm Model="@DTOItem" @ref="@MudForm">
-            @FormControls!(DTOItem!) 
-        </MudForm>
-    </MudItem>
-    <MudItem xs="2">
-        <MudButton Variant="@ButtonVariant" Color="@ButtonColor" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
-    </MudItem>
-</MudGrid>
+<MudItem>
+    <MudForm Model="@DTOItem" @ref="@MudForm">
+        @FormControls!(DTOItem!)
+    </MudForm>
+</MudItem>
+<MudItem>
+    <MudButton Variant="@ButtonVariant" Color="@ButtonColor" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
+</MudItem>
 
 @code {
 
@@ -33,7 +31,7 @@
     public Variant ButtonVariant { get; set; } = Variant.Filled;
 
     private MudForm? MudForm { get; set; } = new();
-    
+
     private async Task SubmitForm()
     {
         await OnSubmitForm.InvokeAsync(MudForm);

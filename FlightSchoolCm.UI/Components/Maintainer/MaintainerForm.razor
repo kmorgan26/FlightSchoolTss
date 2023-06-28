@@ -2,12 +2,18 @@
 <FSForm OnSubmitForm="SubmitForm" TItem="MaintainerDto" Validation="_validator.ValidateValue">
     <FormControls>
 
-        <MudTextField @bind-Value="_dto.Name"
-                      Variant="Variant.Outlined"
-                      For="(() => _dto.Name)"
-                      Label="Maintainer Name"
-                      OnlyValidateIfDirty = "true"
-                      Class="my-6" />
+        <MudGrid>
+            <MudItem lg="4">
+
+                <MudTextField @bind-Value="_dto.Name"
+                              Variant="Variant.Outlined"
+                              For="(() => _dto.Name)"
+                              Label="Maintainer Name"
+                              OnlyValidateIfDirty="true"
+                              Class="my-6" />
+            </MudItem>
+        </MudGrid>
+
     </FormControls>
 </FSForm>
 

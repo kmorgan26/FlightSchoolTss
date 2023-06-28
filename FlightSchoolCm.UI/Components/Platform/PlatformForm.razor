@@ -1,24 +1,35 @@
 ﻿<FSForm OnSubmitForm="SubmitForm" TItem="PlatformDto">
     <FormControls>
 
-        <MudTextField @bind-Value="_dto.Name"
-                      Variant="Variant.Outlined"
-                      For="(() => _dto.Name)"
-                      Label="Platform Name"
-                      OnlyValidateIfDirty="true"
-                      Class="my-6" />
+        <MudGrid>
+            <MudItem lg="4" md="6" sm="12" xs="12">
 
+                <MudTextField @bind-Value="_dto.Name"
+                              Variant="Variant.Outlined"
+                              For="(() => _dto.Name)"
+                              Label="Platform Name"
+                              OnlyValidateIfDirty="true"
+                              Class="my-6" />
 
-        <MudSelect Variant="Variant.Outlined" T="int" Label="Maintainer" MultiSelection="false" @bind-Value="@_dto.MaintainerId">
-            <MudSelectItem Value="0">SELECT ONE</MudSelectItem>
-            @foreach (var item in MaintainerVms)
-            {
-                <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
-            }
-        </MudSelect>
+            </MudItem>
+            <MudItem lg="4" md="6" sm="12" xs="12">
 
-        <MudCheckBox @bind-Checked="_dto.IsActive"
-                     Label="Is Active?" Class="mt-4" />
+                <MudSelect Class="mt-6" Variant="Variant.Outlined" T="int" Label="Maintainer" MultiSelection="false" @bind-Value="@_dto.MaintainerId">
+                    <MudSelectItem Value="0">SELECT ONE</MudSelectItem>
+                    @foreach (var item in MaintainerVms)
+                    {
+                        <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+
+            </MudItem>
+            <MudItem lg="4" md="6" sm="12" xs="12">
+
+                <MudCheckBox @bind-Checked="_dto.IsActive" Label="Is Active?" Class="mt-7" />
+
+            </MudItem>
+        </MudGrid>
+
 
         <MudHidden @bind-Value="_dto.MaintainableId" />
 
