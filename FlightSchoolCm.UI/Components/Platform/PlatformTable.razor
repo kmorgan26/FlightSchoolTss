@@ -1,80 +1,37 @@
-﻿<style>
-    .selected {
-        background-color: #1E88E5 !important;
-    }
-
-        .selected > td {
-            color: white !important;
-        }
-
-            .selected > td .mud-input {
-                color: white !important;
-            }
-</style>
-@if (PlatformVms is null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <MudTable Dense Hover Items="@PlatformVms" @ref="_mudTable" RowClassFunc="@SelectedRowClassFunc" T="PlatformTableRowVm" Breakpoint="Breakpoint.Sm" Class="mt-4"
-              LoadingProgressColor="Color.Info" OnRowClick="@RowClickEvent">
-        <HeaderContent>
-            <MudTh>Id</MudTh>
-            <MudTh>Name</MudTh>
-            <MudTh>Maintainer</MudTh>
-            <MudTh>Active?</MudTh>
-            <MudTh></MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="ID">@context.Id</MudTd>
-            <MudTd DataLabel="Name">@context.Name</MudTd>
-            <MudTd DataLabel="Maintainer">@context.Maintainer</MudTd>
-            <MudTd DataLabel="Active?">@context.IsActive</MudTd>
-            <MudTd DataLabel="DELETE">
-                <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" />
-            </MudTd>
-        </RowTemplate>
-    </MudTable>
-}
+﻿@using FlightSchoolTss.Data.Entities;
+<FstssTable TItem="PlatformTableRowVm" FstssItem="BindPlatformDto">
+    <FstssHeaderTemplate>
+        <MudTh>Id</MudTh>
+        <MudTh>Name</MudTh>
+        <MudTh>Maintainer</MudTh>
+        <MudTh>Active?</MudTh>
+        <MudTh></MudTh>
+    </FstssHeaderTemplate>
+    <FstssRowTemplate>
+        <MudTd DataLabel="ID">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Maintainer">@context.Maintainer</MudTd>
+        <MudTd DataLabel="Active?">@context.IsActive</MudTd>
+        <MudTd DataLabel="DELETE">
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" />
+        </MudTd>
+    </FstssRowTemplate>
+</FstssTable>
 
 @code {
 
     [Parameter]
-    public List<PlatformTableRowVm>? PlatformVms { get; set; }
-
-    [Parameter]
-    public EventCallback<PlatformTableRowVm> PlatformVm { get; set; }
+    public EventCallback<PlatformTableRowVm> OnPlatformSelect { get; set; }
 
     [Parameter]
     public EventCallback<PlatformTableRowVm> OnPlatformDelete { get; set; }
 
-    public void RowClickEvent(TableRowClickEventArgs<PlatformTableRowVm> row)
+    public async void BindPlatformDto(PlatformTableRowVm vm)
     {
-        PlatformVm.InvokeAsync(row.Item);
+        await OnPlatformSelect.InvokeAsync(vm);
     }
     public async void OnButtonClick(PlatformTableRowVm vm)
     {
         await OnPlatformDelete.InvokeAsync(vm);
-    }
-
-    private int selectedRowNumber = -1;
-
-    private MudTable<PlatformTableRowVm>? _mudTable;
-
-    private string SelectedRowClassFunc(PlatformTableRowVm element, int rowNumber)
-    {
-        if (selectedRowNumber == rowNumber)
-        {
-            selectedRowNumber = -1;
-            return string.Empty;
-        }
-        else if (_mudTable!.SelectedItem != null && _mudTable.SelectedItem.Id == element.Id)
-        {
-            selectedRowNumber = rowNumber;
-            return "selected";
-        }
-
-        return string.Empty;
     }
 }

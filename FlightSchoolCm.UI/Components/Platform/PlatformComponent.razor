@@ -15,10 +15,14 @@
             <MudText Typo="Typo.h3">Platforms</MudText>
         </MudItem>
         <MudItem sm="8">
-            <PlatformForm OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto" MaintainerVms="_maintainers" />
+            <CascadingValue Value="_buttonText">
+                <PlatformForm OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto" MaintainerVms="_maintainers" />
+            </CascadingValue>
         </MudItem>
         <MudItem xs="12">
-            <PlatformTable PlatformVms="@_platforms" PlatformVm="BindPlatformDto" OnPlatformDelete="DeletePlatform"></PlatformTable>
+            <CascadingValue Value="_platforms">
+                <PlatformTable OnPlatformDelete="DeletePlatform" OnPlatformSelect="BindPlatformDto"></PlatformTable>
+            </CascadingValue>
         </MudItem>
     </MudGrid>
 }
@@ -84,7 +88,7 @@
             await ApiClient.DeleteAsync(vm.Id);
             await MaintainableApiClient.DeleteAsync(vm.MaintainableId);
             await RefreshPlatforms();
-            
+
             Snackbar.Add($"The Platform has been deleted!", MudBlazor.Severity.Success);
         }
     }
