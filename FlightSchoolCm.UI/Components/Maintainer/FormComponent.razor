@@ -21,13 +21,13 @@
     public EventCallback<MudForm> OnSubmitForm { get; set; }
 
     [Parameter]
-    public MaintainerDto _dto { get; set; } = new();
-
-    [Parameter]
     public string ButtonText { get; set; } = "ADD";
 
     [Parameter]
     public MudForm? MudForm { get; set; } = new();
+
+    [CascadingParameter]
+    public MaintainerDto _dto { get; set; } = new();
 
     MaintainerDtoValidator _validator = new();
 

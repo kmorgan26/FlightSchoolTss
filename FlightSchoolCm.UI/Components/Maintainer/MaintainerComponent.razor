@@ -10,11 +10,13 @@
         <MudText Typo="Typo.h3">Maintainers</MudText>
     </MudItem>
     <MudItem sm="8">
-        <FormComponent OnSubmitForm="CreateOrInsertAsync" ButtonText=@_buttonText _dto="_maintainerDto" />
+        <CascadingValue Value="_maintainerDto">
+            <FormComponent OnSubmitForm="CreateOrInsertAsync" ButtonText=@_buttonText/>
+        </CascadingValue>
     </MudItem>
     <MudItem xs="12">
         <CascadingValue Value="_maintainers">
-                <MaintainerTable OnMaintainerDelete="DeleteMaintainer" OnMaintainerSelect="BindMaintainerDto"/>
+            <MaintainerTable OnMaintainerDelete="DeleteMaintainer" OnMaintainerSelect="BindMaintainerDto" />
         </CascadingValue>
     </MudItem>
 </MudGrid>
