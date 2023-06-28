@@ -8,5 +8,5 @@ namespace FlightSchoolTss.Data.Abstractions;
 public abstract class BaseDtoViewModel
 {
     public abstract int Id { get; set; }
-    public string Name { get; set; } = null!;
+    public virtual string Name { get; set; } = null!;
 }
