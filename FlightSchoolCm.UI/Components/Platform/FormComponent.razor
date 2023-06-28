@@ -1,33 +1,28 @@
-﻿<MudGrid Style="align-items: center">
-    <MudItem xs="12">
-        <MudForm Model="@_dto" @ref="@MudForm" Validation="_validator.ValidateValue" ValidationDelay="0">
+﻿<FSForm OnSubmitForm="SubmitForm" TItem="PlatformDto">
+    <FormControls>
 
-            <MudTextField @bind-Value="_dto.Name"
-                          Variant="Variant.Outlined"
-                          For="(() => _dto.Name)"
-                          Label="Platform Name"
-                          OnlyValidateIfDirty="true"
-                          Class="my-6" />
+        <MudTextField @bind-Value="_dto.Name"
+                      Variant="Variant.Outlined"
+                      For="(() => _dto.Name)"
+                      Label="Platform Name"
+                      OnlyValidateIfDirty="true"
+                      Class="my-6" />
 
-            <MudSelect T="int" Label="Maintainer" MultiSelection="false" @bind-Value="@_dto.MaintainerId">
-                <MudSelectItem Value="0">SELECT ONE</MudSelectItem>
-                @foreach(var item in MaintainerVms)
-                {
-                    <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
-                }
-            </MudSelect>
+        <MudSelect T="int" Label="Maintainer" MultiSelection="false" @bind-Value="@_dto.MaintainerId">
+            <MudSelectItem Value="0">SELECT ONE</MudSelectItem>
+            @foreach (var item in MaintainerVms)
+            {
+                <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+            }
+        </MudSelect>
 
-            <MudCheckBox @bind-Checked="_dto.IsActive"
-                         Label="Is Active?" />
+        <MudCheckBox @bind-Checked="_dto.IsActive"
+                     Label="Is Active?" />
 
-            <MudHidden @bind-Value="_dto.MaintainableId"/>
+        <MudHidden @bind-Value="_dto.MaintainableId" />
 
-        </MudForm>
-    </MudItem>
-    <MudItem xs="6">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
-    </MudItem>
-</MudGrid>
+    </FormControls>
+</FSForm>
 
 @code {
 
@@ -45,8 +40,6 @@
 
     [Parameter]
     public List<MaintainerVm> MaintainerVms { get; set; } = null!;
-
-    PlatformDtoValidator _validator = new();
 
     private async Task SubmitForm()
     {
