@@ -1,13 +1,18 @@
 ﻿@typeparam TItem
 
 <MudForm>
-    <MudRadioGroup T="int" SelectedOptionChanged="@((int newValue) => SetOption(newValue))" SelectedOption="SelectedOption">
-        <MudRadio Option="0" Color="Color.Default" Size="Size.Small">None</MudRadio>
-        @foreach(var option in RadioItems)
-        {
-            @RadioButtons(option)
-        }
+
+    <MudRadioGroup T="int" 
+        SelectedOptionChanged="@((int newValue) => SetOption(newValue))" 
+        SelectedOption="SelectedOption">
+
+            <MudRadio Option="0" Color="@RadioColor" Size="@RadioSize" Dense>None</MudRadio>
+            @foreach(var option in RadioItems)
+            {
+                @RadioButtons(option)
+            }
     </MudRadioGroup>
+
 </MudForm>
 
 @code {
@@ -16,13 +21,19 @@
     public int SelectedOption { get; set; }
 
     [Parameter]
-    public List<TItem> RadioItems { get; set; } = new();
+    public IEnumerable<TItem> RadioItems { get; set; }=null!;
 
     [Parameter]
     public RenderFragment<TItem> RadioButtons { get; set; } =null!;
 
     [Parameter]
     public EventCallback<int> OnSelectedOptionChanged { get; set; }
+
+    [Parameter]
+    public Size RadioSize { get; set; } = Size.Small;
+
+    [Parameter]
+    public Color RadioColor { get; set; } = Color.Default;
 
     private Task SetOption(int option)
     {
