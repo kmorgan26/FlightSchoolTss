@@ -21,7 +21,12 @@
 }
 else
 {
-    <MudTable @ref="_mudTable" Items="@FstssData" OnRowClick="RowClickEvent" T="TItem" RowClassFunc="SelectedRowClassFunc" Striped="true">
+    <MudTable @ref="_mudTable" 
+        Items="@FstssData" 
+        OnRowClick="RowClickEvent" T="TItem" 
+        RowClassFunc="SelectedRowClassFunc" 
+        Striped="true"
+        Dense="IsDense">
         <HeaderContent>
             @FstssHeaderTemplate
         </HeaderContent>
@@ -44,6 +49,9 @@ else
 
     [Parameter]
     public RenderFragment FstssHeaderTemplate { get; set; } = null!;
+
+    [Parameter]
+    public bool IsDense { get; set; } = true;
 
     private int selectedRowNumber = -1;
 
