@@ -1,0 +1,34 @@
+﻿@inject IGenericApiClient<PlatformDto> ApiClient
+@inject IMapper Mapper
+
+@if (Items is not null && _selectedOption > -1)
+{
+    <CascadingValue Value="@_selectedOption">
+        <FSRadio TItem="RadioVm" RadioItems="@Items" Context="context" OnSelectedOptionChanged="ChangePlatform">
+            <RadioButtons>
+                <MudRadio Option="@context.Id" Dense>@context.Name</MudRadio>
+            </RadioButtons>
+        </FSRadio>
+    </CascadingValue>
+}
+
+@code {
+
+    private int _selectedOption { get; set; }
+
+    public IEnumerable<RadioVm>? Items { get; set; }
+
+    private void ChangePlatform(int id)
+    {
+        _selectedOption = id;
+    }
+    private async Task RefreshPlatforms()
+    {
+        var platforms = await ApiClient.GetAllAsync();
+        Items = Mapper.Map<IEnumerable<RadioVm>>(platforms);
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshPlatforms();
+    }
+}
