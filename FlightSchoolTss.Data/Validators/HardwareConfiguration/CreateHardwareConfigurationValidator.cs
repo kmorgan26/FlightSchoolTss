@@ -2,9 +2,9 @@
 using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.HardwareConfiguration;
-public class CreateHardwareConfigurationDtoValidator : AbstractValidator<CreateHardwareConfigurationDto>
+public class HardwareConfigurationDtoValidator : AbstractValidator<HardwareConfigurationDto>
 {
-    public CreateHardwareConfigurationDtoValidator()
+    public HardwareConfigurationDtoValidator()
     {
         RuleFor(dto => dto.ConfigurationItemId)
             .NotEmpty().WithMessage("ConfigurationItemId is required.")

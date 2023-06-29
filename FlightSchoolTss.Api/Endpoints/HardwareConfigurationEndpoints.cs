@@ -22,7 +22,7 @@ public static class HardwareConfigurationEndpoints
         .WithName("GetAllHardwareConfigurations")
         .Produces<List<HardwareConfigurationDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.HardwareConfigurations.GetAsync(id)
                 is HardwareConfiguration model
@@ -34,7 +34,7 @@ public static class HardwareConfigurationEndpoints
         .Produces<HardwareConfigurationDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, HardwareConfigurationDto configDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, HardwareConfigurationDto configDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.HardwareConfigurations.GetAsync(id);
 
@@ -53,20 +53,20 @@ public static class HardwareConfigurationEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateHardwareConfigurationDto createHardwareConfigurationDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (HardwareConfigurationDto hardwareConfigurationDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var config = mapper.Map<HardwareConfiguration>(createHardwareConfigurationDto);
+            var config = mapper.Map<HardwareConfiguration>(hardwareConfigurationDto);
             await unitOfWork.HardwareConfigurations.AddAsync(config);
             await unitOfWork.CommitAsync();
 
             return Results.Created($"/api/HardwareConfiguration/{config.Id}", config);
         })
-        .AddEndpointFilter<ValidationFilter<CreateHardwareConfigurationDto>>()
+        .AddEndpointFilter<ValidationFilter<HardwareConfigurationDto>>()
         .WithTags(nameof(HardwareConfiguration))
         .WithName("CreateHardwareConfiguration")
         .Produces<HardwareConfiguration>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.HardwareConfigurations.DeleteAsync(id);
             await unitOfWork.CommitAsync();
