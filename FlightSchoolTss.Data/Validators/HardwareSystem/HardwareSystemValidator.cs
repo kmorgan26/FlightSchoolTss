@@ -2,9 +2,9 @@
 using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.HardwareSystem;
-public class CreateHardwareSystemDtoValidator : AbstractValidator<CreateHardwareSystemDto>
+public class HardwareSystemDtoValidator : AbstractValidator<HardwareSystemDto>
 {
-    public CreateHardwareSystemDtoValidator()
+    public HardwareSystemDtoValidator()
     {
         RuleFor(dto => dto.Name)
             .NotEmpty().WithMessage("Name is required.")
