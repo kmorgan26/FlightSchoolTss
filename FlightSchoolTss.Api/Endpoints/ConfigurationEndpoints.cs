@@ -22,7 +22,7 @@ public static class ConfigurationEndpoints
         .WithName("GetAllConfigurations")
         .Produces<List<ConfigurationDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.Configurations.GetAsync(id)
                 is Configuration model
@@ -34,7 +34,7 @@ public static class ConfigurationEndpoints
         .Produces<ConfigurationDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, ConfigurationDto configDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, ConfigurationDto configDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.Configurations.GetAsync(id);
 
@@ -53,7 +53,7 @@ public static class ConfigurationEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateConfigurationDto createConfigurationDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (CreateConfigurationDto createConfigurationDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var config = mapper.Map<Configuration>(createConfigurationDto);
             await unitOfWork.Configurations.AddAsync(config);
@@ -66,7 +66,7 @@ public static class ConfigurationEndpoints
         .WithName("CreateConfiguration")
         .Produces<Configuration>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.Configurations.DeleteAsync(id);
             await unitOfWork.CommitAsync();
