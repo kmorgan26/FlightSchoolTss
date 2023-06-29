@@ -27,10 +27,8 @@ public class MapperConfig : Profile
     public MapperConfig()
     {
         CreateMap<ConfigurationItem, ConfigurationItemDto>().ReverseMap();
-        CreateMap<ConfigurationItem, CreateConfigurationItemDto>().ReverseMap();
 
         CreateMap<Configuration, ConfigurationDto>().ReverseMap();
-        CreateMap<Configuration, CreateConfigurationDto>().ReverseMap();
 
         CreateMap<HardwareConfiguration, HardwareConfigurationDto>().ReverseMap();
         CreateMap<HardwareConfiguration, CreateHardwareConfigurationDto>().ReverseMap();

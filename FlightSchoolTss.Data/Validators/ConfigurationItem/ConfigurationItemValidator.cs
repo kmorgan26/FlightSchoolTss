@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.ConfigurationItem;
 
-public class CreateConfigurationItemDtoValidator : AbstractValidator<CreateConfigurationItemDto>
+public class ConfigurationItemDtoValidator : AbstractValidator<ConfigurationItemDto>
 {
-    public CreateConfigurationItemDtoValidator()
+    public ConfigurationItemDtoValidator()
     {
         RuleFor(dto => dto.Name)
             .NotEmpty().WithMessage("Name is required.")

@@ -22,7 +22,7 @@ public static class ConfigurationItemEndpoints
         .WithName("GetAllConfigurationItems")
         .Produces<List<ConfigurationItemDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.ConfigurationItems.GetAsync(id)
                 is ConfigurationItem model
@@ -34,7 +34,7 @@ public static class ConfigurationItemEndpoints
         .Produces<ConfigurationItemDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, ConfigurationItemDto configItemDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, ConfigurationItemDto configItemDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.ConfigurationItems.GetAsync(id);
 
@@ -53,7 +53,7 @@ public static class ConfigurationItemEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateConfigurationItemDto createConfigurationItemDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (ConfigurationItemDto createConfigurationItemDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var configItem = mapper.Map<ConfigurationItem>(createConfigurationItemDto);
             await unitOfWork.ConfigurationItems.AddAsync(configItem);
@@ -61,12 +61,12 @@ public static class ConfigurationItemEndpoints
 
             return Results.Created($"/api/ConfigurationItem/{configItem.Id}", configItem);
         })
-        .AddEndpointFilter<ValidationFilter<CreateConfigurationItemDto>>()
+        .AddEndpointFilter<ValidationFilter<ConfigurationItemDto>>()
         .WithTags(nameof(ConfigurationItem))
         .WithName("CreateConfigurationItem")
         .Produces<ConfigurationItem>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.ConfigurationItems.DeleteAsync(id);
             await unitOfWork.CommitAsync();

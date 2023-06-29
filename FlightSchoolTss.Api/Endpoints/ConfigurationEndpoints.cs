@@ -53,15 +53,15 @@ public static class ConfigurationEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", [AllowAnonymous] async (CreateConfigurationDto createConfigurationDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (ConfigurationDto configurationDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var config = mapper.Map<Configuration>(createConfigurationDto);
+            var config = mapper.Map<Configuration>(configurationDto);
             await unitOfWork.Configurations.AddAsync(config);
             await unitOfWork.CommitAsync();
 
             return Results.Created($"/api/Configuration/{config.Id}", config);
         })
-        .AddEndpointFilter<ValidationFilter<CreateConfigurationDto>>()
+        .AddEndpointFilter<ValidationFilter<ConfigurationDto>>()
         .WithTags(nameof(Configuration))
         .WithName("CreateConfiguration")
         .Produces<Configuration>(StatusCodes.Status201Created);
