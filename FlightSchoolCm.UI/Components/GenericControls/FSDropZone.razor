@@ -1,0 +1,50 @@
+﻿@inject IGenericApiClient<MaintainerDto> ApiClient
+@inject IMapper Mapper
+
+@if (_items is null)
+{
+    <text>Loading...</text>
+}
+else
+{
+
+    <MudDropContainer T="MaintainerDto"
+                      Items="_items"
+                      ItemsSelector="@((item,dropzone) => item.Id.ToString() == dropzone)"
+                      ItemDropped="ItemUpdated" Class="d-flex flex-wrap flex-grow-1">
+
+        <ChildContent>
+            @foreach(var item in _items)
+            {
+                var dropzone = item.Id.ToString();
+                <MudPaper Class="ma-4 flex-grow-1">
+                    <MudList Clickable="true" Class="d-flex flex-column mud-height-full">
+                        <MudListSubheader>Maintainers @dropzone</MudListSubheader>
+                        <MudDropZone T="MaintainerDto" Identifier="@dropzone" Class="flex-grow-1" AllowReorder="true" />
+                    </MudList>
+                </MudPaper>
+            }
+        </ChildContent>
+
+        <ItemRenderer>
+            <MudPaper Elevation="25" Class="pa-4 my-4">@context.Name</MudPaper>
+        </ItemRenderer>
+
+    </MudDropContainer>
+}
+
+@code {
+    private void ItemUpdated(MudItemDropInfo<MaintainerDto> dropItem)
+    {
+        dropItem.Item!.Id = Convert.ToInt32(dropItem.DropzoneIdentifier);
+    }
+
+    private List<MaintainerDto> _items = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _items = await ApiClient.GetAllAsync();
+    }
+
+
+}

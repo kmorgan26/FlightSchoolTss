@@ -1,5 +1,5 @@
 ﻿@using FlightSchoolTss.Data.Entities;
-<FstssTable TItem="PlatformTableRowVm" FstssItem="BindPlatformDto">
+<FSTable TItem="PlatformTableRowVm" FstssItem="BindPlatformDto">
     <FstssHeaderTemplate>
         <MudTh>Id</MudTh>
         <MudTh>Name</MudTh>
@@ -16,7 +16,7 @@
             <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" />
         </MudTd>
     </FstssRowTemplate>
-</FstssTable>
+</FSTable>
 
 @code {
 

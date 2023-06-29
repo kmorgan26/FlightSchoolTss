@@ -10,11 +10,11 @@
 @if (MaintainerVms is not null && SelectedOption > -1)
 {
     <CascadingValue Value="@SelectedOption">
-        <FstssRadio TItem="MaintainerVm" RadioItems="@MaintainerVms" Context="context" OnSelectedOptionChanged="ChangeMode">
+        <FSRadio TItem="MaintainerVm" RadioItems="@MaintainerVms" Context="context" OnSelectedOptionChanged="ChangeMode">
             <RadioButtons>
                 <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
             </RadioButtons>
-        </FstssRadio>
+        </FSRadio>
     </CascadingValue>
 }
 
