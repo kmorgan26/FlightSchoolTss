@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.SoftwareLoad;
 
-public class CreateSoftwareLoadDtoValidator : AbstractValidator<CreateSoftwareLoadDto>
+public class SoftwareLoadDtoValidator : AbstractValidator<SoftwareLoadDto>
 {
-    public CreateSoftwareLoadDtoValidator()
+    public SoftwareLoadDtoValidator()
     {
 
         RuleFor(dto => dto.ConfigurationItemId)

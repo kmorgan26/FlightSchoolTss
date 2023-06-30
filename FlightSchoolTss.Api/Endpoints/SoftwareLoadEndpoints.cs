@@ -22,7 +22,7 @@ public static class SoftwareLoadEndpoints
         .WithName("GetAllSoftwareLoads")
         .Produces<List<SoftwareLoadDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.SoftwareLoads.GetAsync(id)
                 is SoftwareLoad model
@@ -34,7 +34,7 @@ public static class SoftwareLoadEndpoints
         .Produces<SoftwareLoadDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, SoftwareLoadDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, SoftwareLoadDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.SoftwareLoads.GetAsync(id);
 
@@ -53,7 +53,7 @@ public static class SoftwareLoadEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateSoftwareLoadDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (SoftwareLoadDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var config = mapper.Map<SoftwareLoad>(dto);
             await unitOfWork.SoftwareLoads.AddAsync(config);
@@ -61,12 +61,12 @@ public static class SoftwareLoadEndpoints
 
             return Results.Created($"/api/SoftwareLoad/{config.Id}", config);
         })
-        .AddEndpointFilter<ValidationFilter<CreateSoftwareLoadDto>>()
+        .AddEndpointFilter<ValidationFilter<SoftwareLoadDto>>()
         .WithTags(nameof(SoftwareLoad))
         .WithName("CreateSoftwareLoad")
         .Produces<SoftwareLoad>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.SoftwareLoads.DeleteAsync(id);
             await unitOfWork.CommitAsync();
