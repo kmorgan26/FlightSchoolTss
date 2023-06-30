@@ -35,7 +35,6 @@ public class MapperConfig : Profile
         CreateMap<HardwareSystem, HardwareSystemDto>().ReverseMap();
 
         CreateMap<HardwareVersion, HardwareVersionDto>().ReverseMap();
-        CreateMap<HardwareVersion, CreateHardwareVersionDto>().ReverseMap();
 
         CreateMap<HardwareVersionsConfigurations, HardwareVersionsConfigurationsDto>().ReverseMap();
         CreateMap<HardwareVersionsConfigurations, CreateHardwareVersionConfigurationDto>().ReverseMap();
