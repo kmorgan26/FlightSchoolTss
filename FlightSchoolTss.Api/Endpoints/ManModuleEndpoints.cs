@@ -4,6 +4,7 @@ using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.DTOs.ManModule;
 using FlightSchoolTss.Filters;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FlightSchoolTss.Endpoints;
 
@@ -13,7 +14,7 @@ public static class ManModuleEndpoints
     {
         var group = routes.MapGroup("/api/manmodule").WithTags(nameof(ManModule));
 
-        group.MapGet("/", async (IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/",[AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var manModules = await unitOfWork.ManModules.GetAllAsync();
             return mapper.Map<List<ManModuleDto>>(manModules);
@@ -22,7 +23,7 @@ public static class ManModuleEndpoints
         .WithName("GetAllManModules")
         .Produces<List<ManModuleDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.ManModules.GetAsync(id)
                 is ManModule model
@@ -35,7 +36,7 @@ public static class ManModuleEndpoints
         .Produces<ManModuleDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, ManModuleDto manModuleDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, ManModuleDto manModuleDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var affected = await unitOfWork.ManModules.GetAsync(id);
 
@@ -53,20 +54,20 @@ public static class ManModuleEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateManModuleDto createManModuleDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (ManModuleDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var manModule = mapper.Map<ManModule>(createManModuleDto);
+            var manModule = mapper.Map<ManModule>(dto);
             await unitOfWork.ManModules.AddAsync(manModule);
             await unitOfWork.CommitAsync();
 
-            return TypedResults.Created($"/api/manmodule/{manModule.Id}", createManModuleDto);
+            return TypedResults.Created($"/api/manmodule/{manModule.Id}", dto);
         })
-        .AddEndpointFilter<ValidationFilter<CreateManModuleDto>>()
+        .AddEndpointFilter<ValidationFilter<ManModuleDto>>()
         .WithTags(nameof(ManModule))
         .WithName("CreateManModule")
         .Produces<ManModule>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.ManModules.DeleteAsync(id);
             await unitOfWork.CommitAsync();

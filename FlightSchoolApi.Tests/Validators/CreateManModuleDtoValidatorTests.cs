@@ -35,7 +35,7 @@ public class CreateManModuleDtoValidatorTests
     public async Task Validate_WithMissingName_ReturnsFalse()
     {
         // Arrange
-        var validator = new CreateManModuleDtoValidator(_mockRepository.Object);
+        var validator = new ManModuleDtoValidator(_mockRepository.Object);
         var dto = new CreateManModuleDto
         {
             Name = "", // Empty name
@@ -54,7 +54,7 @@ public class CreateManModuleDtoValidatorTests
     public async Task Validate_WithInvalidNameLength_ReturnsFalse()
     {
         // Arrange
-        var validator = new CreateManModuleDtoValidator(_mockRepository.Object);
+        var validator = new ManModuleDtoValidator(_mockRepository.Object);
         var dto = new CreateManModuleDto
         {
             Name = "aaa", // Name length less than the minimum length (5)
@@ -73,7 +73,7 @@ public class CreateManModuleDtoValidatorTests
     public async Task Validate_WithInvalidLotId_ReturnsFalse()
     {
         // Arrange
-        var validator = new CreateManModuleDtoValidator(_mockRepository.Object);
+        var validator = new ManModuleDtoValidator(_mockRepository.Object);
         var dto = new CreateManModuleDto
         {
             Name = "ValidName",

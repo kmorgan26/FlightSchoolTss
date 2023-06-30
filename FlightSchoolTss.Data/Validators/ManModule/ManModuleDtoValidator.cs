@@ -4,11 +4,11 @@ using FlightSchoolTss.DTOs.ManModule;
 
 namespace FlightSchoolTss.Data.Validators.ManModule;
 
-public class CreateManModuleDtoValidator : AbstractValidator<CreateManModuleDto>
+public class ManModuleDtoValidator : AbstractValidator<ManModuleDto>
 {
     private readonly IManModuleRepository _repository;
 
-    public CreateManModuleDtoValidator(IManModuleRepository repository)
+    public ManModuleDtoValidator(IManModuleRepository repository)
     {
         _repository = repository;
 
