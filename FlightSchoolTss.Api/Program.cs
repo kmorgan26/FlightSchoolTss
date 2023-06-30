@@ -141,5 +141,6 @@ app.MapAuthenticationEndpoints();
 app.MapSoftwareLoadEndpoints();
 app.MapSoftwareSystemEndpoints();
 app.MapSoftwareVersionEndpoints();
+app.MapSoftwareVersionLoadEndpoints();
 
 app.Run();
