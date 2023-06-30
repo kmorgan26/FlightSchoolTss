@@ -41,7 +41,6 @@ public class MapperConfig : Profile
         CreateMap<ItemType, ItemTypeDto>().ReverseMap();
 
         CreateMap<Maintainable, MaintainableDto>().ReverseMap();
-        CreateMap<Maintainable, CreateMaintainableDto>().ReverseMap();
 
         CreateMap<Maintainer, MaintainerDto>().ReverseMap();
         CreateMap<Maintainer, CreateMaintainerDto>().ReverseMap();

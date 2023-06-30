@@ -22,7 +22,7 @@ public static class MaintainableEndpoints
         .WithName("GetAllMaintainables")
         .Produces<List<MaintainableDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.Maintainables.GetAsync(id)
                 is Maintainable model
@@ -34,7 +34,7 @@ public static class MaintainableEndpoints
         .Produces<MaintainableDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, MaintainableDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, MaintainableDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.Maintainables.GetAsync(id);
 
@@ -53,7 +53,7 @@ public static class MaintainableEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", [AllowAnonymous] async (CreateMaintainableDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (MaintainableDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var maintainable = mapper.Map<Maintainable>(dto);
             await unitOfWork.Maintainables.AddAsync(maintainable);
@@ -61,7 +61,7 @@ public static class MaintainableEndpoints
 
             return Results.Created($"/api/Maintainable/{maintainable.Id}", maintainable);
         })
-        .AddEndpointFilter<ValidationFilter<CreateMaintainableDto>>()
+        .AddEndpointFilter<ValidationFilter<MaintainableDto>>()
         .WithTags(nameof(Maintainable))
         .WithName("CreateMaintainable")
         .Produces<Maintainable>(StatusCodes.Status201Created);

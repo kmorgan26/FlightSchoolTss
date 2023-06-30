@@ -4,9 +4,9 @@ using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.Maintainable;
 
-public class CreateMaintainableDtoValidator : AbstractValidator<CreateMaintainableDto>
+public class MaintainableDtoValidator : AbstractValidator<MaintainableDto>
 {
-    public CreateMaintainableDtoValidator()
+    public MaintainableDtoValidator()
     {
         RuleFor(i => i.Name)
             .NotEmpty()
