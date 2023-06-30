@@ -22,7 +22,7 @@ public static class ItemTypeEndpoints
         .WithName("GetAllItemTypes")
         .Produces<List<ItemTypeDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.ItemTypes.GetAsync(id)
                 is ItemType model
@@ -34,7 +34,7 @@ public static class ItemTypeEndpoints
         .Produces<ItemTypeDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, ItemTypeDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, ItemTypeDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.ItemTypes.GetAsync(id);
 
@@ -53,7 +53,7 @@ public static class ItemTypeEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateItemTypeDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (ItemTypeDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var itemType = mapper.Map<ItemType>(dto);
             await unitOfWork.ItemTypes.AddAsync(itemType);
@@ -61,12 +61,12 @@ public static class ItemTypeEndpoints
 
             return Results.Created($"/api/ItemType/{itemType.Id}", itemType);
         })
-        .AddEndpointFilter<ValidationFilter<CreateItemTypeDto>>()
+        .AddEndpointFilter<ValidationFilter<ItemTypeDto>>()
         .WithTags(nameof(ItemType))
         .WithName("CreateItemType")
         .Produces<ItemType>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.ItemTypes.DeleteAsync(id);
             await unitOfWork.CommitAsync();

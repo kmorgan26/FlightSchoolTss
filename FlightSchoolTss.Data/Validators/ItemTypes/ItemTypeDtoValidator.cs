@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.ItemTypes;
 
-public class CreateItemTypeDtoValidator : AbstractValidator<CreateItemTypeDto>
+public class ItemTypeDtoValidator : AbstractValidator<ItemTypeDto>
 {
-    public CreateItemTypeDtoValidator()
+    public ItemTypeDtoValidator()
     {
         RuleFor(i => i.Name)
             .NotEmpty()
