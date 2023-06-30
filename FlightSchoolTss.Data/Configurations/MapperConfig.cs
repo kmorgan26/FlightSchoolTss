@@ -43,11 +43,6 @@ public class MapperConfig : Profile
         CreateMap<Maintainable, MaintainableDto>().ReverseMap();
 
         CreateMap<Maintainer, MaintainerDto>().ReverseMap();
-        CreateMap<Maintainer, CreateMaintainerDto>().ReverseMap();
-        
-        CreateMap<MaintainerDto, CreateMaintainerDto>()
-            .ForMember(i => i.Id, x => x.MapFrom(dto => dto.Id))
-            .ReverseMap();
 
         CreateMap<MaintainerDto, MaintainerVm>().ReverseMap();
         CreateMap<Maintainer, MaintainerDetailsDto>()

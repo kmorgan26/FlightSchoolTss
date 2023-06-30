@@ -2,14 +2,14 @@
 using FlightSchoolTss.Data.DTOs.Maintainer;
 
 namespace FlightSchoolTss.Tests.Validators;
-public class CreateMaintainerDtoValidatorTests
+public class MaintainerDtoValidatorTests
 {
     [Fact]
     public async Task Validate_WithValidDto_ReturnsTrue()
     {
         // Arrange
-        var validator = new CreateMaintainerDtoValidator();
-        var dto = new CreateMaintainerDto
+        var validator = new MaintainerDtoValidator();
+        var dto = new MaintainerDto
         {
             Name = "John Doe"
         };
@@ -25,8 +25,8 @@ public class CreateMaintainerDtoValidatorTests
     public async Task Validate_WithMissingName_ReturnsFalse()
     {
         // Arrange
-        var validator = new CreateMaintainerDtoValidator();
-        var dto = new CreateMaintainerDto
+        var validator = new MaintainerDtoValidator();
+        var dto = new MaintainerDto
         {
             Name = ""
         };
@@ -36,15 +36,15 @@ public class CreateMaintainerDtoValidatorTests
 
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(result.Errors, error => error.PropertyName == nameof(CreateMaintainerDto.Name));
+        Assert.Contains(result.Errors, error => error.PropertyName == nameof(MaintainerDto.Name));
     }
 
     [Fact]
     public async Task Validate_WithInvalidNameLength_ReturnsFalse()
     {
         // Arrange
-        var validator = new CreateMaintainerDtoValidator();
-        var dto = new CreateMaintainerDto
+        var validator = new MaintainerDtoValidator();
+        var dto = new MaintainerDto
         {
             Name = "A" // Name length less than the minimum length (3)
         };
@@ -54,15 +54,15 @@ public class CreateMaintainerDtoValidatorTests
 
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(result.Errors, error => error.PropertyName == nameof(CreateMaintainerDto.Name));
+        Assert.Contains(result.Errors, error => error.PropertyName == nameof(MaintainerDto.Name));
     }
 
     [Fact]
     public async Task Validate_WithExcessiveNameLength_ReturnsFalse()
     {
         // Arrange
-        var validator = new CreateMaintainerDtoValidator();
-        var dto = new CreateMaintainerDto
+        var validator = new MaintainerDtoValidator();
+        var dto = new MaintainerDto
         {
             Name = "ThisIsAVeryLongName" // Name length exceeds the maximum length (15)
         };
@@ -72,6 +72,6 @@ public class CreateMaintainerDtoValidatorTests
 
         // Assert
         Assert.False(result.IsValid);
-        Assert.Contains(result.Errors, error => error.PropertyName == nameof(CreateMaintainerDto.Name));
+        Assert.Contains(result.Errors, error => error.PropertyName == nameof(MaintainerDto.Name));
     }
 }
