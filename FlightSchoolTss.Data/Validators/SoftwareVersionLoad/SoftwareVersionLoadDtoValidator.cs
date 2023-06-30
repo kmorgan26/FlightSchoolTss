@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace FlightSchoolTss.Data.Validators.SoftwareVersionLoad;
 
-public class CreateSoftwareVersionLoadDtoValidator : AbstractValidator<CreateSoftwareVersionLoadDto>
+public class SoftwareVersionLoadDtoValidator : AbstractValidator<SoftwareVersionLoadDto>
 {
-    public CreateSoftwareVersionLoadDtoValidator()
+    public SoftwareVersionLoadDtoValidator()
     {
         RuleFor(dto => dto.SoftwareVersionId)
             .NotEmpty().WithMessage("SoftwareVersionId is required.")

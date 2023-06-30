@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.SoftwareVersion;
 
-public class CreateSoftwareVersionDtoValidator : AbstractValidator<CreateSoftwareVersionDto>
+public class SoftwareVersionDtoValidator : AbstractValidator<SoftwareVersionDto>
 {
-    public CreateSoftwareVersionDtoValidator()
+    public SoftwareVersionDtoValidator()
     {
         RuleFor(dto => dto.Name)
             .NotEmpty().WithMessage("Name is required.")

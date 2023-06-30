@@ -4,11 +4,11 @@ using FlightSchoolTss.DTOs.Lot;
 
 namespace FlightSchoolTss.Data.Validators.Lot;
 
-public class CreateLotDtoValidator : AbstractValidator<CreateLotDto>
+public class LotDtoValidator : AbstractValidator<LotDto>
 {
     private readonly ILotRepository _repository;
 
-    public CreateLotDtoValidator(ILotRepository repository)
+    public LotDtoValidator(ILotRepository repository)
     {
         _repository = repository;
 

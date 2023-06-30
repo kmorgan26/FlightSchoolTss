@@ -69,13 +69,10 @@ public class MapperConfig : Profile
         CreateMap<SoftwareSystem, SoftwareSystemDto>().ReverseMap();
 
         CreateMap<SoftwareVersion, SoftwareVersionDto>().ReverseMap();
-        CreateMap<SoftwareVersion, CreateSoftwareVersionDto>().ReverseMap();
 
         CreateMap<SoftwareVersionLoad, SoftwareVersionLoadDto>().ReverseMap();
-        CreateMap<SoftwareVersionLoad, CreateSoftwareVersionLoadDto>().ReverseMap();
 
         CreateMap<Lot, LotDto>().ReverseMap();
-        CreateMap<Lot, CreateLotDto>().ReverseMap();
         CreateMap<Lot, LotDetailsDto>()
             .ForMember(i => i.ManModules, x => x.MapFrom(lot => lot.ManModules));
 

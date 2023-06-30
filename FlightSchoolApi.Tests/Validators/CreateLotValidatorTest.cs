@@ -35,7 +35,7 @@ public class CreateLotDtoValidatorTests
     public async Task Validate_WithMissingName_ReturnsFalse()
     {
         // Arrange
-        var validator = new CreateLotDtoValidator(_mockRepository.Object);
+        var validator = new LotDtoValidator(_mockRepository.Object);
         var dto = new CreateLotDto
         {
             Name = "", // Empty name
@@ -54,7 +54,7 @@ public class CreateLotDtoValidatorTests
     public async Task Validate_WithInvalidNameLength_ReturnsFalse()
     {
         // Arrange
-        var validator = new CreateLotDtoValidator(_mockRepository.Object);
+        var validator = new LotDtoValidator(_mockRepository.Object);
         var dto = new CreateLotDto
         {
             Name = "aaa", // Name length less than the minimum length (5)
@@ -73,7 +73,7 @@ public class CreateLotDtoValidatorTests
     public async Task Validate_WithMissingPlatformId_ReturnsFalse()
     {
         // Arrange
-        var validator = new CreateLotDtoValidator(_mockRepository.Object);
+        var validator = new LotDtoValidator(_mockRepository.Object);
         var dto = new CreateLotDto
         {
             Name = "ValidName",
@@ -92,7 +92,7 @@ public class CreateLotDtoValidatorTests
     public async Task Validate_WithNonExistingPlatformId_ReturnsFalse()
     {
         // Arrange
-        var validator = new CreateLotDtoValidator(_mockRepository.Object);
+        var validator = new LotDtoValidator(_mockRepository.Object);
         var dto = new CreateLotDto
         {
             Name = "ValidName",

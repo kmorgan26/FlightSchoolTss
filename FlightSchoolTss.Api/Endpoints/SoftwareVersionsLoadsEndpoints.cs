@@ -22,7 +22,7 @@ public static class SoftwareVersionLoadEndpoints
         .WithName("GetAllSoftwareVersionLoad")
         .Produces<List<SoftwareVersionLoadDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.SoftwareVersionsLoads.GetAsync(id)
                 is SoftwareVersionLoad model
@@ -34,7 +34,7 @@ public static class SoftwareVersionLoadEndpoints
         .Produces<SoftwareVersionLoadDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, SoftwareVersionLoadDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, SoftwareVersionLoadDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.SoftwareVersionsLoads.GetAsync(id);
 
@@ -53,7 +53,7 @@ public static class SoftwareVersionLoadEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateSoftwareVersionLoadDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (SoftwareVersionLoadDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var config = mapper.Map<SoftwareVersionLoad>(dto);
             await unitOfWork.SoftwareVersionsLoads.AddAsync(config);
@@ -61,12 +61,12 @@ public static class SoftwareVersionLoadEndpoints
 
             return Results.Created($"/api/SoftwareVersionLoad/{config.Id}", config);
         })
-        .AddEndpointFilter<ValidationFilter<CreateSoftwareVersionLoadDto>>()
+        .AddEndpointFilter<ValidationFilter<SoftwareVersionLoadDto>>()
         .WithTags(nameof(SoftwareVersionLoad))
         .WithName("CreateSoftwareVersionLoad")
         .Produces<SoftwareVersionLoad>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.SoftwareVersionsLoads.DeleteAsync(id);
             await unitOfWork.CommitAsync();
