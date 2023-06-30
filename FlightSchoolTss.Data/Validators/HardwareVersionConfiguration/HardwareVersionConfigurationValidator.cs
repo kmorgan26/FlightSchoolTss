@@ -1,11 +1,11 @@
-﻿using FlightSchoolTss.Data.DTOs.HardwareVersionConfiguration;
+﻿using FlightSchoolTss.Data.DTOs.HardwareVersionsConfigurations;
 using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.HardwareVersionConfiguration;
 
-public class CreateHardwareVersionConfigurationDtoValidator : AbstractValidator<CreateHardwareVersionConfigurationDto>
+public class HardwareVersionConfigurationDtoValidator : AbstractValidator<HardwareVersionsConfigurationsDto>
 {
-    public CreateHardwareVersionConfigurationDtoValidator()
+    public HardwareVersionConfigurationDtoValidator()
     {
         RuleFor(dto => dto.HardwareVersionId)
             .NotEmpty().WithMessage("HardwareVersionId is required.")

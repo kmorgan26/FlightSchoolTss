@@ -3,7 +3,7 @@ using FluentValidation;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.Filters;
-using FlightSchoolTss.Data.DTOs.HardwareVersionConfiguration;
+using FlightSchoolTss.Data.DTOs.HardwareVersionsConfigurations;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FlightSchoolTss.Endpoints;
@@ -22,7 +22,7 @@ public static class HardwareVersionsConfigurationsEndpoints
         .WithName("GetAllHardwareVersionConfigurations")
         .Produces<List<HardwareVersionsConfigurationsDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.HardwareVersionsConfigurations.GetAsync(id)
                 is HardwareVersionsConfigurations model
@@ -34,7 +34,7 @@ public static class HardwareVersionsConfigurationsEndpoints
         .Produces<HardwareVersionsConfigurationsDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, HardwareVersionsConfigurationsDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, HardwareVersionsConfigurationsDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.HardwareVersionsConfigurations.GetAsync(id);
 
@@ -53,7 +53,7 @@ public static class HardwareVersionsConfigurationsEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateHardwareVersionConfigurationDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (HardwareVersionsConfigurationsDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var hwVersionConfig = mapper.Map<HardwareVersionsConfigurations>(dto);
             await unitOfWork.HardwareVersionsConfigurations.AddAsync(hwVersionConfig);
@@ -61,12 +61,12 @@ public static class HardwareVersionsConfigurationsEndpoints
 
             return Results.Created($"/api/hardwareversionconfiguration/{hwVersionConfig.Id}", hwVersionConfig);
         })
-        .AddEndpointFilter<ValidationFilter<CreateHardwareVersionConfigurationDto>>()
+        .AddEndpointFilter<ValidationFilter<HardwareVersionsConfigurationsDto>>()
         .WithTags(nameof(HardwareVersionsConfigurations))
         .WithName("CreateHardwareVersionConfiguration")
         .Produces<HardwareVersionsConfigurations>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.HardwareVersionsConfigurations.DeleteAsync(id);
             await unitOfWork.CommitAsync();

@@ -4,7 +4,7 @@ using FlightSchoolTss.Data.DTOs.ConfigurationItem;
 using FlightSchoolTss.Data.DTOs.HardwareConfiguration;
 using FlightSchoolTss.Data.DTOs.HardwareSystem;
 using FlightSchoolTss.Data.DTOs.HardwareVersion;
-using FlightSchoolTss.Data.DTOs.HardwareVersionConfiguration;
+using FlightSchoolTss.Data.DTOs.HardwareVersionsConfigurations;
 using FlightSchoolTss.Data.DTOs.ItemTypes;
 using FlightSchoolTss.Data.DTOs.Maintainable;
 using FlightSchoolTss.Data.DTOs.SoftwareLoad;
@@ -37,7 +37,6 @@ public class MapperConfig : Profile
         CreateMap<HardwareVersion, HardwareVersionDto>().ReverseMap();
 
         CreateMap<HardwareVersionsConfigurations, HardwareVersionsConfigurationsDto>().ReverseMap();
-        CreateMap<HardwareVersionsConfigurations, CreateHardwareVersionConfigurationDto>().ReverseMap();
 
         CreateMap<ItemType, ItemTypeDto>().ReverseMap();
         CreateMap<ItemType, CreateItemTypeDto>().ReverseMap();

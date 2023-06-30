@@ -1,4 +1,4 @@
-﻿namespace FlightSchoolTss.Data.DTOs.HardwareVersionConfiguration;
+﻿namespace FlightSchoolTss.Data.DTOs.HardwareVersionsConfigurations;
 
 public class HardwareVersionsConfigurationsDto
 {
