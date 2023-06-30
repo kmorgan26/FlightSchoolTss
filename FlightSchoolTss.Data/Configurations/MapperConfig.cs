@@ -51,7 +51,6 @@ public class MapperConfig : Profile
         CreateMap<ManModule, ManModuleDto>().ReverseMap();
 
         CreateMap<Platform, PlatformDto>().ReverseMap();
-        CreateMap<Platform, CreatePlatformDto>().ReverseMap();
         CreateMap<Platform, PlatformDetailsDto>()
             .ForMember(i => i.Simulators, x => x.MapFrom(platform => platform.Simulators));
         CreateMap<PlatformDto, RadioVm>().ReverseMap();

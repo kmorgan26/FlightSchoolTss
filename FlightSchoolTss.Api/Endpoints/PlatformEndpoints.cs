@@ -84,15 +84,15 @@ public static class PlatformEndpoints
         .WithName("GetPlatformTableRowVms")
         .Produces<List<PlatformDetailsDto>>(StatusCodes.Status200OK);
 
-        group.MapPost("/", [AllowAnonymous] async (CreatePlatformDto createPlatformDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (PlatformDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var platform = mapper.Map<Platform>(createPlatformDto);
+            var platform = mapper.Map<Platform>(dto);
             await unitOfWork.Platforms.AddAsync(platform);
             await unitOfWork.CommitAsync();
 
             return Results.Created($"/api/Platform/{platform.Id}", platform);
         })
-        .AddEndpointFilter<ValidationFilter<CreatePlatformDto>>()
+        .AddEndpointFilter<ValidationFilter<PlatformDto>>()
         .WithTags(nameof(Platform))
         .WithName("CreatePlatform")
         .Produces<Platform>(StatusCodes.Status201Created);
