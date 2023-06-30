@@ -3,9 +3,9 @@ using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.SoftwareSystem;
 
-public class CreateSoftwareSystemDtoValidator : AbstractValidator<CreateSoftwareSystemDto>
+public class SoftwareSystemDtoValidator : AbstractValidator<SoftwareSystemDto>
 {
-    public CreateSoftwareSystemDtoValidator()
+    public SoftwareSystemDtoValidator()
     {
         RuleFor(dto => dto.MaintainableId)
                 .NotEmpty().WithMessage("MaintainableId is required.")

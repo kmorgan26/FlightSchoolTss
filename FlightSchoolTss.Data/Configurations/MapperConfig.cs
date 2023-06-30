@@ -67,7 +67,6 @@ public class MapperConfig : Profile
         CreateMap<SoftwareLoad, SoftwareLoadDto>().ReverseMap();
 
         CreateMap<SoftwareSystem, SoftwareSystemDto>().ReverseMap();
-        CreateMap<SoftwareSystem, CreateSoftwareSystemDto>().ReverseMap();
 
         CreateMap<SoftwareVersion, SoftwareVersionDto>().ReverseMap();
         CreateMap<SoftwareVersion, CreateSoftwareVersionDto>().ReverseMap();

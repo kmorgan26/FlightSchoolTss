@@ -22,7 +22,7 @@ public static class SoftwareSystemEndpoints
         .WithName("GetAllSoftwareSystems")
         .Produces<List<SoftwareSystemDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.SoftwareSystems.GetAsync(id)
                 is SoftwareSystem model
@@ -34,7 +34,7 @@ public static class SoftwareSystemEndpoints
         .Produces<SoftwareSystemDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, SoftwareSystemDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, SoftwareSystemDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.SoftwareSystems.GetAsync(id);
 
@@ -53,7 +53,7 @@ public static class SoftwareSystemEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateSoftwareSystemDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (SoftwareSystemDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var config = mapper.Map<SoftwareSystem>(dto);
             await unitOfWork.SoftwareSystems.AddAsync(config);
@@ -61,12 +61,12 @@ public static class SoftwareSystemEndpoints
 
             return Results.Created($"/api/SoftwareSystem/{config.Id}", config);
         })
-        .AddEndpointFilter<ValidationFilter<CreateSoftwareSystemDto>>()
+        .AddEndpointFilter<ValidationFilter<SoftwareSystemDto>>()
         .WithTags(nameof(SoftwareSystem))
         .WithName("CreateSoftwareSystem")
         .Produces<SoftwareSystem>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.SoftwareSystems.DeleteAsync(id);
             await unitOfWork.CommitAsync();
