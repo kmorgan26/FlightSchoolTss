@@ -4,10 +4,10 @@ using FluentValidation;
 
 namespace FlightSchoolTss.Data.Validators.Simulator;
 
-public class CreateSimulatorDtoValidator : AbstractValidator<CreateSimulatorDto>
+public class SimulatorDtoValidator : AbstractValidator<SimulatorDto>
 {
     private readonly ISimulatorRepository _repository;
-    public CreateSimulatorDtoValidator(ISimulatorRepository repository)
+    public SimulatorDtoValidator(ISimulatorRepository repository)
     {
         _repository = repository;
 

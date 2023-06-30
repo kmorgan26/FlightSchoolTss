@@ -63,7 +63,6 @@ public class MapperConfig : Profile
         CreateMap<PlatformTableRowVm, PlatformDto>().ReverseMap();
 
         CreateMap<Simulator, SimulatorDto>().ReverseMap();
-        CreateMap<Simulator, CreateSimulatorDto>().ReverseMap();
 
         CreateMap<SoftwareLoad, SoftwareLoadDto>().ReverseMap();
         CreateMap<SoftwareLoad, CreateSoftwareLoadDto>().ReverseMap();

@@ -4,6 +4,7 @@ using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.Filters;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FlightSchoolTss.Endpoints;
 public static class SimulatorEndpoints
@@ -12,7 +13,7 @@ public static class SimulatorEndpoints
     {
         var group = routes.MapGroup("/api/simulator").WithTags(nameof(Simulator));
 
-        group.MapGet("/", async (IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/", [AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var simulators = await unitOfWork.Simulators.GetAllAsync();
             return mapper.Map<List<SimulatorDto>>(simulators);
@@ -21,7 +22,7 @@ public static class SimulatorEndpoints
         .WithName("GetAllSimulators")
         .Produces<List<SimulatorDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.Simulators.GetAsync(id)
                 is Simulator model
@@ -34,7 +35,7 @@ public static class SimulatorEndpoints
         .Produces<SimulatorDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapGet("/GetByPlatform/{id}", async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/GetByPlatform/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             return await unitOfWork.Simulators.GetAllSimulatorsByPlatformIdAsync(id)
                 is List<Simulator> model
@@ -47,7 +48,7 @@ public static class SimulatorEndpoints
         .Produces<SimulatorDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapPut("/{id}", async (int id, SimulatorDto simulatorDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPut("/{id}", [AllowAnonymous] async (int id, SimulatorDto simulatorDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.Simulators.GetAsync(id);
 
@@ -64,18 +65,18 @@ public static class SimulatorEndpoints
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status204NoContent);
 
-        group.MapPost("/", async (CreateSimulatorDto createSimulatorDto, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapPost("/", [AllowAnonymous] async (SimulatorDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var simulator = mapper.Map<Simulator>(createSimulatorDto);
+            var simulator = mapper.Map<Simulator>(dto);
             await unitOfWork.Simulators.AddAsync(simulator);
             return Results.Created($"/api/Simulator/{simulator.Id}", simulator);
         })
-        .AddEndpointFilter<ValidationFilter<CreateSimulatorDto>>()
+        .AddEndpointFilter<ValidationFilter<SimulatorDto>>()
         .WithTags(nameof(Simulator))
         .WithName("CreateSimulator")
         .Produces<Simulator>(StatusCodes.Status201Created);
 
-        group.MapDelete("/{id}", async (int id, IUnitOfWork unitOfWork) =>
+        group.MapDelete("/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork) =>
         {
             var result = await unitOfWork.Simulators.DeleteAsync(id);
             await unitOfWork.CommitAsync();
