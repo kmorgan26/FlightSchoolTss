@@ -1,18 +1,24 @@
 ﻿@inject IGenericApiClient<PlatformDto> ApiClient
 @inject IMapper Mapper
 
-@if (Items is not null && _selectedOption > -1)
+@if (isReady)
 {
     <CascadingValue Value="@_selectedOption">
         <FSRadio TItem="RadioVm" RadioItems="@Items" Context="context" OnSelectedOptionChanged="ChangePlatform">
             <RadioButtons>
                 <MudRadio Option="@context.Id" Dense>@context.Name</MudRadio>
-            </RadioButtons>
-        </FSRadio>
-    </CascadingValue>
+        </RadioButtons>
+    </FSRadio>
+</CascadingValue>
+
+}
+@if (_selectedOption > 0)
+{
+    <SoftwareSystemList MaintainableId="_selectedOption" />
 }
 
 @code {
+    private bool isReady;
 
     private int _selectedOption { get; set; }
 
@@ -29,6 +35,8 @@
     }
     protected override async Task OnInitializedAsync()
     {
+        isReady = false;
         await RefreshPlatforms();
+        isReady = true;
     }
 }

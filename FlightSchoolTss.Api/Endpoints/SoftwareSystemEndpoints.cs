@@ -77,5 +77,15 @@ public static class SoftwareSystemEndpoints
         .WithName("DeleteSoftwareSystem")
         .Produces<SoftwareSystem>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
+
+        group.MapGet("/GetSoftwareSystemsByMaintainableId/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        {
+            var softwareSystems = await unitOfWork.SoftwareSystems.GetSoftwareSystemsByMaintainableIdAsync(id);
+            return mapper.Map<IEnumerable<SoftwareSystemDto>>(softwareSystems);
+        })
+        .WithTags(nameof(SoftwareSystem))
+        .WithName("GetSoftwareSystemsByMaintainableId")
+        .Produces<SoftwareSystemDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
     }
 }

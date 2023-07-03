@@ -1,0 +1,28 @@
+﻿@using FlightSchoolTss.Data.DTOs.SoftwareSystem;
+@inject ISoftwareApiClient ApiClient
+
+    <MudList Clickable="true">
+        @foreach (var item in DTOs)
+        {
+            <MudListItem Text="@item.Name" Value="@item.Id" />
+        }
+    </MudList>
+
+
+@code {
+
+    [Parameter]
+    public int MaintainableId { get; set; }
+
+    public IEnumerable<SoftwareSystemDto>? DTOs { get; set; }
+
+    private async Task RefreshSoftwareSystemDtos()
+    {
+        DTOs = await ApiClient.GetSoftwareSystemDtoByMaintainableIdAsync(MaintainableId);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshSoftwareSystemDtos();
+    }
+}
