@@ -26,9 +26,9 @@ public class MapperConfig : Profile
 {
     public MapperConfig()
     {
-        CreateMap<ConfigurationItem, ConfigurationItemDto>().ReverseMap();
-
         CreateMap<Configuration, ConfigurationDto>().ReverseMap();
+
+        CreateMap<ConfigurationItem, ConfigurationItemDto>().ReverseMap();
 
         CreateMap<HardwareConfiguration, HardwareConfigurationDto>().ReverseMap();
 
@@ -46,18 +46,20 @@ public class MapperConfig : Profile
 
         CreateMap<MaintainerDto, MaintainerVm>().ReverseMap();
         CreateMap<Maintainer, MaintainerDetailsDto>()
-            .ForMember(i => i.Platforms, x => x.MapFrom(maintainer => maintainer.Platforms));
+            .ForMember(dto => dto.Platforms, x => x.MapFrom(maintainer => maintainer.Platforms));
 
         CreateMap<ManModule, ManModuleDto>().ReverseMap();
 
         CreateMap<Platform, PlatformDto>().ReverseMap();
         CreateMap<Platform, PlatformDetailsDto>()
-            .ForMember(i => i.Simulators, x => x.MapFrom(platform => platform.Simulators));
-        CreateMap<PlatformDto, RadioVm>().ReverseMap();
+            .ForMember(dto => dto.Simulators, x => x.MapFrom(platform => platform.Simulators));
+
+        CreateMap<PlatformDto, RadioVm>()
+            .ForMember(radio => radio.Id, x => x.MapFrom(platform => platform.MaintainableId));
 
         CreateMap<PlatformDetailsDto, PlatformTableRowVm>()
-            .ForMember(i => i.Maintainer, x => x.MapFrom(dto => dto.Maintainer.Name))
-            .ForMember(i => i.MaintainerId, x => x.MapFrom(dto => dto.Maintainer.Id))
+            .ForMember(row => row.Maintainer, x => x.MapFrom(dto => dto.Maintainer.Name))
+            .ForMember(row => row.MaintainerId, x => x.MapFrom(dto => dto.Maintainer.Id))
             .ReverseMap();
 
         CreateMap<PlatformTableRowVm, PlatformDto>().ReverseMap();
@@ -74,7 +76,7 @@ public class MapperConfig : Profile
 
         CreateMap<Lot, LotDto>().ReverseMap();
         CreateMap<Lot, LotDetailsDto>()
-            .ForMember(i => i.ManModules, x => x.MapFrom(lot => lot.ManModules));
+            .ForMember(dto => dto.ManModules, x => x.MapFrom(lot => lot.ManModules));
 
     }
 }
