@@ -1,28 +1,23 @@
-﻿@using FlightSchoolTss.Data.DTOs.SoftwareSystem;
-@inject ISoftwareApiClient ApiClient
-
-    <MudList Clickable="true">
-        @foreach (var item in DTOs)
+﻿<FSList TItem="SoftwareSystemDto" Items="SoftwareSystemDtos" OnSelectedItemsChanged="SelectionChanged">
+    <ChildContent>
+        @foreach (var item in SoftwareSystemDtos!)
         {
             <MudListItem Text="@item.Name" Value="@item.Id" />
         }
-    </MudList>
-
+    </ChildContent>
+</FSList>
 
 @code {
 
     [Parameter]
-    public int MaintainableId { get; set; }
+    public EventCallback<int> OnSelectedSoftwareSystemChanged { get; set; }
 
-    public IEnumerable<SoftwareSystemDto>? DTOs { get; set; }
+    [Parameter]
+    public IEnumerable<SoftwareSystemDto>? SoftwareSystemDtos { get; set; }
 
-    private async Task RefreshSoftwareSystemDtos()
+    private async Task SelectionChanged(int id)
     {
-        DTOs = await ApiClient.GetSoftwareSystemDtoByMaintainableIdAsync(MaintainableId);
+        await OnSelectedSoftwareSystemChanged.InvokeAsync(id);
     }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await RefreshSoftwareSystemDtos();
-    }
+    
 }

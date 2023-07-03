@@ -5,6 +5,7 @@ using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.Filters;
 using FlightSchoolTss.Data.DTOs.SoftwareVersion;
 using Microsoft.AspNetCore.Authorization;
+using FlightSchoolTss.Data.DTOs.SoftwareSystem;
 
 namespace FlightSchoolTss.Endpoints;
 public static class SoftwareVersionEndpoints
@@ -77,5 +78,16 @@ public static class SoftwareVersionEndpoints
         .WithName("DeleteSoftwareVersion")
         .Produces<SoftwareVersion>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
+
+        group.MapGet("/GetSoftwareVersionsBySoftwareSystemId/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        {
+            var softwareVersions = await unitOfWork.SoftwareVersions.GetSoftwareVersionsBySoftwareSystemIdAsync(id);
+            return mapper.Map<IEnumerable<SoftwareVersionDto>>(softwareVersions);
+        })
+        .WithTags(nameof(SoftwareVersion))
+        .WithName("GetSoftwareVersionsBySoftwareSystemId")
+        .Produces<SoftwareVersionDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
     }
 }

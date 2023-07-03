@@ -1,0 +1,34 @@
+﻿@typeparam TItem
+
+@if (Items is not null)
+{
+    <MudItem xs="12" md="2">
+        <MudList Clickable="true"
+                 Dense="true"
+                 Color="Color.Success"
+                 SelectedItemChanged="SelectionChanged">
+            @ChildContent
+        </MudList>
+    </MudItem>
+}
+
+
+@code {
+
+    [Parameter]
+    public EventCallback<int> OnSelectedItemsChanged { get; set; }
+
+    [Parameter]
+    public IEnumerable<TItem>? Items { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private MudListItem? _selectedItem;
+
+    private async Task SelectionChanged(MudListItem item)
+    {
+        int value = (int)item.Value;
+        await OnSelectedItemsChanged.InvokeAsync(value);
+    }
+}
