@@ -30,6 +30,7 @@ builder.Services.AddScoped<IGenericApiClient<MaintainableDto>>
     (c => new GenericApiClient<MaintainableDto>(apiBaseAddress, "/api/maintainable"));
 
 builder.Services.AddScoped<IPlatformApiClient, PlatformApiClient>();
+builder.Services.AddScoped<ISoftwareApiClient, SoftwareApiClient>();
 
 builder.Services.AddMudServices();
 builder.Services.AddFluxor(o => o.ScanAssemblies(typeof(Program).Assembly));
