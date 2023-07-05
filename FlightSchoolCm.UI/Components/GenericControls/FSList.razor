@@ -2,14 +2,16 @@
 
 @if (Items is not null)
 {
-    <MudItem xs="12" md="2">
-        <MudList Clickable="true"
-                 Dense="true"
-                 Color="Color.Success"
-                 SelectedItemChanged="SelectionChanged">
-            @ChildContent
-        </MudList>
-    </MudItem>
+    <MudPaper Width="@Width" Elevation="2">
+        <MudItem>
+            <MudList Clickable="true"
+                     Dense="true"
+                     Color="Color.Success"
+                     SelectedItemChanged="SelectionChanged">
+                @ChildContent
+            </MudList>
+        </MudItem>
+    </MudPaper>
 }
 
 
@@ -23,6 +25,9 @@
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public string Width { get; set; } = "300px";
 
     private MudListItem? _selectedItem;
 

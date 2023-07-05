@@ -38,8 +38,9 @@ public class SoftwareApiClient : ISoftwareApiClient
         {
             var content = await response.Content.ReadAsStringAsync();
 
-            var dtos = JsonConvert.DeserializeObject<List<SoftwareVersionDto>>(content);
-
+            var dtos = JsonConvert.DeserializeObject<List<SoftwareVersionDto>>(content)
+                .OrderByDescending(i => i.VersionDate);
+            
             return dtos!;
         }
 
