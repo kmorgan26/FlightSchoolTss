@@ -1,5 +1,5 @@
 ﻿
-<FSTable TItem="MaintainerVm" FstssItem="BindMaintainerDto">
+<FSTable TItem="MaintainerDto" FstssItem="BindMaintainerDto">
     <FstssHeaderTemplate>
         <MudTh>Id</MudTh>
         <MudTh>Name</MudTh>
@@ -17,17 +17,17 @@
 @code {
 
     [Parameter]
-    public EventCallback<MaintainerVm> OnMaintainerSelect { get; set; }
+    public EventCallback<MaintainerDto> OnMaintainerSelect { get; set; }
 
     [Parameter]
-    public EventCallback<MaintainerVm> OnMaintainerDelete { get; set; }
+    public EventCallback<MaintainerDto> OnMaintainerDelete { get; set; }
 
-    public async void OnButtonClick(MaintainerVm vm)
+    public async void OnButtonClick(MaintainerDto dto)
     {
-        await OnMaintainerDelete.InvokeAsync(vm);
+        await OnMaintainerDelete.InvokeAsync(dto);
     }
-    private void BindMaintainerDto(MaintainerVm vm)
+    private void BindMaintainerDto(MaintainerDto dto)
     {
-        OnMaintainerSelect.InvokeAsync(vm);
+        OnMaintainerSelect.InvokeAsync(dto);
     }
 }

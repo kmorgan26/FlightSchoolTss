@@ -16,7 +16,7 @@
 
                 <MudSelect Class="mt-6" Variant="Variant.Outlined" T="int" Label="Maintainer" MultiSelection="false" @bind-Value="@_dto.MaintainerId">
                     <MudSelectItem Value="0">SELECT ONE</MudSelectItem>
-                    @foreach (var item in MaintainerVms)
+                    @foreach (var item in MaintainerDtos)
                     {
                         <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
                     }
@@ -52,7 +52,7 @@
     public MudForm? MudForm { get; set; } = new();
 
     [Parameter]
-    public List<MaintainerVm> MaintainerVms { get; set; } = null!;
+    public List<MaintainerDto> MaintainerDtos { get; set; } = null!;
 
     private async Task SubmitForm()
     {

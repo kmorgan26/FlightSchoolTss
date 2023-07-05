@@ -25,7 +25,7 @@
 
 @code {
 
-    private List<MaintainerVm>? _maintainers;
+    private List<MaintainerDto>? _maintainers;
 
     private MaintainerDto _maintainerDto = new();
 
@@ -34,14 +34,13 @@
     private async Task RefreshMaintainers()
     {
         _buttonText = "ADD";
-        var maintainerDTOs = await ApiClient.GetAllAsync();
-        _maintainers = Mapper.Map<List<MaintainerVm>>(maintainerDTOs);
+        _maintainers = await ApiClient.GetAllAsync();
     }
 
-    private void BindMaintainerDto(MaintainerVm vm)
+    private void BindMaintainerDto(MaintainerDto dto)
     {
         _buttonText = "UPDATE";
-        _maintainerDto = Mapper.Map<MaintainerDto>(vm);
+        _maintainerDto = Mapper.Map<MaintainerDto>(dto);
     }
 
     private async Task CreateOrInsertAsync(MudForm _mudForm)
@@ -68,14 +67,14 @@
         }
     }
 
-    public async Task DeleteMaintainer(MaintainerVm vm)
+    public async Task DeleteMaintainer(MaintainerDto dto)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
         var dialog = await DialogService.ShowAsync<ConfirmDialog>("Delete Maintainer?", options);
         var result = await dialog.Result;
         if (!result.Canceled)
         {
-            await ApiClient.DeleteAsync(vm.Id);
+            await ApiClient.DeleteAsync(dto.Id);
             await RefreshMaintainers();
 
             Snackbar.Add($"The Maintainer has been deleted!", MudBlazor.Severity.Success);

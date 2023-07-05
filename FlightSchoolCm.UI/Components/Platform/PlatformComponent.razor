@@ -16,7 +16,7 @@
         </MudItem>
         <MudItem sm="8">
             <CascadingValue Value="_buttonText">
-                <PlatformForm OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto" MaintainerVms="_maintainers" />
+                <PlatformForm OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto" MaintainerDtos="_maintainers" />
             </CascadingValue>
         </MudItem>
         <MudItem xs="12">
@@ -32,7 +32,7 @@
     private string _buttonText = "ADD";
     private List<PlatformTableRowVm>? _platforms;
     private PlatformDto _platformDto = new();
-    private List<MaintainerVm>? _maintainers;
+    private List<MaintainerDto>? _maintainers;
 
     private async Task RefreshPlatforms()
     {
@@ -47,8 +47,7 @@
     }
     private async Task RefreshMaintainers()
     {
-        var _maintainerDtos = await MaintainerApiClient.GetAllAsync();
-        _maintainers = Mapper.Map<List<MaintainerVm>>(_maintainerDtos);
+        _maintainers = await MaintainerApiClient.GetAllAsync();
     }
 
     private async Task CreateOrInsertAsync(MudForm _mudForm)

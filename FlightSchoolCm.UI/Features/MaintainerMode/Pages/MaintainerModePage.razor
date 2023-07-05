@@ -7,10 +7,10 @@
 @inject IMapper Mapper
 @inject IGenericApiClient<MaintainerDto> ApiClient
 
-@if (MaintainerVms is not null && SelectedOption > -1)
+@if (MaintainerDtos is not null && SelectedOption > -1)
 {
     <CascadingValue Value="@SelectedOption">
-        <FSRadio TItem="MaintainerVm" RadioItems="@MaintainerVms" Context="context" OnSelectedOptionChanged="ChangeMode">
+        <FSRadio TItem="MaintainerDto" RadioItems="@MaintainerDtos" Context="context" OnSelectedOptionChanged="ChangeMode">
             <RadioButtons>
                 <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
             </RadioButtons>
@@ -21,7 +21,7 @@
 @code {
 
     [Parameter]
-    public List<MaintainerVm>? MaintainerVms { get; set; }
+    public List<MaintainerDto>? MaintainerDtos { get; set; }
 
     public int SelectedOption { get; set; }
 
@@ -33,8 +33,7 @@
     }
     private async Task RefreshMaintainers()
     {
-        var maintainerDtos = await ApiClient.GetAllAsync();
-        MaintainerVms = Mapper.Map<List<MaintainerVm>>(maintainerDtos);
+        MaintainerDtos = await ApiClient.GetAllAsync();
         SelectedOption = MaintainerModeState.Value.MaintainerModeId;
     }
     protected override async Task OnInitializedAsync()
