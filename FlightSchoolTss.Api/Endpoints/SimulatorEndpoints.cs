@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FlightSchoolTss.Data.DTOs.Platform;
 using FlightSchoolTss.Data.DTOs.Simulator;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
@@ -48,6 +49,18 @@ public static class SimulatorEndpoints
         .Produces<SimulatorDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
+
+        group.MapGet("/GetSimulatorDtos", [AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
+        {
+            var simulators = await unitOfWork.Simulators.GetSimulatorsWithPlatformsAsync();
+            return mapper.Map<List<SimulatorDto>>(simulators);
+        })
+        .WithTags(nameof(Simulator))
+        .WithName("GetSimulatorDtos")
+        .Produces<List<SimulatorDto>>(StatusCodes.Status200OK);
+
+
+
         group.MapPut("/{id}", [AllowAnonymous] async (int id, SimulatorDto simulatorDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
             var foundModel = await unitOfWork.Simulators.GetAsync(id);
@@ -58,6 +71,7 @@ public static class SimulatorEndpoints
             mapper.Map(simulatorDto, foundModel);
 
             await unitOfWork.Simulators.UpdateAsync(foundModel.Id);
+            await unitOfWork.CommitAsync();
             return Results.NoContent();
         })
         .WithTags(nameof(Simulator))
@@ -69,6 +83,7 @@ public static class SimulatorEndpoints
         {
             var simulator = mapper.Map<Simulator>(dto);
             await unitOfWork.Simulators.AddAsync(simulator);
+            await unitOfWork.CommitAsync();
             return Results.Created($"/api/Simulator/{simulator.Id}", simulator);
         })
         .AddEndpointFilter<ValidationFilter<SimulatorDto>>()

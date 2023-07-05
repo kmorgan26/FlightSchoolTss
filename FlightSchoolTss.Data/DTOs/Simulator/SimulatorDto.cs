@@ -16,4 +16,5 @@ public class SimulatorDto
     public int PlatformId { get; set; }
     public int MaintainableId { get; set; }
     public bool IsActive { get; set; }
+    public string Platform { get; set; } = null!;
 }

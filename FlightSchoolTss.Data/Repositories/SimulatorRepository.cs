@@ -15,4 +15,11 @@ public class SimulatorRepository : GenericRepository<Simulator>, ISimulatorRepos
             .OrderBy(s => s.Name)
             .ToListAsync();
     }
+    public async Task<IEnumerable<Simulator>> GetSimulatorsWithPlatformsAsync()
+    {
+        return await _context.Simulators
+            .Include(i => i.Platform)
+            .OrderBy(s => s.Name)
+            .ToListAsync();
+    }
 }

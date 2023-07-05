@@ -1,5 +1,99 @@
-﻿<h3>SimulatorComponent</h3>
+﻿@inject IPlatformApiClient AdHocApiClient
+@inject IGenericApiClient<SimulatorDto> SimulatorApiClient
+@inject IGenericApiClient<PlatformDto> PlatformApiClient
+@inject IGenericApiClient<MaintainableDto> MaintainableApiClient
+@inject IMapper Mapper
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+<PageTitle>Platforms</PageTitle>
+
+@if (_simulators is not null)
+{
+    <MudGrid>
+        <MudItem xs="12">
+            <MudText Typo="Typo.h3">Simulators</MudText>
+        </MudItem>
+        <MudItem sm="8">
+            <CascadingValue Value="@_buttonText">
+                <SimulatorForm OnSubmitForm="CreateOrInsertAsync" PlatformDtos="_platforms" _dto="_simulatorDto" />
+            </CascadingValue>
+        </MudItem>
+        <MudItem xs="12">
+            <CascadingValue Value="_simulators">
+                <SimulatorTable OnPlatformDelete="DeleteSimulator" OnPlatformSelect="BindSimulatorDto" />
+            </CascadingValue>
+        </MudItem>
+    </MudGrid>
+}
 
 @code {
+    private string _buttonText = "ADD";
+    private List<SimulatorDto>? _simulators;
+    private SimulatorDto _simulatorDto = new();
+    private List<PlatformDto>? _platforms;
 
+    private async Task RefreshSimulators()
+    {
+        _buttonText = "ADD";
+        _simulators = await AdHocApiClient.GetSimulatorDtosAsync();
+    }
+    private void BindSimulatorDto(SimulatorDto dto)
+    {
+        _buttonText = "UPDATE";
+        _simulatorDto = dto;
+    }
+    private async Task RefreshPlatforms()
+    {
+        _platforms = await PlatformApiClient.GetAllAsync();
+    }
+
+    private async Task CreateOrInsertAsync(MudForm _mudForm)
+    {
+        await _mudForm!.Validate();
+
+        if (_mudForm.IsValid)
+        {
+            string operation = string.Empty;
+            var dto = _simulatorDto;
+
+            if (_simulatorDto.Id == 0)
+            {
+                operation = "added";
+                var maintainableDto = await MaintainableApiClient.CreateAsync(new MaintainableDto() { Name = "Platform:" + _simulatorDto.Name });
+                dto.MaintainableId = maintainableDto.Id;
+                await SimulatorApiClient.CreateAsync(dto);
+            }
+            else
+            {
+                operation = "updated";
+                await SimulatorApiClient.UpdateAsync(_simulatorDto.Id, dto);
+            }
+            await RefreshSimulators();
+            await _mudForm.ResetAsync();
+            _simulatorDto = new();
+            Snackbar.Add($"The Simulator was Successfully {operation}!", MudBlazor.Severity.Success);
+        }
+    }
+
+
+    public async Task DeleteSimulator(SimulatorDto dto)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Delete Simulator?", options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await SimulatorApiClient.DeleteAsync(dto.Id);
+            await MaintainableApiClient.DeleteAsync(dto.MaintainableId);
+            await RefreshSimulators();
+
+            Snackbar.Add($"The Simulator has been deleted!", MudBlazor.Severity.Success);
+        }
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshSimulators();
+        await RefreshPlatforms();
+    }
 }

@@ -1,5 +1,38 @@
-﻿<h3>SimulatorTable</h3>
+﻿<FSTable TItem="SimulatorDto" FstssItem="BindSimulatorDto">
+    <FstssHeaderTemplate>
+        <MudTh>Id</MudTh>
+        <MudTh>Name</MudTh>
+        <MudTh>Alias</MudTh>
+        <MudTh>Platform</MudTh>
+        <MudTh>Active?</MudTh>
+        <MudTh></MudTh>
+    </FstssHeaderTemplate>
+    <FstssRowTemplate>
+        <MudTd DataLabel="ID">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Name">@context.Alias</MudTd>
+        <MudTd DataLabel="Platform">@context.Platform</MudTd>
+        <MudTd DataLabel="Active?">@context.IsActive</MudTd>
+        <MudTd DataLabel="DELETE">
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" />
+        </MudTd>
+    </FstssRowTemplate>
+</FSTable>
 
 @code {
 
+    [Parameter]
+    public EventCallback<SimulatorDto> OnPlatformSelect { get; set; }
+
+    [Parameter]
+    public EventCallback<SimulatorDto> OnPlatformDelete { get; set; }
+
+    public async void BindSimulatorDto(SimulatorDto dto)
+    {
+        await OnPlatformSelect.InvokeAsync(dto);
+    }
+    public async void OnButtonClick(SimulatorDto dto)
+    {
+        await OnPlatformDelete.InvokeAsync(dto);
+    }
 }

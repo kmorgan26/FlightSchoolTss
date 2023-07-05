@@ -1,5 +1,53 @@
 ﻿
-<h3>SimulatorForm</h3>
+<FSForm OnSubmitForm="SubmitForm" TItem="SimulatorDto">
+    <FormControls>
+
+        <MudGrid>
+
+            <MudItem lg="3" md="4" sm="12" xs="12">
+
+                <MudTextField @bind-Value="_dto.Name"
+                              Variant="Variant.Outlined"
+                              For="(() => _dto.Name)"
+                              Label="Simulator Name"
+                              OnlyValidateIfDirty="true"
+                              Class="my-6" />
+
+            </MudItem>
+
+            <MudItem lg="3" md="4" sm="12" xs="12">
+
+                <MudTextField @bind-Value="_dto.Alias"
+                              Variant="Variant.Outlined"
+                              For="(() => _dto.Alias)"
+                              Label="Alias (Optional)"
+                              Class="my-6" />
+
+            </MudItem>
+
+            <MudItem lg="3" md="4" sm="12" xs="12">
+
+                <MudSelect Class="mt-6" Variant="Variant.Outlined" T="int" Label="Platform" MultiSelection="false" @bind-Value="@_dto.PlatformId">
+                    <MudSelectItem Value="0">SELECT ONE</MudSelectItem>
+                    @foreach (var item in PlatformDtos)
+                    {
+                        <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+
+            </MudItem>
+            <MudItem lg="3" md="4" sm="12" xs="12">
+
+                <MudCheckBox @bind-Checked="_dto.IsActive" Label="Is Active?" Class="mt-7" />
+
+            </MudItem>
+
+        </MudGrid>
+
+        <MudHidden @bind-Value="_dto.PlatformId" />
+
+    </FormControls>
+</FSForm>
 
 @code {
 
@@ -7,12 +55,13 @@
     public EventCallback<MudForm> OnSubmitForm { get; set; }
 
     [Parameter]
-    public MudForm? MudForm { get; set; } = new();
-
-    [CascadingParameter]
     public SimulatorDto _dto { get; set; } = new();
 
-    MaintainerDtoValidator _validator = new();
+    [Parameter]
+    public MudForm? MudForm { get; set; } = new();
+
+    [Parameter]
+    public List<PlatformDto> PlatformDtos { get; set; } = null!;
 
     private async Task SubmitForm()
     {
