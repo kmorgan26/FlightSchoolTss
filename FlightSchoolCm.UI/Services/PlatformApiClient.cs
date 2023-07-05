@@ -15,7 +15,7 @@ public class PlatformApiClient : IPlatformApiClient
 
     public async Task<List<PlatformDetailsDto>> GetPlatformDetailsAsync()
     {
-        var response = await _httpClient.GetAsync($"/api/platform/GetPlatformTableRowVms");
+        var response = await _httpClient.GetAsync($"/api/platform/GetPlatformDetailDtos");
 
         if (response.IsSuccessStatusCode)
         {

@@ -1,5 +1,5 @@
 ﻿@using FlightSchoolTss.Data.Entities;
-<FSTable TItem="PlatformTableRowVm" FstssItem="BindPlatformDto">
+<FSTable TItem="PlatformDto" FstssItem="BindPlatformDto">
     <FstssHeaderTemplate>
         <MudTh>Id</MudTh>
         <MudTh>Name</MudTh>
@@ -21,16 +21,16 @@
 @code {
 
     [Parameter]
-    public EventCallback<PlatformTableRowVm> OnPlatformSelect { get; set; }
+    public EventCallback<PlatformDto> OnPlatformSelect { get; set; }
 
     [Parameter]
-    public EventCallback<PlatformTableRowVm> OnPlatformDelete { get; set; }
+    public EventCallback<PlatformDto> OnPlatformDelete { get; set; }
 
-    public async void BindPlatformDto(PlatformTableRowVm vm)
+    public async void BindPlatformDto(PlatformDto vm)
     {
         await OnPlatformSelect.InvokeAsync(vm);
     }
-    public async void OnButtonClick(PlatformTableRowVm vm)
+    public async void OnButtonClick(PlatformDto vm)
     {
         await OnPlatformDelete.InvokeAsync(vm);
     }

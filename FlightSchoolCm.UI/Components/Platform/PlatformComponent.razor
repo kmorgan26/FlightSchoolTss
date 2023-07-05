@@ -30,7 +30,7 @@
 @code {
 
     private string _buttonText = "ADD";
-    private List<PlatformTableRowVm>? _platforms;
+    private List<PlatformDto>? _platforms;
     private PlatformDto _platformDto = new();
     private List<MaintainerDto>? _maintainers;
 
@@ -38,12 +38,12 @@
     {
         _buttonText = "ADD";
         var _platformDtos = await PlatformApiClient.GetPlatformDetailsAsync();
-        _platforms = Mapper.Map<List<PlatformTableRowVm>>(_platformDtos);
+        _platforms = Mapper.Map<List<PlatformDto>>(_platformDtos);
     }
-    private void BindPlatformDto(PlatformTableRowVm vm)
+    private void BindPlatformDto(PlatformDto dto)
     {
         _buttonText = "UPDATE";
-        _platformDto = Mapper.Map<PlatformDto>(vm);
+        _platformDto = dto;
     }
     private async Task RefreshMaintainers()
     {
@@ -57,12 +57,12 @@
         if (_mudForm.IsValid)
         {
             string operation = string.Empty;
-            var dto = Mapper.Map(_platformDto, new PlatformDto());
+            var dto = _platformDto;
 
             if (_platformDto.Id == 0)
             {
                 operation = "added";
-                var maintainableDto = await MaintainableApiClient.CreateAsync(new MaintainableDto() { Name = _platformDto.Name });
+                var maintainableDto = await MaintainableApiClient.CreateAsync(new MaintainableDto() { Name = "Platform:" + _platformDto.Name });
                 dto.MaintainableId = maintainableDto.Id;
                 await ApiClient.CreateAsync(dto);
             }
@@ -77,15 +77,15 @@
             Snackbar.Add($"The Platform was Successfully {operation}!", MudBlazor.Severity.Success);
         }
     }
-    public async Task DeletePlatform(PlatformTableRowVm vm)
+    public async Task DeletePlatform(PlatformDto dto)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
         var dialog = await DialogService.ShowAsync<ConfirmDialog>("Delete Platform?", options);
         var result = await dialog.Result;
         if (!result.Canceled)
         {
-            await ApiClient.DeleteAsync(vm.Id);
-            await MaintainableApiClient.DeleteAsync(vm.MaintainableId);
+            await ApiClient.DeleteAsync(dto.Id);
+            await MaintainableApiClient.DeleteAsync(dto.MaintainableId);
             await RefreshPlatforms();
 
             Snackbar.Add($"The Platform has been deleted!", MudBlazor.Severity.Success);

@@ -24,7 +24,7 @@ public class PlatformRepository : GenericRepository<Platform>, IPlatformReposito
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<Platform>> GetPlatformTableRowVms()
+    public async Task<IEnumerable<Platform>> GetPlatformDtos()
     {
         return await _context.Platforms
             .Include(i => i.Maintainer)

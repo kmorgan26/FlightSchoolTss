@@ -17,7 +17,6 @@ using FlightSchoolTss.Data.DTOs.Maintainer;
 using FlightSchoolTss.DTOs.ManModule;
 using FlightSchoolTss.Data.DTOs.Platform;
 using FlightSchoolTss.Data.DTOs.Simulator;
-using FlightSchoolTss.Data.ViewModels.Platform;
 using FlightSchoolTss.Data.ViewModels.Generic;
 
 namespace FlightSchoolTss.Data.Configurations;
@@ -48,19 +47,21 @@ public class MapperConfig : Profile
 
         CreateMap<ManModule, ManModuleDto>().ReverseMap();
 
-        CreateMap<Platform, PlatformDto>().ReverseMap();
+        CreateMap<Platform, PlatformDto>();
+
+        CreateMap<PlatformDto, Platform>()
+            .ForMember(dto => dto.Maintainer, x => x.Ignore());
+
         CreateMap<Platform, PlatformDetailsDto>()
             .ForMember(dto => dto.Simulators, x => x.MapFrom(platform => platform.Simulators));
 
         CreateMap<PlatformDto, RadioVm>()
             .ForMember(radio => radio.Id, x => x.MapFrom(platform => platform.MaintainableId));
 
-        CreateMap<PlatformDetailsDto, PlatformTableRowVm>()
+        CreateMap<PlatformDetailsDto, PlatformDto>()
             .ForMember(row => row.Maintainer, x => x.MapFrom(dto => dto.Maintainer.Name))
             .ForMember(row => row.MaintainerId, x => x.MapFrom(dto => dto.Maintainer.Id))
             .ReverseMap();
-
-        CreateMap<PlatformTableRowVm, PlatformDto>().ReverseMap();
 
         CreateMap<Simulator, SimulatorDto>().ReverseMap();
 

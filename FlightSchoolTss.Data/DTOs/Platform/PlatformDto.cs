@@ -10,11 +10,13 @@ public class PlatformDto
     [MinLength(3, ErrorMessage = "Please use at least 3 characters for the name")]
     public string Name { get; set; } = null!;
 
-    public bool IsActive { get; set; }
+    public bool IsActive { get; set; } = true;
 
     [Required(ErrorMessage = "Please select a maintainer")]
     [Range(0, int.MaxValue, ErrorMessage = "Please Select a Maintainer")]
     public int MaintainerId { get; set; } = 0;
 
     public int MaintainableId { get; set; } = 0;
+
+    public string Maintainer { get; set; } = null!;
 }

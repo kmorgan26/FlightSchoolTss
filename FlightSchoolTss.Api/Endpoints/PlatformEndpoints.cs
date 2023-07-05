@@ -75,13 +75,13 @@ public static class PlatformEndpoints
         .WithName("GetPlatformsWithSimulatorDetails")
         .Produces<List<PlatformDetailsDto>>(StatusCodes.Status200OK);
 
-        group.MapGet("/GetPlatformTableRowVms", [AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/GetPlatformDetailDtos", [AllowAnonymous] async (IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            var platforms = await unitOfWork.Platforms.GetPlatformTableRowVms();
+            var platforms = await unitOfWork.Platforms.GetPlatformDtos();
             return mapper.Map<List<PlatformDetailsDto>>(platforms);
         })
         .WithTags(nameof(Platform))
-        .WithName("GetPlatformTableRowVms")
+        .WithName("GetPlatformDetailDtos")
         .Produces<List<PlatformDetailsDto>>(StatusCodes.Status200OK);
 
         group.MapPost("/", [AllowAnonymous] async (PlatformDto dto, IUnitOfWork unitOfWork, IMapper mapper) =>

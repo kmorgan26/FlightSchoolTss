@@ -6,5 +6,5 @@ public interface IPlatformRepository : IGenericRepository<Platform>
 {
     Task<IEnumerable<Platform>> GetPlatformsByMaintainerIdAsync(int maintainerId);
     Task<IEnumerable<Platform>> GetPlatformsWithSimulatorDetailsAsync();
-    Task<IEnumerable<Platform>> GetPlatformTableRowVms();
+    Task<IEnumerable<Platform>> GetPlatformDtos();
 }
