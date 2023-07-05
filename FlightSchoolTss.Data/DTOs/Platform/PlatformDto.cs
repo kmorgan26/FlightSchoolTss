@@ -13,7 +13,7 @@ public class PlatformDto
     public bool IsActive { get; set; } = true;
 
     [Required(ErrorMessage = "Please select a maintainer")]
-    [Range(0, int.MaxValue, ErrorMessage = "Please Select a Maintainer")]
+    [Range(1, int.MaxValue, ErrorMessage = "Please Select a Maintainer")]
     public int MaintainerId { get; set; } = 0;
 
     public int MaintainableId { get; set; } = 0;

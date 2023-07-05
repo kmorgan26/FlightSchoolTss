@@ -12,7 +12,7 @@ public class SimulatorDto
     public string Alias { get; set; } = null!;
 
     [Required(ErrorMessage = "Please select a Platform"),
-        Range(0, int.MaxValue, ErrorMessage = "Please Select a Platform")]
+        Range(1, int.MaxValue, ErrorMessage = "Please Select a Platform")]
     public int PlatformId { get; set; }
     public int MaintainableId { get; set; }
     public bool IsActive { get; set; }
