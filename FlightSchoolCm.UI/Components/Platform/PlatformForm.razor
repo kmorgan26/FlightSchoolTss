@@ -1,4 +1,4 @@
-﻿<FSForm OnSubmitForm="SubmitForm" TItem="PlatformDto">
+﻿<FSForm OnSubmitForm="SubmitForm" TItem="PlatformDto" IsDisabled="@DisableChecker()">
     <FormControls>
 
         <MudGrid>
@@ -13,13 +13,21 @@
 
             </MudItem>
             <MudItem lg="4" md="6" sm="12" xs="12">
+                
+                <MudSelect 
+                    Class="mt-6" 
+                    Variant="Variant.Outlined" 
+                    For="@(() => _dto.MaintainerId)" 
+                    T="int" Label="Maintainer" 
+                    MultiSelection="false" 
+                    @bind-Value="@_dto.MaintainerId">
 
-                <MudSelect Class="mt-6" Variant="Variant.Outlined" T="int" Label="Maintainer" MultiSelection="false" @bind-Value="@_dto.MaintainerId">
                     <MudSelectItem Value="0">SELECT ONE</MudSelectItem>
                     @foreach (var item in MaintainerDtos)
                     {
                         <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
                     }
+
                 </MudSelect>
 
             </MudItem>
@@ -32,7 +40,7 @@
 
 
         <MudHidden @bind-Value="_dto.MaintainableId" />
-
+        
 
     </FormControls>
 </FSForm>
@@ -56,6 +64,11 @@
 
     private async Task SubmitForm()
     {
-        await OnSubmitForm.InvokeAsync(MudForm);
+        if(MudForm!.IsValid)
+            await OnSubmitForm.InvokeAsync(MudForm);
+    }
+    private bool DisableChecker()
+    {
+        return _dto.MaintainerId == 0;
     }
 }

@@ -7,7 +7,7 @@
     </MudForm>
 </MudItem>
 <MudItem>
-    <MudButton Variant="@ButtonVariant" Color="@ButtonColor" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
+    <MudButton Variant="@ButtonVariant" Disabled="@IsDisabled" Color="@ButtonColor" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
 </MudItem>
 
 @code {
@@ -29,6 +29,9 @@
 
     [Parameter]
     public Variant ButtonVariant { get; set; } = Variant.Filled;
+
+    [Parameter]
+    public bool IsDisabled { get; set; }
 
     private MudForm? MudForm { get; set; } = new();
 
