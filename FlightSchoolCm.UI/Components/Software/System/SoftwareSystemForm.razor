@@ -1,0 +1,40 @@
+﻿@namespace FlightSchoolCm.UI.Components.Software
+
+<FSForm OnSubmitForm="SubmitForm" TItem="SoftwareSystemDto">
+    <FormControls>
+
+        <MudGrid>
+
+            <MudItem lg="4">
+
+                <MudTextField @bind-Value="_dto.Name"
+                              Variant="Variant.Outlined"
+                              For="(() => _dto.Name)"
+                              Label="System Name"
+                              OnlyValidateIfDirty="true"
+                              Class="my-6" />
+            </MudItem>
+
+            <MudHidden @bind-Value="@_dto.MaintainableId"/>
+
+        </MudGrid>
+
+    </FormControls>
+</FSForm>
+
+@code {
+
+    [Parameter]
+    public EventCallback<MudForm> OnSubmitForm { get; set; }
+
+    [Parameter]
+    public MudForm? MudForm { get; set; } = new();
+
+    [CascadingParameter]
+    public SoftwareSystemDto _dto { get; set; } = new();
+
+    private async Task SubmitForm()
+    {
+        await OnSubmitForm.InvokeAsync(MudForm);
+    }
+}

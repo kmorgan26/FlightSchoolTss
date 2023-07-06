@@ -1,0 +1,32 @@
+﻿@namespace FlightSchoolCm.UI.Components.Software
+
+<FSTable TItem="SoftwareSystemDto" FstssItem="BindDto">
+    <FstssHeaderTemplate>
+        <MudTh>Name</MudTh>
+        <MudTh></MudTh>
+    </FstssHeaderTemplate>
+    <FstssRowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="DELETE">
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" />
+        </MudTd>
+    </FstssRowTemplate>
+</FSTable>
+
+@code {
+
+    [Parameter]
+    public EventCallback<SoftwareSystemDto> OnSystemSelect { get; set; }
+
+    [Parameter]
+    public EventCallback<SoftwareSystemDto> OnSystemDelete { get; set; }
+
+    public async void OnButtonClick(SoftwareSystemDto dto)
+    {
+        await OnSystemDelete.InvokeAsync(dto);
+    }
+    private void BindDto(SoftwareSystemDto dto)
+    {
+        OnSystemSelect.InvokeAsync(dto);
+    }
+}
