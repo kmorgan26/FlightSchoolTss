@@ -36,7 +36,7 @@ builder.Services.AddScoped<IGenericApiClient<SoftwareSystemDto>>
     (c => new GenericApiClient<SoftwareSystemDto>(apiBaseAddress, "/api/softwaresystem"));
 
 builder.Services.AddScoped<IGenericApiClient<SoftwareVersionDto>>
-    (c => new GenericApiClient<SoftwareVersionDto>(apiBaseAddress, "/api/softwaresystem"));
+    (c => new GenericApiClient<SoftwareVersionDto>(apiBaseAddress, "/api/softwareversion"));
 
 builder.Services.AddScoped<IGenericApiClient<MaintainableDto>>
     (c => new GenericApiClient<MaintainableDto>(apiBaseAddress, "/api/maintainable"));

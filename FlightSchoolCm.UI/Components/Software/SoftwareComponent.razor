@@ -1,0 +1,206 @@
+﻿@namespace FlightSchoolCm.UI.Components.Software
+
+@inject IGenericApiClient<PlatformDto> ApiClient
+@inject IGenericApiClient<SoftwareSystemDto> SoftwareSystemApiClient
+@inject IGenericApiClient<SoftwareVersionDto> SoftwareVersionApiClient
+@inject ISoftwareApiClient SoftwareApiClient
+@inject IMapper Mapper
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+<MudGrid Spacing="2" Justify="Justify.FlexStart">
+    <MudItem xs="12">
+        @if (isReady)
+        {
+            <CascadingValue Value="@_selectedPlatform">
+                <FSRadio TItem="RadioVm" RadioItems="@_platforms" Context="context" OnSelectedOptionChanged="ChangePlatform">
+                    <RadioButtons>
+                        <MudRadio Option="@context.Id" Dense>@context.Name</MudRadio>
+                </RadioButtons>
+            </FSRadio>
+        </CascadingValue>
+        }
+    </MudItem>
+
+    <MudDivider />
+
+    <MudItem sm="6" md="4" lg="4">
+        @if (_selectedPlatform > 0)
+        {
+            <CascadingValue Value="_softwareSystemDto">
+                <CascadingValue Value="_buttonText">
+                    <SoftwareSystemForm OnSubmitForm="CreateOrUpdateSystem" />
+                </CascadingValue>
+            </CascadingValue>
+
+            <CascadingValue Value="_softwareSystemDtos">
+                <SoftwareSystemTable OnSystemDelete="DeleteSystem" OnSystemSelect="SelectSystem" />
+            </CascadingValue>
+        }
+    </MudItem>
+
+    <MudItem sm="6" md="4" lg="4">
+        @if (_selectedSoftwareSystemId > 0)
+        {
+            <CascadingValue Value="_softwareVersionDto">
+                <CascadingValue Value="_buttonTextV">
+                    <SoftwareVersionForm OnSubmitForm="CreateOrUpdateVersion" />
+                </CascadingValue>
+            </CascadingValue>
+
+            <CascadingValue Value="_softwareVersionDtos">
+                <SoftwareVersionTable OnVersionDelete="DeleteVersion" OnVersionSelect="SelectVersion" />
+            </CascadingValue>
+        }
+    </MudItem>
+</MudGrid>
+
+@code {
+    private bool isReady;
+
+    private int _selectedPlatform { get; set; }
+
+    private int _selectedSoftwareSystemId { get; set; }
+
+    private int _selectedSoftwareVersionId { get; set; }
+
+    private string? _buttonText { get; set; } = "Add";
+
+    private string? _buttonTextV { get; set; } = "Add";
+
+    private SoftwareSystemDto? _softwareSystemDto { get; set; } = new();
+
+    private SoftwareVersionDto? _softwareVersionDto { get; set; } = new();
+
+    public IEnumerable<RadioVm>? _platforms { get; set; }
+
+    private IEnumerable<SoftwareVersionDto>? _softwareVersionDtos { get; set; }
+
+    private IEnumerable<SoftwareSystemDto>? _softwareSystemDtos { get; set; }
+
+    private async Task ChangePlatform(int id)
+    {
+        _selectedPlatform = id;
+        await RefreshSystems();
+    }
+    private async Task ChangeSoftwareSystemId(int id)
+    {
+        _selectedSoftwareSystemId = id;
+        await RefreshVersions();
+    }
+    private async Task RefreshPlatforms()
+    {
+        var platforms = await ApiClient.GetAllAsync();
+        _platforms = Mapper.Map<IEnumerable<RadioVm>>(platforms);
+    }
+    private async Task RefreshSystems()
+    {
+        _softwareSystemDtos = await SoftwareApiClient.GetSoftwareSystemDtosByMaintainableIdAsync(_selectedPlatform);
+        _softwareVersionDtos = new List<SoftwareVersionDto>();
+    }
+    private async Task SelectSystem(SoftwareSystemDto dto)
+    {
+        _buttonText = "UPDATE";
+        _softwareSystemDto = Mapper.Map<SoftwareSystemDto>(dto);
+        _selectedSoftwareSystemId = dto.Id;
+        await RefreshVersions();
+    }
+    private void SelectVersion(SoftwareVersionDto dto)
+    {
+        _buttonTextV = "UPDATE";
+        _softwareVersionDto = Mapper.Map<SoftwareVersionDto>(dto);
+        _selectedSoftwareVersionId = dto.Id;
+    }
+    private async Task DeleteSystem(SoftwareSystemDto dto)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Delete Software System?", options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await SoftwareSystemApiClient.DeleteAsync(dto.Id);
+            await RefreshSystems();
+
+            Snackbar.Add($"The Software System has been deleted!", MudBlazor.Severity.Success);
+        }
+    }
+    private async Task DeleteVersion(SoftwareVersionDto dto)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Delete Software Version?", options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await SoftwareVersionApiClient.DeleteAsync(dto.Id);
+            await RefreshSystems();
+
+            Snackbar.Add($"The Software Version has been deleted!", MudBlazor.Severity.Success);
+        }
+    }
+    private async Task RefreshVersions()
+    {
+        _softwareVersionDtos = await SoftwareApiClient
+            .GetSoftwareVersionDtosBySoftwareSystemIdAsync(_selectedSoftwareSystemId);
+    }
+
+    private async Task CreateOrUpdateSystem(MudForm mudForm)
+    {
+        await mudForm!.Validate();
+
+        if (mudForm.IsValid)
+        {
+            string operation = string.Empty;
+            var dto = _softwareSystemDto;
+
+            if (_softwareSystemDto!.Id == 0)
+            {
+                operation = "added";
+                dto!.MaintainableId = _selectedPlatform;
+                await SoftwareSystemApiClient.CreateAsync(dto);
+            }
+            else
+            {
+                operation = "updated";
+                await SoftwareSystemApiClient.UpdateAsync(_softwareSystemDto.Id, dto);
+            }
+            await RefreshSystems();
+            await mudForm.ResetAsync();
+            _softwareSystemDto = new();
+            Snackbar.Add($"The Software System was Successfully {operation}!", MudBlazor.Severity.Success);
+        }
+    }
+
+    private async Task CreateOrUpdateVersion(MudForm mudForm)
+    {
+        await mudForm!.Validate();
+
+        if (mudForm.IsValid)
+        {
+            string operation = string.Empty;
+            var dto = _softwareVersionDto;
+
+            if (_softwareVersionDto!.Id == 0)
+            {
+                operation = "added";
+                dto!.SoftwareSystemId = _selectedPlatform;
+                await SoftwareVersionApiClient.CreateAsync(dto);
+            }
+            else
+            {
+                operation = "updated";
+                await SoftwareVersionApiClient.UpdateAsync(_softwareVersionDto.Id, dto);
+            }
+            await RefreshVersions();
+            await mudForm.ResetAsync();
+            _softwareVersionDto = new();
+            Snackbar.Add($"The Software Version was Successfully {operation}!", MudBlazor.Severity.Success);
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        isReady = false;
+        await RefreshPlatforms();
+        isReady = true;
+    }
+}

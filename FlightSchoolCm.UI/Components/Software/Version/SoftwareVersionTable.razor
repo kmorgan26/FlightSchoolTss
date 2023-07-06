@@ -1,12 +1,14 @@
 ﻿@namespace FlightSchoolCm.UI.Components.Software
 
-<FSTable TItem="SoftwareSystemDto" FstssItem="BindDto">
+<FSTable TItem="SoftwareVersionDto" FstssItem="BindDto">
     <FstssHeaderTemplate>
         <MudTh>Name</MudTh>
+        <MudTh>Date</MudTh>
         <MudTh></MudTh>
     </FstssHeaderTemplate>
     <FstssRowTemplate>
         <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Date">@context.VersionDate</MudTd>
         <MudTd DataLabel="DELETE">
             <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" Size="Size.Small" />
         </MudTd>
@@ -16,17 +18,17 @@
 @code {
 
     [Parameter]
-    public EventCallback<SoftwareSystemDto> OnSystemSelect { get; set; }
+    public EventCallback<SoftwareVersionDto> OnVersionSelect { get; set; }
 
     [Parameter]
-    public EventCallback<SoftwareSystemDto> OnSystemDelete { get; set; }
+    public EventCallback<SoftwareVersionDto> OnVersionDelete { get; set; }
 
-    public async void OnButtonClick(SoftwareSystemDto dto)
+    public async void OnButtonClick(SoftwareVersionDto dto)
     {
-        await OnSystemDelete.InvokeAsync(dto);
+        await OnVersionDelete.InvokeAsync(dto);
     }
-    private void BindDto(SoftwareSystemDto dto)
+    private void BindDto(SoftwareVersionDto dto)
     {
-        OnSystemSelect.InvokeAsync(dto);
+        OnVersionSelect.InvokeAsync(dto);
     }
 }
