@@ -8,7 +8,7 @@
     </FstssHeaderTemplate>
     <FstssRowTemplate>
         <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Date">@context.VersionDate</MudTd>
+        <MudTd DataLabel="Date">@Convert.ToDateTime(@context.VersionDate).ToShortDateString()</MudTd>
         <MudTd DataLabel="DELETE">
             <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" Size="Size.Small" />
         </MudTd>
