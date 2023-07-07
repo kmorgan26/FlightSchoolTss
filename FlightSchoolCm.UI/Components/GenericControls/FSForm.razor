@@ -1,14 +1,16 @@
 ﻿@typeparam TItem
 @inherits MudForm
 
-<MudItem>
-    <MudForm Model="@DTOItem" @ref="@MudForm">
-        @FormControls!(DTOItem!)
-    </MudForm>
-</MudItem>
-<MudItem>
-    <MudButton Variant="@ButtonVariant" Disabled="@IsDisabled" Color="@ButtonColor" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
-</MudItem>
+<MudPaper Class="d-flex flex-row align-center flex-grow-1 gap-4 px-4" Elevation="0">
+    <MudItem>
+        <MudForm Model="@DTOItem" @ref="@MudForm">
+            @FormControls!(DTOItem!)
+        </MudForm>
+    </MudItem>
+    <MudItem>
+        <MudButton Variant="@ButtonVariant" Disabled="@IsDisabled" Color="@ButtonColor" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
+    </MudItem>
+</MudPaper>
 
 @code {
 
