@@ -5,7 +5,7 @@
 
         <MudGrid>
 
-            <MudItem lg="4">
+            <MudItem>
 
                 <MudTextField @bind-Value="_dto.Name"
                               Variant="Variant.Outlined"
@@ -17,7 +17,7 @@
 
             </MudItem>
 
-            <MudItem lg="4">
+            <MudItem>
                 <MudDatePicker @bind-Date="@_dto.VersionDate"
                     Class="my-5"
                     For="(() => _dto.VersionDate)"

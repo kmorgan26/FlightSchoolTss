@@ -2,7 +2,7 @@
     <FormControls>
 
         <MudGrid>
-            <MudItem lg="4" md="6" sm="12" xs="12">
+            <MudItem>
 
                 <MudTextField @bind-Value="_dto.Name"
                               Variant="Variant.Outlined"
@@ -12,7 +12,7 @@
                               Class="my-6" />
 
             </MudItem>
-            <MudItem lg="4" md="6" sm="12" xs="12">
+            <MudItem>
                 
                 <MudSelect 
                     Class="mt-6" 
@@ -31,7 +31,7 @@
                 </MudSelect>
 
             </MudItem>
-            <MudItem lg="4" md="6" sm="12" xs="12">
+            <MudItem>
 
                 <MudCheckBox @bind-Checked="_dto.IsActive" Label="Is Active?" Class="mt-7" />
 

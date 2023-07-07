@@ -4,7 +4,7 @@
 
         <MudGrid>
 
-            <MudItem lg="3" md="4" sm="12" xs="12">
+            <MudItem>
 
                 <MudTextField @bind-Value="_dto.Name"
                               Variant="Variant.Outlined"
@@ -15,7 +15,7 @@
 
             </MudItem>
 
-            <MudItem lg="3" md="4" sm="12" xs="12">
+            <MudItem>
 
                 <MudTextField @bind-Value="_dto.Alias"
                               Variant="Variant.Outlined"
@@ -25,7 +25,7 @@
 
             </MudItem>
 
-            <MudItem lg="3" md="4" sm="12" xs="12">
+            <MudItem>
 
                 <MudSelect Class="mt-6" Variant="Variant.Outlined" T="int" Label="Platform" MultiSelection="false" @bind-Value="@_dto.PlatformId">
                     <MudSelectItem Value="0">SELECT ONE</MudSelectItem>
@@ -36,7 +36,7 @@
                 </MudSelect>
 
             </MudItem>
-            <MudItem lg="3" md="4" sm="12" xs="12">
+            <MudItem>
 
                 <MudCheckBox @bind-Checked="_dto.IsActive" Label="Is Active?" Class="mt-7" />
 
