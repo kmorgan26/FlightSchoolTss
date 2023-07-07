@@ -1,3 +1,2 @@
-﻿align the Name and Date on the Version Form
-Prevent the form from posting when not valid
+﻿Prevent the form from posting when not valid
 On Software Page, Delete button should not be available if ther are versions

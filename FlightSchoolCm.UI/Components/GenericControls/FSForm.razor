@@ -3,16 +3,18 @@
 
 <MudPaper Class="d-flex flex-row align-center flex-grow-1 gap-4 px-4" Elevation="0">
     <MudItem>
-        <MudForm Model="@DTOItem" @ref="@MudForm">
+        <MudForm Model="@DTOItem" @ref="@MudForm" @bind-IsValid="@_success">
             @FormControls!(DTOItem!)
         </MudForm>
     </MudItem>
     <MudItem>
-        <MudButton Variant="@ButtonVariant" Disabled="@IsDisabled" Color="@ButtonColor" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
+        <MudButton Variant="@ButtonVariant" Disabled="@(!_success)" Color="@ButtonColor" OnClick="@(async () => await SubmitForm())">@ButtonText</MudButton>
     </MudItem>
 </MudPaper>
 
 @code {
+
+    private bool _success;
 
     [CascadingParameter]
     public TItem? DTOItem { get; set; }
@@ -31,9 +33,6 @@
 
     [Parameter]
     public Variant ButtonVariant { get; set; } = Variant.Filled;
-
-    [Parameter]
-    public bool IsDisabled { get; set; }
 
     private MudForm? MudForm { get; set; } = new();
 

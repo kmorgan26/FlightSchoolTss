@@ -1,4 +1,4 @@
-﻿<FSForm OnSubmitForm="SubmitForm" TItem="PlatformDto" IsDisabled="@DisableChecker()">
+﻿<FSForm OnSubmitForm="SubmitForm" TItem="PlatformDto">
     <FormControls>
 
         <MudGrid>
@@ -66,9 +66,5 @@
     {
         if(MudForm!.IsValid)
             await OnSubmitForm.InvokeAsync(MudForm);
-    }
-    private bool DisableChecker()
-    {
-        return _dto.MaintainerId == 0;
     }
 }

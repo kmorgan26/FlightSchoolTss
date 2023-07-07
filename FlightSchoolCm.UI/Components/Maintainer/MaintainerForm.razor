@@ -1,5 +1,5 @@
 ﻿
-<FSForm OnSubmitForm="SubmitForm" TItem="MaintainerDto" Validation="_validator.ValidateValue">
+<FSForm OnSubmitForm="SubmitForm" TItem="MaintainerDto">
     <FormControls>
 
         <MudGrid>
@@ -9,7 +9,6 @@
                               Variant="Variant.Outlined"
                               For="(() => _dto.Name)"
                               Label="Maintainer Name"
-                              OnlyValidateIfDirty="true"
                               Class="my-6" />
             </MudItem>
         </MudGrid>
@@ -27,8 +26,6 @@
 
     [CascadingParameter]
     public MaintainerDto _dto { get; set; } = new();
-
-    MaintainerDtoValidator _validator = new();
 
     private async Task SubmitForm()
     {
