@@ -21,7 +21,7 @@
         </MudItem>
         <MudItem xs="12">
             <CascadingValue Value="_platforms">
-                <PlatformTable OnPlatformDelete="DeletePlatform" OnPlatformSelect="BindPlatformDto"></PlatformTable>
+                <PlatformTable OnPlatformDelete="DeletePlatform" OnPlatformSelect="SelectPlatform"></PlatformTable>
             </CascadingValue>
         </MudItem>
     </MudGrid>
@@ -30,8 +30,11 @@
 @code {
 
     private string _buttonText = "ADD";
+
     private List<PlatformDto>? _platforms;
+
     private PlatformDto _platformDto = new();
+
     private List<MaintainerDto>? _maintainers;
 
     private async Task RefreshPlatforms()
@@ -40,14 +43,40 @@
         var _platformDtos = await PlatformApiClient.GetPlatformDetailsAsync();
         _platforms = Mapper.Map<List<PlatformDto>>(_platformDtos);
     }
-    private void BindPlatformDto(PlatformDto dto)
-    {
-        _buttonText = "UPDATE";
-        _platformDto = dto;
-    }
+
     private async Task RefreshMaintainers()
     {
         _maintainers = await MaintainerApiClient.GetAllAsync();
+    }
+
+    private void SelectPlatform(PlatformDto dto)
+    {
+        if (dto is not null)
+        {
+            _buttonText = "UPDATE";
+            _platformDto = dto;
+
+        }
+        else
+        {
+            _buttonText = "ADD";
+            _platformDto = new();
+        }
+    }
+
+    public async Task DeletePlatform(PlatformDto dto)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Delete Platform?", options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await ApiClient.DeleteAsync(dto.Id);
+            await MaintainableApiClient.DeleteAsync(dto.MaintainableId);
+            await RefreshPlatforms();
+
+            Snackbar.Add($"The Platform has been deleted!", MudBlazor.Severity.Success);
+        }
     }
 
     private async Task CreateOrInsertAsync(MudForm _mudForm)
@@ -77,23 +106,11 @@
             Snackbar.Add($"The Platform was Successfully {operation}!", MudBlazor.Severity.Success);
         }
     }
-    public async Task DeletePlatform(PlatformDto dto)
-    {
-        var options = new DialogOptions { CloseOnEscapeKey = true };
-        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Delete Platform?", options);
-        var result = await dialog.Result;
-        if (!result.Canceled)
-        {
-            await ApiClient.DeleteAsync(dto.Id);
-            await MaintainableApiClient.DeleteAsync(dto.MaintainableId);
-            await RefreshPlatforms();
 
-            Snackbar.Add($"The Platform has been deleted!", MudBlazor.Severity.Success);
-        }
-    }
     protected override async Task OnInitializedAsync()
     {
         await RefreshPlatforms();
         await RefreshMaintainers();
     }
+
 }

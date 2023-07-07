@@ -21,33 +21,63 @@
         </MudItem>
         <MudItem xs="12">
             <CascadingValue Value="_simulators">
-                <SimulatorTable OnPlatformDelete="DeleteSimulator" OnPlatformSelect="BindSimulatorDto" />
+                <SimulatorTable OnPlatformDelete="DeleteSimulator" OnPlatformSelect="SelectSimulator" />
             </CascadingValue>
         </MudItem>
     </MudGrid>
 }
 
 @code {
+    
     private string _buttonText = "ADD";
+    
     private List<SimulatorDto>? _simulators;
+    
     private SimulatorDto _simulatorDto = new();
+    
     private List<PlatformDto>? _platforms;
-
+    
     private async Task RefreshSimulators()
     {
         _buttonText = "ADD";
         _simulators = await AdHocApiClient.GetSimulatorDtosAsync();
     }
-    private void BindSimulatorDto(SimulatorDto dto)
+    
+    private void SelectSimulator(SimulatorDto dto)
     {
-        _buttonText = "UPDATE";
-        _simulatorDto = dto;
+        if (dto is not null)
+        {
+            _buttonText = "UPDATE";
+            _simulatorDto = dto;
+
+        }
+        else
+        {
+            _buttonText = "ADD";
+            _simulatorDto = new();
+        }
     }
+    
+    public async Task DeleteSimulator(SimulatorDto dto)
+    {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Delete Simulator?", options);
+        var result = await dialog.Result;
+        if (!result.Canceled)
+        {
+            await SimulatorApiClient.DeleteAsync(dto.Id);
+            await MaintainableApiClient.DeleteAsync(dto.MaintainableId);
+            await RefreshSimulators();
+
+            Snackbar.Add($"The Simulator has been deleted!", MudBlazor.Severity.Success);
+        }
+    }
+    
     private async Task RefreshPlatforms()
     {
         _platforms = await PlatformApiClient.GetAllAsync();
     }
-
+    
     private async Task CreateOrInsertAsync(MudForm _mudForm)
     {
         await _mudForm!.Validate();
@@ -75,22 +105,7 @@
             Snackbar.Add($"The Simulator was Successfully {operation}!", MudBlazor.Severity.Success);
         }
     }
-
-
-    public async Task DeleteSimulator(SimulatorDto dto)
-    {
-        var options = new DialogOptions { CloseOnEscapeKey = true };
-        var dialog = await DialogService.ShowAsync<ConfirmDialog>("Delete Simulator?", options);
-        var result = await dialog.Result;
-        if (!result.Canceled)
-        {
-            await SimulatorApiClient.DeleteAsync(dto.Id);
-            await MaintainableApiClient.DeleteAsync(dto.MaintainableId);
-            await RefreshSimulators();
-
-            Snackbar.Add($"The Simulator has been deleted!", MudBlazor.Severity.Success);
-        }
-    }
+    
     protected override async Task OnInitializedAsync()
     {
         await RefreshSimulators();

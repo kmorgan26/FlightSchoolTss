@@ -21,13 +21,13 @@
 }
 else
 {
-    <MudTable @ref="_mudTable" 
-        Items="@FstssData" 
-        Class="my-4"
-        OnRowClick="RowClickEvent" T="TItem" 
-        RowClassFunc="SelectedRowClassFunc" 
-        Striped="true"
-        Dense="@IsDense">
+    <MudTable @ref="_mudTable"
+              Items="@FstssData"
+              Class="my-4"
+              OnRowClick="RowClickEvent" T="TItem"
+              RowClassFunc="SelectedRowClassFunc"
+              Striped="true"
+              Dense="@IsDense">
         <HeaderContent>
             @FstssHeaderTemplate
         </HeaderContent>
@@ -60,7 +60,14 @@ else
 
     private void RowClickEvent(TableRowClickEventArgs<TItem> row)
     {
-        FstssItem.InvokeAsync(row.Item);
+        if (row.Row.Class != "selected")
+        {
+            FstssItem.InvokeAsync(row.Item);
+        }
+        else
+        {
+            FstssItem.InvokeAsync(default);
+        }
     }
 
     private string SelectedRowClassFunc(TItem item, int rowNumber)

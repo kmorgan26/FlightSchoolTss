@@ -18,7 +18,7 @@
     </MudItem>
     <MudItem xs="12">
         <CascadingValue Value="_maintainers">
-            <MaintainerTable OnMaintainerDelete="DeleteMaintainer" OnMaintainerSelect="BindMaintainerDto" />
+            <MaintainerTable OnMaintainerDelete="DeleteMaintainer" OnMaintainerSelect="SelectMaintainer" />
         </CascadingValue>
     </MudItem>
 </MudGrid>
@@ -37,10 +37,18 @@
         _maintainers = await ApiClient.GetAllAsync();
     }
 
-    private void BindMaintainerDto(MaintainerDto dto)
+    private void SelectMaintainer(MaintainerDto dto)
     {
-        _buttonText = "UPDATE";
-        _maintainerDto = Mapper.Map<MaintainerDto>(dto);
+        if (dto is not null)
+        {
+            _buttonText = "UPDATE";
+            _maintainerDto = Mapper.Map<MaintainerDto>(dto);
+        }
+        else
+        {
+            _buttonText = "ADD";
+            _maintainerDto = new();
+        }
     }
 
     private async Task CreateOrInsertAsync(MudForm _mudForm)

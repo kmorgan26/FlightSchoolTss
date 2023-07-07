@@ -8,7 +8,12 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 
+<PageTitle>Software</PageTitle>
+
 <MudGrid Spacing="2" Justify="Justify.FlexStart">
+    <MudItem xs="12">
+        <MudText Typo="Typo.h3">Software</MudText>
+    </MudItem>
     <MudItem xs="12">
         @if (isReady)
         {
@@ -95,21 +100,45 @@
     }
     private async Task RefreshSystems()
     {
+        _buttonText = "ADD";
         _softwareSystemDtos = await SoftwareApiClient.GetSoftwareSystemDtosByMaintainableIdAsync(_selectedPlatform);
         _softwareVersionDtos = new List<SoftwareVersionDto>();
     }
+    private async Task RefreshVersions()
+    {
+        _buttonTextV = "ADD";
+        _softwareVersionDtos = await SoftwareApiClient
+            .GetSoftwareVersionDtosBySoftwareSystemIdAsync(_selectedSoftwareSystemId);
+    }
     private async Task SelectSystem(SoftwareSystemDto dto)
     {
-        _buttonText = "UPDATE";
-        _softwareSystemDto = Mapper.Map<SoftwareSystemDto>(dto);
-        _selectedSoftwareSystemId = dto.Id;
+        if (dto is not null)
+        {
+            _buttonText = "UPDATE";
+            _softwareSystemDto = Mapper.Map<SoftwareSystemDto>(dto);
+            _selectedSoftwareSystemId = dto.Id;
+        }
+        else
+        {
+            _buttonText = "ADD";
+            _softwareSystemDto = new();
+            _selectedSoftwareSystemId = 0;
+        }
         await RefreshVersions();
     }
     private void SelectVersion(SoftwareVersionDto dto)
     {
-        _buttonTextV = "UPDATE";
-        _softwareVersionDto = Mapper.Map<SoftwareVersionDto>(dto);
-        _selectedSoftwareVersionId = dto.Id;
+        if (dto is not null)
+        {
+            _buttonTextV = "UPDATE";
+            _softwareVersionDto = Mapper.Map<SoftwareVersionDto>(dto);
+            _selectedSoftwareVersionId = dto.Id;
+        }
+        else
+        {
+            _buttonText = "ADD";
+            _softwareVersionDto = new();
+        }
     }
     private async Task DeleteSystem(SoftwareSystemDto dto)
     {
@@ -136,11 +165,6 @@
 
             Snackbar.Add($"The Software Version has been deleted!", MudBlazor.Severity.Success);
         }
-    }
-    private async Task RefreshVersions()
-    {
-        _softwareVersionDtos = await SoftwareApiClient
-            .GetSoftwareVersionDtosBySoftwareSystemIdAsync(_selectedSoftwareSystemId);
     }
 
     private async Task CreateOrUpdateSystem(MudForm mudForm)
@@ -182,7 +206,7 @@
             if (_softwareVersionDto!.Id == 0)
             {
                 operation = "added";
-                dto!.SoftwareSystemId = _selectedPlatform;
+                dto!.SoftwareSystemId = _selectedSoftwareSystemId;
                 await SoftwareVersionApiClient.CreateAsync(dto);
             }
             else
