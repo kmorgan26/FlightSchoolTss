@@ -10,7 +10,8 @@ public class MaintainerModeFeature : Feature<MaintainerModeState>
     {
         return new MaintainerModeState
         {
-            MaintainerModeId = 0
+            MaintainerModeId = 0,
+            MaintainerDtos = null
         };
     }
 }
