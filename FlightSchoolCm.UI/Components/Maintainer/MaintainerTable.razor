@@ -9,7 +9,13 @@
         <MudTd DataLabel="ID">@context.Id</MudTd>
         <MudTd DataLabel="Name">@context.Name</MudTd>
         <MudTd DataLabel="DELETE">
-            <MudIconButton Icon="@Icons.Material.Filled.Delete" OnClick="@(() =>OnButtonClick(context))" Color="Color.Error" Size="Size.Small" />
+
+            <MudIconButton 
+                Icon="@Icons.Material.Filled.Delete" 
+                OnClick="@(() =>OnButtonClick(context))" 
+                Color="Color.Error" 
+                Size="Size.Small" />
+
         </MudTd>
     </FstssRowTemplate>
 </FSTable>

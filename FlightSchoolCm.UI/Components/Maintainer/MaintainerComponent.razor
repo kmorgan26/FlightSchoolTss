@@ -1,7 +1,12 @@
-﻿@inject IGenericApiClient<MaintainerDto> ApiClient
+﻿
+@inject IGenericApiClient<MaintainerDto> ApiClient
 @inject IMapper Mapper
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+
+@inherits FluxorComponent
+@inject IDispatcher Dispatcher
+@inject IState<MaintainerState> State
 
 <PageTitle>Maintainers</PageTitle>
 
@@ -10,14 +15,10 @@
         <MudText Typo="Typo.h3">Maintainers</MudText>
     </MudItem>
     <MudItem sm="8">
-        <CascadingValue Value="_maintainerDto">
-            <CascadingValue Value="_buttonText">
-                <MaintainerForm OnSubmitForm="CreateOrInsertAsync" />
-            </CascadingValue>
-        </CascadingValue>
+        <MaintainerForm OnSubmitForm="CreateOrInsertAsync" />
     </MudItem>
     <MudItem xs="12">
-        <CascadingValue Value="_maintainers">
+        <CascadingValue Value="State.Value.MaintainerDtos">
             <MaintainerTable OnMaintainerDelete="DeleteMaintainer" OnMaintainerSelect="SelectMaintainer" />
         </CascadingValue>
     </MudItem>
@@ -25,29 +26,32 @@
 
 @code {
 
-    private List<MaintainerDto>? _maintainers;
-
-    private MaintainerDto _maintainerDto = new();
-
-    private string _buttonText = "ADD";
-
     private async Task RefreshMaintainers()
     {
-        _buttonText = "ADD";
-        _maintainers = await ApiClient.GetAllAsync();
+        var action = new MaintainerButtonTextChangeAction { ButtonText = "ADD" };
+        Dispatcher.Dispatch(action);
+
+        var action_maintainers = new MaintainerCollectionChangeAction { MaintainerDtos = await ApiClient.GetAllAsync() };
+        Dispatcher.Dispatch(action_maintainers);
     }
 
     private void SelectMaintainer(MaintainerDto dto)
     {
         if (dto is not null)
         {
-            _buttonText = "UPDATE";
-            _maintainerDto = Mapper.Map<MaintainerDto>(dto);
+            var action = new MaintainerButtonTextChangeAction { ButtonText = "UPDATE" };
+            Dispatcher.Dispatch(action);
+
+            var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = dto };
+            Dispatcher.Dispatch(action_maintainer);
         }
         else
         {
-            _buttonText = "ADD";
-            _maintainerDto = new();
+            var action = new MaintainerButtonTextChangeAction { ButtonText = "UPDATE" };
+            Dispatcher.Dispatch(action);
+
+            var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = new() };
+            Dispatcher.Dispatch(action_maintainer);
         }
     }
 
@@ -58,19 +62,21 @@
         {
             string operation = string.Empty;
 
-            if (_maintainerDto.Id == 0)
+            if (State.Value.MaintainerDto!.Id == 0)
             {
                 operation = "added";
-                await ApiClient.CreateAsync(_maintainerDto);
+                await ApiClient.CreateAsync(State.Value.MaintainerDto);
             }
             else
             {
                 operation = "updated";
-                await ApiClient.UpdateAsync(_maintainerDto.Id, _maintainerDto);
+                await ApiClient.UpdateAsync(State.Value.MaintainerDto.Id, State.Value.MaintainerDto);
             }
             await RefreshMaintainers();
             await _mudForm.ResetAsync();
-            _maintainerDto = new();
+
+            var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = new() };
+            Dispatcher.Dispatch(action_maintainer);
             Snackbar.Add($"The Maintainer was Successfully {operation}!", MudBlazor.Severity.Success);
         }
     }

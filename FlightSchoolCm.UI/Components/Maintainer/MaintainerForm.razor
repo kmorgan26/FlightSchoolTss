@@ -1,13 +1,16 @@
-﻿
+﻿@using FlightSchoolCm.UI.Components.Maintainer.Store;
+@inherits FluxorComponent
+@inject IState<MaintainerState> State
+
 <FSForm OnSubmitForm="SubmitForm" TItem="MaintainerDto">
     <FormControls>
 
         <MudGrid>
             <MudItem>
 
-                <MudTextField @bind-Value="_dto.Name"
+                <MudTextField @bind-Value="State.Value.MaintainerDto!.Name"
                               Variant="Variant.Outlined"
-                              For="(() => _dto.Name)"
+                              For="(() => State.Value.MaintainerDto!.Name)"
                               Label="Maintainer Name"
                               Class="my-6" />
             </MudItem>
@@ -23,9 +26,6 @@
 
     [Parameter]
     public MudForm? MudForm { get; set; } = new();
-
-    [CascadingParameter]
-    public MaintainerDto _dto { get; set; } = new();
 
     private async Task SubmitForm()
     {
