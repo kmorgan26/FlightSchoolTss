@@ -1,5 +1,4 @@
-﻿
-@inject IGenericApiClient<MaintainerDto> ApiClient
+﻿@inject IGenericApiClient<MaintainerDto> ApiClient
 @inject IMapper Mapper
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
@@ -15,7 +14,9 @@
         <MudText Typo="Typo.h3">Maintainers</MudText>
     </MudItem>
     <MudItem sm="8">
-        <MaintainerForm OnSubmitForm="CreateOrInsertAsync" />
+        <CascadingValue Value="State.Value.ButtonText">
+            <MaintainerForm OnSubmitForm="CreateOrInsertAsync" />
+        </CascadingValue>
     </MudItem>
     <MudItem xs="12">
         <CascadingValue Value="State.Value.MaintainerDtos">
@@ -47,7 +48,7 @@
         }
         else
         {
-            var action = new MaintainerButtonTextChangeAction { ButtonText = "UPDATE" };
+            var action = new MaintainerButtonTextChangeAction { ButtonText = "ADD" };
             Dispatcher.Dispatch(action);
 
             var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = new() };
