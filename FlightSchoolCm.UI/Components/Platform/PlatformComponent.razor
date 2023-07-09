@@ -120,6 +120,7 @@
 
     protected override async Task OnInitializedAsync()
     {
+        SelectPlatform(new PlatformDto());
         await RefreshPlatforms();
         await RefreshMaintainers();
     }
