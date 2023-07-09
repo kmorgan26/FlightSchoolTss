@@ -17,5 +17,5 @@ public class SimulatorDtosChangeAction
 }
 public class SimulatorPlatformIdChangeAction
 {
-    public int PlatformId { get; set; } = 0;
+    public int PlatformId { get; init; } = 0;
 }
