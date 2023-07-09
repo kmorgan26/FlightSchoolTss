@@ -1,2 +1,3 @@
 ﻿Prevent the form from posting when not valid
-On Software Page, Delete button should not be available if ther are versions
+On Software Page, Delete button should not be available if there are versions
+Figure out a way to persist the selected row in the table when revisiting the page
