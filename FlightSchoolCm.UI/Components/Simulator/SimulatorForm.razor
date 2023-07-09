@@ -1,4 +1,6 @@
-﻿
+﻿@inherits FluxorComponent
+@inject IState<SimulatorState> State
+
 <FSForm OnSubmitForm="SubmitForm" TItem="SimulatorDto">
     <FormControls>
 
@@ -6,9 +8,9 @@
 
             <MudItem>
 
-                <MudTextField @bind-Value="_dto.Name"
+                <MudTextField @bind-Value="State.Value.SimulatorDto!.Name"
                               Variant="Variant.Outlined"
-                              For="(() => _dto.Name)"
+                              For="(() => State.Value.SimulatorDto!.Name)"
                               Label="Simulator Name"
                               OnlyValidateIfDirty="true"
                               Class="my-6" />
@@ -17,9 +19,9 @@
 
             <MudItem>
 
-                <MudTextField @bind-Value="_dto.Alias"
+                <MudTextField @bind-Value="State.Value.SimulatorDto!.Alias"
                               Variant="Variant.Outlined"
-                              For="(() => _dto.Alias)"
+                              For="(() => State.Value.SimulatorDto!.Alias)"
                               Label="Alias (Optional)"
                               Class="my-6" />
 
@@ -27,7 +29,7 @@
 
             <MudItem>
 
-                <MudSelect Class="mt-6" Variant="Variant.Outlined" T="int" Label="Platform" MultiSelection="false" @bind-Value="@_dto.PlatformId">
+                <MudSelect Class="mt-6" Variant="Variant.Outlined" T="int" Label="Platform" MultiSelection="false" @bind-Value="@State.Value.SimulatorDto!.PlatformId">
                     <MudSelectItem Value="0">SELECT ONE</MudSelectItem>
                     @foreach (var item in PlatformDtos)
                     {
@@ -38,13 +40,13 @@
             </MudItem>
             <MudItem>
 
-                <MudCheckBox @bind-Checked="_dto.IsActive" Label="Is Active?" Class="mt-7" />
+                <MudCheckBox @bind-Checked="State.Value.SimulatorDto!.IsActive" Label="Is Active?" Class="mt-7" />
 
             </MudItem>
 
         </MudGrid>
 
-        <MudHidden @bind-Value="_dto.PlatformId" />
+        <MudHidden @bind-Value="State.Value.SimulatorDto!.PlatformId" />
 
     </FormControls>
 </FSForm>
@@ -53,9 +55,6 @@
 
     [Parameter]
     public EventCallback<MudForm> OnSubmitForm { get; set; }
-
-    [Parameter]
-    public SimulatorDto _dto { get; set; } = new();
 
     [Parameter]
     public MudForm? MudForm { get; set; } = new();
@@ -67,5 +66,4 @@
     {
         await OnSubmitForm.InvokeAsync(MudForm);
     }
-
 }

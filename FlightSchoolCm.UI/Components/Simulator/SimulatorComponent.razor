@@ -6,21 +6,25 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 
+@inherits FluxorComponent
+@inject IDispatcher Dispatcher
+@inject IState<SimulatorState> State
+
 <PageTitle>Platforms</PageTitle>
 
-@if (_simulators is not null)
+@if (@State.Value.SimulatorDtos is not null && _platforms is not null)
 {
     <MudGrid>
         <MudItem xs="12">
             <MudText Typo="Typo.h3">Simulators</MudText>
         </MudItem>
         <MudItem sm="8">
-            <CascadingValue Value="@_buttonText">
-                <SimulatorForm OnSubmitForm="CreateOrInsertAsync" PlatformDtos="_platforms" _dto="_simulatorDto" />
+            <CascadingValue Value="State.Value.ButtonText">
+                <SimulatorForm OnSubmitForm="CreateOrInsertAsync" PlatformDtos="_platforms" />
             </CascadingValue>
         </MudItem>
         <MudItem xs="12">
-            <CascadingValue Value="_simulators">
+            <CascadingValue Value="State.Value.SimulatorDtos">
                 <SimulatorTable OnPlatformDelete="DeleteSimulator" OnPlatformSelect="SelectSimulator" />
             </CascadingValue>
         </MudItem>
@@ -28,36 +32,37 @@
 }
 
 @code {
-    
-    private string _buttonText = "ADD";
-    
-    private List<SimulatorDto>? _simulators;
-    
-    private SimulatorDto _simulatorDto = new();
-    
+
     private List<PlatformDto>? _platforms;
-    
+
     private async Task RefreshSimulators()
     {
-        _buttonText = "ADD";
-        _simulators = await AdHocApiClient.GetSimulatorDtosAsync();
+        ChangeButtonText("ADD");
+        var simulatorDtos = await SimulatorApiClient.GetAllAsync();
+        var dtos = Mapper.Map<List<SimulatorDto>>(simulatorDtos);
+        var action_simulators = new SimulatorDtosChangeAction { SimulatorDtos = dtos };
+        Dispatcher.Dispatch(action_simulators);
     }
-    
+
+    private async Task RefreshPlatforms()
+    {
+        _platforms = await PlatformApiClient.GetAllAsync();
+    }
+
     private void SelectSimulator(SimulatorDto dto)
     {
         if (dto is not null)
         {
-            _buttonText = "UPDATE";
-            _simulatorDto = dto;
-
+            ChangeButtonText("UPDATE");
+            ChangeSimulatorDto(dto);
         }
         else
         {
-            _buttonText = "ADD";
-            _simulatorDto = new();
+            ChangeButtonText("ADD");
+            ChangeSimulatorDto(new());
         }
     }
-    
+
     public async Task DeleteSimulator(SimulatorDto dto)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
@@ -72,12 +77,7 @@
             Snackbar.Add($"The Simulator has been deleted!", MudBlazor.Severity.Success);
         }
     }
-    
-    private async Task RefreshPlatforms()
-    {
-        _platforms = await PlatformApiClient.GetAllAsync();
-    }
-    
+
     private async Task CreateOrInsertAsync(MudForm _mudForm)
     {
         await _mudForm!.Validate();
@@ -85,29 +85,42 @@
         if (_mudForm.IsValid)
         {
             string operation = string.Empty;
-            var dto = _simulatorDto;
 
-            if (_simulatorDto.Id == 0)
+            if (State.Value.SimulatorDto!.Id == 0)
             {
                 operation = "added";
-                var maintainableDto = await MaintainableApiClient.CreateAsync(new MaintainableDto() { Name = "Platform:" + _simulatorDto.Name });
-                dto.MaintainableId = maintainableDto.Id;
-                await SimulatorApiClient.CreateAsync(dto);
+                var maintainableDto = 
+                    await MaintainableApiClient.CreateAsync(new MaintainableDto() { Name = "Platform:" + State.Value.SimulatorDto!.Name });
+                State.Value.SimulatorDto!.MaintainableId = maintainableDto.Id;
+                await SimulatorApiClient.CreateAsync(State.Value.SimulatorDto!);
             }
             else
             {
                 operation = "updated";
-                await SimulatorApiClient.UpdateAsync(_simulatorDto.Id, dto);
+                await SimulatorApiClient.UpdateAsync(State.Value.SimulatorDto!.Id, State.Value.SimulatorDto!);
             }
             await RefreshSimulators();
             await _mudForm.ResetAsync();
-            _simulatorDto = new();
+            ChangeSimulatorDto(new());
             Snackbar.Add($"The Simulator was Successfully {operation}!", MudBlazor.Severity.Success);
         }
     }
-    
+
+    private void ChangeButtonText(string text)
+    {
+        var action = new SimulatorButtonTextChangeAction { ButtonText = text };
+        Dispatcher.Dispatch(action);
+    }
+
+    private void ChangeSimulatorDto(SimulatorDto dto)
+    {
+        var action = new SimulatorDtoChangeAction { SimulatorDto = dto };
+        Dispatcher.Dispatch(action);
+    }
+
     protected override async Task OnInitializedAsync()
     {
+        SelectSimulator(new SimulatorDto());
         await RefreshSimulators();
         await RefreshPlatforms();
     }
