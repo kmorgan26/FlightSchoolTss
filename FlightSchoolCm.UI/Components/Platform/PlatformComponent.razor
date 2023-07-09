@@ -6,21 +6,25 @@
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
 
+@inherits FluxorComponent
+@inject IDispatcher Dispatcher
+@inject IState<PlatformState> State
+
 <PageTitle>Platforms</PageTitle>
 
-@if (_platforms is not null)
+@if (State.Value.PlatformDtos is not null && _maintainers is not null)
 {
     <MudGrid>
         <MudItem xs="12">
             <MudText Typo="Typo.h3">Platforms</MudText>
         </MudItem>
         <MudItem sm="8">
-            <CascadingValue Value="_buttonText">
-                <PlatformForm OnSubmitForm="CreateOrInsertAsync" ButtonText="@_buttonText" _dto="_platformDto" MaintainerDtos="_maintainers" />
+            <CascadingValue Value="State.Value.ButtonText">
+                <PlatformForm OnSubmitForm="CreateOrInsertAsync" MaintainerDtos="_maintainers" />
             </CascadingValue>
         </MudItem>
         <MudItem xs="12">
-            <CascadingValue Value="_platforms">
+            <CascadingValue Value="State.Value.PlatformDtos">
                 <PlatformTable OnPlatformDelete="DeletePlatform" OnPlatformSelect="SelectPlatform"></PlatformTable>
             </CascadingValue>
         </MudItem>
@@ -29,19 +33,15 @@
 
 @code {
 
-    private string _buttonText = "ADD";
-
-    private List<PlatformDto>? _platforms;
-
-    private PlatformDto _platformDto = new();
-
     private List<MaintainerDto>? _maintainers;
 
     private async Task RefreshPlatforms()
     {
-        _buttonText = "ADD";
+        ChangeButtonText("ADD");
         var _platformDtos = await PlatformApiClient.GetPlatformDetailsAsync();
-        _platforms = Mapper.Map<List<PlatformDto>>(_platformDtos);
+        var dtos = Mapper.Map<List<PlatformDto>>(_platformDtos);
+        var action_platforms = new PlatformDtosChangeAction { PlatformDtos = dtos };
+        Dispatcher.Dispatch(action_platforms);
     }
 
     private async Task RefreshMaintainers()
@@ -53,14 +53,13 @@
     {
         if (dto is not null)
         {
-            _buttonText = "UPDATE";
-            _platformDto = dto;
-
+            ChangeButtonText("UPDATE");
+            ChangePlatformDto(dto);
         }
         else
         {
-            _buttonText = "ADD";
-            _platformDto = new();
+            ChangeButtonText("ADD");
+            ChangePlatformDto(new());
         }
     }
 
@@ -86,25 +85,37 @@
         if (_mudForm.IsValid)
         {
             string operation = string.Empty;
-            var dto = _platformDto;
 
-            if (_platformDto.Id == 0)
+            if (State.Value.PlatformDto!.Id == 0)
             {
                 operation = "added";
-                var maintainableDto = await MaintainableApiClient.CreateAsync(new MaintainableDto() { Name = "Platform:" + _platformDto.Name });
-                dto.MaintainableId = maintainableDto.Id;
-                await ApiClient.CreateAsync(dto);
+                var maintainableDto =
+                    await MaintainableApiClient.CreateAsync(new MaintainableDto() { Name = "Platform:" + State.Value.PlatformDto!.Name });
+                State.Value.PlatformDto!.MaintainableId = maintainableDto.Id;
+                await ApiClient.CreateAsync(State.Value.PlatformDto!);
             }
             else
             {
                 operation = "updated";
-                await ApiClient.UpdateAsync(_platformDto.Id, dto);
+                await ApiClient.UpdateAsync(State.Value.PlatformDto!.Id, State.Value.PlatformDto!);
             }
             await RefreshPlatforms();
             await _mudForm.ResetAsync();
-            _platformDto = new();
+            ChangePlatformDto(new());
             Snackbar.Add($"The Platform was Successfully {operation}!", MudBlazor.Severity.Success);
         }
+    }
+
+    private void ChangeButtonText(string text)
+    {
+        var action = new PlatformButtonTextChangeAction { ButtonText = text };
+        Dispatcher.Dispatch(action);
+    }
+
+    private void ChangePlatformDto(PlatformDto dto)
+    {
+        var action = new PlatformDtoChangeAction { PlatformDto = dto };
+        Dispatcher.Dispatch(action);
     }
 
     protected override async Task OnInitializedAsync()
@@ -112,5 +123,4 @@
         await RefreshPlatforms();
         await RefreshMaintainers();
     }
-
 }
