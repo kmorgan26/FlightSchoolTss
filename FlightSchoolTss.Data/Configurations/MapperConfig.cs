@@ -66,6 +66,9 @@ public class MapperConfig : Profile
         CreateMap<Simulator, SimulatorDto>()
             .ForMember(dto => dto.Platform, x => x.MapFrom(entity => entity.Platform.Name));
 
+        CreateMap<SimulatorDto, RadioVm>()
+            .ForMember(radio => radio.Id, x => x.MapFrom(entity => entity.MaintainableId));
+
         CreateMap<SimulatorDto,Simulator>()
             .ForMember(dto => dto.Platform, ent => ent.Ignore());
 
