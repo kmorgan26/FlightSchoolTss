@@ -20,7 +20,7 @@ public class SoftwareFeature : Feature<SoftwareState>
             SoftwareVersionDtos = new List<SoftwareVersionDto>(),
             SelectedSystemId = 0,
             SelectedVersionId = 0,
-            SelectedPlatform = 0
+            SelectedMaintainable = 0
         };
     }
 }

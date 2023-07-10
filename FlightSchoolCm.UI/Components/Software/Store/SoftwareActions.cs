@@ -35,7 +35,7 @@ public class SelectedVersionIdChangeAction
 {
     public int SelectedVersionId { get; init; } = 0;
 }
-public class SelectedPlatformChangeAction
+public class SelectedMaintainableChangeAction
 {
-    public int SelectedPlatform { get; init; } = 0;
+    public int SelectedMaintainable { get; init; } = 0;
 }

@@ -19,7 +19,7 @@
     <MudItem xs="12">
         @if (isReady)
         {
-            <CascadingValue Value="@State.Value.SelectedPlatform">
+            <CascadingValue Value="@State.Value.SelectedMaintainable">
                 <FSRadio TItem="RadioVm" RadioItems="@_platforms" Context="context" OnSelectedOptionChanged="ChangePlatform">
                     <RadioButtons>
                         <MudRadio Option="@context.Id" Dense>@context.Name</MudRadio>
@@ -32,7 +32,7 @@
     <MudDivider />
 
     <MudItem xs="12" sm="6">
-        @if (State.Value.SelectedPlatform > 0)
+        @if (State.Value.SelectedMaintainable > 0)
         {
             <CascadingValue Value="State.Value.ButtonTextSystem">
                 <SoftwareSystemForm OnSubmitForm="CreateOrUpdateSystem" />
@@ -45,7 +45,7 @@
     </MudItem>
 
     <MudItem xs="12" sm="6">
-        @if (State.Value.SelectedSystemId > 0 && State.Value.SelectedPlatform > 0)
+        @if (State.Value.SelectedSystemId > 0 && State.Value.SelectedMaintainable > 0)
         {
             <CascadingValue Value="State.Value.ButtonTextVersion">
                 <SoftwareVersionForm OnSubmitForm="CreateOrUpdateVersion" />
@@ -66,7 +66,7 @@
 
     private async Task ChangePlatform(int id)
     {
-        var action = new SelectedPlatformChangeAction { SelectedPlatform = id };
+        var action = new SelectedMaintainableChangeAction { SelectedMaintainable = id };
         Dispatcher.Dispatch(action);
         ChangeDto(new SoftwareSystemDto());
         ChangeDto(new SoftwareVersionDto());
@@ -80,10 +80,10 @@
         await RefreshVersions();
     }
 
-    private async Task RefreshPlatforms()
+    private async Task RefreshMaintainables()
     {
-        var platforms = await ApiClient.GetAllAsync();
-        _platforms = Mapper.Map<IEnumerable<RadioVm>>(platforms);
+        var maintainables = await ApiClient.GetAllAsync();
+        _platforms = Mapper.Map<IEnumerable<RadioVm>>(maintainables);
         
     }
 
@@ -93,7 +93,7 @@
 
         var action = new SoftwareSystemDtosChangeAction
             {
-                SoftwareSystemDtos = await SoftwareApiClient.GetSoftwareSystemDtosByMaintainableIdAsync(State.Value.SelectedPlatform)
+                SoftwareSystemDtos = await SoftwareApiClient.GetSoftwareSystemDtosByMaintainableIdAsync(State.Value.SelectedMaintainable)
             };
         Dispatcher.Dispatch(action);
 
@@ -189,7 +189,7 @@
             if (State.Value.SoftwareSystemDto!.Id == 0)
             {
                 operation = "added";
-                State.Value.SoftwareSystemDto!.MaintainableId = State.Value.SelectedPlatform;
+                State.Value.SoftwareSystemDto!.MaintainableId = State.Value.SelectedMaintainable;
                 await SoftwareSystemApiClient.CreateAsync(State.Value.SoftwareSystemDto);
             }
             else
@@ -273,7 +273,7 @@
     protected override async Task OnInitializedAsync()
     {
         isReady = false;
-        await RefreshPlatforms();
+        await RefreshMaintainables();
         isReady = true;
     }
 }

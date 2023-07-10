@@ -5,7 +5,7 @@ namespace FlightSchoolCm.UI.Components.Software.Store;
 
 public record SoftwareState
 {
-    public int SelectedPlatform { get; init; } = 0;
+    public int SelectedMaintainable { get; init; } = 0;
     public int SelectedSystemId { get; init; } = 0;
     public int SelectedVersionId { get; init; } = 0;
     public string ButtonTextSystem { get; init; } = "ADD";

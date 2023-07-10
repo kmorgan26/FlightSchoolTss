@@ -14,7 +14,7 @@ public class SoftwareReducer
             ButtonTextVersion = state.ButtonTextVersion,
             SelectedSystemId = state.SelectedSystemId,
             SelectedVersionId = state.SelectedVersionId,
-            SelectedPlatform = state.SelectedPlatform,
+            SelectedMaintainable = state.SelectedMaintainable,
             SoftwareSystemDtos = state.SoftwareSystemDtos,
             SoftwareVersionDtos = state.SoftwareVersionDtos,
             SoftwareVersionDto = state.SoftwareVersionDto
@@ -30,7 +30,7 @@ public class SoftwareReducer
             ButtonTextSystem = state.ButtonTextSystem,
             ButtonTextVersion = state.ButtonTextVersion,
             SelectedSystemId = state.SelectedSystemId,
-            SelectedPlatform = state.SelectedPlatform,
+            SelectedMaintainable = state.SelectedMaintainable,
             SoftwareSystemDtos = state.SoftwareSystemDtos,
             SoftwareVersionDtos = state.SoftwareVersionDtos,
         };
@@ -46,7 +46,7 @@ public class SoftwareReducer
             ButtonTextSystem = state.ButtonTextSystem,
             ButtonTextVersion = state.ButtonTextVersion,
             SelectedSystemId = state.SelectedSystemId,
-            SelectedPlatform = state.SelectedPlatform,
+            SelectedMaintainable = state.SelectedMaintainable,
             SoftwareVersionDtos = state.SoftwareVersionDtos,
         };
     }
@@ -61,7 +61,7 @@ public class SoftwareReducer
             ButtonTextSystem = state.ButtonTextSystem,
             ButtonTextVersion = state.ButtonTextVersion,
             SelectedSystemId = state.SelectedSystemId,
-            SelectedPlatform = state.SelectedPlatform,
+            SelectedMaintainable = state.SelectedMaintainable,
             SoftwareSystemDtos = state.SoftwareSystemDtos,
         };
     }
@@ -74,7 +74,7 @@ public class SoftwareReducer
             ButtonTextSystem = state.ButtonTextSystem,
             ButtonTextVersion = state.ButtonTextVersion,
             SelectedVersionId = state.SelectedVersionId,
-            SelectedPlatform = state.SelectedPlatform,
+            SelectedMaintainable = state.SelectedMaintainable,
             SoftwareSystemDtos = state.SoftwareSystemDtos,
             SoftwareVersionDtos = state.SoftwareVersionDtos,
             SoftwareVersionDto = state.SoftwareVersionDto
@@ -89,17 +89,17 @@ public class SoftwareReducer
             SoftwareSystemDto = state.SoftwareSystemDto,
             ButtonTextSystem = state.ButtonTextSystem,
             ButtonTextVersion = state.ButtonTextVersion,
-            SelectedPlatform = state.SelectedPlatform,
+            SelectedMaintainable = state.SelectedMaintainable,
             SoftwareSystemDtos = state.SoftwareSystemDtos,
             SoftwareVersionDtos = state.SoftwareVersionDtos,
             SoftwareVersionDto = state.SoftwareVersionDto
         };
     }
-    [ReducerMethod] public static SoftwareState SoftwareSelectedPlatformChangeAction(SoftwareState state, SelectedPlatformChangeAction action)
+    [ReducerMethod] public static SoftwareState SoftwareSelectedPlatformChangeAction(SoftwareState state, SelectedMaintainableChangeAction action)
     {
         return state with
         {
-            SelectedPlatform = action.SelectedPlatform!,
+            SelectedMaintainable = action.SelectedMaintainable!,
             SelectedVersionId = state.SelectedVersionId,
             SelectedSystemId = state.SelectedSystemId,
             SoftwareSystemDto = state.SoftwareSystemDto,
@@ -116,7 +116,7 @@ public class SoftwareReducer
         return state with
         {
             ButtonTextSystem = action.ButtonText!,
-            SelectedPlatform = state.SelectedPlatform,
+            SelectedMaintainable = state.SelectedMaintainable,
             SelectedVersionId = state.SelectedVersionId,
             SelectedSystemId = state.SelectedSystemId,
             SoftwareSystemDto = state.SoftwareSystemDto,
@@ -132,7 +132,7 @@ public class SoftwareReducer
         {
             ButtonTextVersion = action.ButtonText!,
             ButtonTextSystem = state.ButtonTextSystem,
-            SelectedPlatform = state.SelectedPlatform,
+            SelectedMaintainable = state.SelectedMaintainable,
             SelectedVersionId = state.SelectedVersionId,
             SelectedSystemId = state.SelectedSystemId,
             SoftwareSystemDto = state.SoftwareSystemDto,
