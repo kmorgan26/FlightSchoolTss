@@ -65,7 +65,7 @@ public class SoftwareReducer
             SoftwareSystemDtos = state.SoftwareSystemDtos,
         };
     }
-    [ReducerMethod] public static SoftwareState SoftwareSelectedSystemIdChangeAction(SoftwareState state, SoftwareSelectedSystemIdChangeAction action)
+    [ReducerMethod] public static SoftwareState SoftwareSelectedSystemIdChangeAction(SoftwareState state, SelectedSystemIdChangeAction action)
     {
         return state with
         {
@@ -80,7 +80,7 @@ public class SoftwareReducer
             SoftwareVersionDto = state.SoftwareVersionDto
         };
     }
-    [ReducerMethod] public static SoftwareState SoftwareSelectedVersionIdChangeAction(SoftwareState state, SoftwareSelectedVersionIdChangeAction action)
+    [ReducerMethod] public static SoftwareState SoftwareSelectedVersionIdChangeAction(SoftwareState state, SelectedVersionIdChangeAction action)
     {
         return state with
         {
@@ -95,7 +95,7 @@ public class SoftwareReducer
             SoftwareVersionDto = state.SoftwareVersionDto
         };
     }
-    [ReducerMethod] public static SoftwareState SoftwareSelectedPlatformChangeAction(SoftwareState state, SoftwareSelectedPlatformChangeAction action)
+    [ReducerMethod] public static SoftwareState SoftwareSelectedPlatformChangeAction(SoftwareState state, SelectedPlatformChangeAction action)
     {
         return state with
         {

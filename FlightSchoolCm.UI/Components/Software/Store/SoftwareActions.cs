@@ -27,15 +27,15 @@ public class SoftwareVersionDtosChangeAction
 {
     public IEnumerable<SoftwareVersionDto>? SoftwareVersionDtos { get; init; }
 }
-public class SoftwareSelectedSystemIdChangeAction
+public class SelectedSystemIdChangeAction
 {
     public int SelectedSystemId { get; init; } = 0;
 }
-public class SoftwareSelectedVersionIdChangeAction
+public class SelectedVersionIdChangeAction
 {
     public int SelectedVersionId { get; init; } = 0;
 }
-public class SoftwareSelectedPlatformChangeAction
+public class SelectedPlatformChangeAction
 {
     public int SelectedPlatform { get; init; } = 0;
 }

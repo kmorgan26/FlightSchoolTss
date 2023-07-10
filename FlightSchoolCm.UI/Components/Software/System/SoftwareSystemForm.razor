@@ -1,4 +1,6 @@
 ﻿@namespace FlightSchoolCm.UI.Components.Software
+@inherits FluxorComponent
+@inject IState<SoftwareState> State
 
 <FSForm OnSubmitForm="SubmitForm" TItem="SoftwareSystemDto">
     <FormControls>
@@ -7,15 +9,15 @@
 
             <MudItem>
 
-                <MudTextField @bind-Value="_dto.Name"
+                <MudTextField @bind-Value="State.Value.SoftwareSystemDto.Name"
                               Variant="Variant.Outlined"
-                              For="(() => _dto.Name)"
+                              For="(() => State.Value.SoftwareSystemDto.Name)"
                               Label="System Name"
                               OnlyValidateIfDirty="true"
                               Class="my-6" />
             </MudItem>
 
-            <MudHidden @bind-Value="@_dto.MaintainableId"/>
+            <MudHidden @bind-Value="@State.Value.SoftwareSystemDto.MaintainableId" />
 
         </MudGrid>
 
@@ -29,9 +31,6 @@
 
     [Parameter]
     public MudForm? MudForm { get; set; } = new();
-
-    [CascadingParameter]
-    public SoftwareSystemDto _dto { get; set; } = new();
 
     private async Task SubmitForm()
     {

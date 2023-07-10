@@ -1,12 +1,14 @@
-﻿@namespace FlightSchoolCm.UI.Components.Software
-
-@inject IGenericApiClient<PlatformDto> ApiClient
+﻿@inject IGenericApiClient<PlatformDto> ApiClient
 @inject IGenericApiClient<SoftwareSystemDto> SoftwareSystemApiClient
 @inject IGenericApiClient<SoftwareVersionDto> SoftwareVersionApiClient
 @inject ISoftwareApiClient SoftwareApiClient
 @inject IMapper Mapper
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
+
+@inherits FluxorComponent
+@inject IDispatcher Dispatcher
+@inject IState<SoftwareState> State
 
 <PageTitle>Software</PageTitle>
 
@@ -17,7 +19,7 @@
     <MudItem xs="12">
         @if (isReady)
         {
-            <CascadingValue Value="@_selectedPlatform">
+            <CascadingValue Value="@State.Value.SelectedPlatform">
                 <FSRadio TItem="RadioVm" RadioItems="@_platforms" Context="context" OnSelectedOptionChanged="ChangePlatform">
                     <RadioButtons>
                         <MudRadio Option="@context.Id" Dense>@context.Name</MudRadio>
@@ -30,30 +32,26 @@
     <MudDivider />
 
     <MudItem xs="12" sm="6">
-        @if (_selectedPlatform > 0)
+        @if (State.Value.SelectedPlatform > 0)
         {
-            <CascadingValue Value="_softwareSystemDto">
-                <CascadingValue Value="_buttonText">
-                    <SoftwareSystemForm OnSubmitForm="CreateOrUpdateSystem" />
-                </CascadingValue>
+            <CascadingValue Value="State.Value.ButtonTextSystem">
+                <SoftwareSystemForm OnSubmitForm="CreateOrUpdateSystem" />
             </CascadingValue>
 
-            <CascadingValue Value="_softwareSystemDtos">
+            <CascadingValue Value="State.Value.SoftwareSystemDtos">
                 <SoftwareSystemTable OnSystemDelete="DeleteSystem" OnSystemSelect="SelectSystem" />
             </CascadingValue>
         }
     </MudItem>
 
     <MudItem xs="12" sm="6">
-        @if (_selectedSoftwareSystemId > 0)
+        @if (State.Value.SelectedSystemId > 0)
         {
-            <CascadingValue Value="_softwareVersionDto">
-                <CascadingValue Value="_buttonTextV">
-                    <SoftwareVersionForm OnSubmitForm="CreateOrUpdateVersion" />
-                </CascadingValue>
+            <CascadingValue Value="State.Value.ButtonTextVersion">
+                <SoftwareVersionForm OnSubmitForm="CreateOrUpdateVersion" />
             </CascadingValue>
 
-            <CascadingValue Value="_softwareVersionDtos">
+            <CascadingValue Value="State.Value.SoftwareVersionDtos">
                 <SoftwareVersionTable OnVersionDelete="DeleteVersion" OnVersionSelect="SelectVersion" />
             </CascadingValue>
         }
@@ -63,83 +61,91 @@
 @code {
     private bool isReady;
 
-    private int _selectedPlatform { get; set; }
-
-    private int _selectedSoftwareSystemId { get; set; }
-
-    private int _selectedSoftwareVersionId { get; set; }
-
-    private string? _buttonText { get; set; } = "Add";
-
-    private string? _buttonTextV { get; set; } = "Add";
-
-    private SoftwareSystemDto? _softwareSystemDto { get; set; } = new();
-
-    private SoftwareVersionDto? _softwareVersionDto { get; set; } = new();
 
     public IEnumerable<RadioVm>? _platforms { get; set; }
 
-    private IEnumerable<SoftwareVersionDto>? _softwareVersionDtos { get; set; }
-
-    private IEnumerable<SoftwareSystemDto>? _softwareSystemDtos { get; set; }
-
     private async Task ChangePlatform(int id)
     {
-        _selectedPlatform = id;
+        var action = new SelectedPlatformChangeAction { SelectedPlatform = id };
+        Dispatcher.Dispatch(action);
         await RefreshSystems();
     }
+
     private async Task ChangeSoftwareSystemId(int id)
     {
-        _selectedSoftwareSystemId = id;
+        var action = new SelectedSystemIdChangeAction { SelectedSystemId = id };
+        Dispatcher.Dispatch(action);
         await RefreshVersions();
     }
+
     private async Task RefreshPlatforms()
     {
         var platforms = await ApiClient.GetAllAsync();
         _platforms = Mapper.Map<IEnumerable<RadioVm>>(platforms);
     }
+
     private async Task RefreshSystems()
     {
-        _buttonText = "ADD";
-        _softwareSystemDtos = await SoftwareApiClient.GetSoftwareSystemDtosByMaintainableIdAsync(_selectedPlatform);
-        _softwareVersionDtos = new List<SoftwareVersionDto>();
+        ChangeButtonText("ADD", true);
+
+        var action = new SoftwareSystemDtosChangeAction
+            {
+                SoftwareSystemDtos = await SoftwareApiClient.GetSoftwareSystemDtosByMaintainableIdAsync(State.Value.SelectedPlatform)
+            };
+        Dispatcher.Dispatch(action);
+
+        var versionAction = new SoftwareVersionDtosChangeAction
+            {
+                SoftwareVersionDtos = new List<SoftwareVersionDto>()
+            };
+        Dispatcher.Dispatch(versionAction);
     }
+
     private async Task RefreshVersions()
     {
-        _buttonTextV = "ADD";
-        _softwareVersionDtos = await SoftwareApiClient
-            .GetSoftwareVersionDtosBySoftwareSystemIdAsync(_selectedSoftwareSystemId);
+        ChangeButtonText("ADD", false);
+
+        var action = new SoftwareVersionDtosChangeAction
+            {
+                SoftwareVersionDtos = await SoftwareApiClient
+                                                .GetSoftwareVersionDtosBySoftwareSystemIdAsync(State.Value.SoftwareSystemDto.Id)
+            };
+        Dispatcher.Dispatch(action);
     }
+
     private async Task SelectSystem(SoftwareSystemDto dto)
     {
         if (dto is not null)
         {
-            _buttonText = "UPDATE";
-            _softwareSystemDto = Mapper.Map<SoftwareSystemDto>(dto);
-            _selectedSoftwareSystemId = dto.Id;
+            ChangeButtonText("UPDATE", true);
+            ChangeDto(dto);
+            ChangeSystemId(dto.Id);
         }
         else
         {
-            _buttonText = "ADD";
-            _softwareSystemDto = new();
-            _selectedSoftwareSystemId = 0;
+            ChangeButtonText("ADD", true);
+            ChangeDto(new SoftwareSystemDto());
+            ChangeSystemId(0);
         }
         await RefreshVersions();
     }
+
     private void SelectVersion(SoftwareVersionDto dto)
     {
         if (dto is not null)
         {
-            _buttonTextV = "UPDATE";
-            _softwareVersionDto = Mapper.Map<SoftwareVersionDto>(dto);
-            _selectedSoftwareVersionId = dto.Id;
+            ChangeButtonText("UPDATE", false);
+            ChangeDto(dto);
+            ChangeVersionId(dto.Id);
         }
         else
         {
-            _buttonText = "ADD";
-            _softwareVersionDto = new();
+            ChangeButtonText("ADD", false);
+            ChangeDto(new SoftwareVersionDto());
+            ChangeVersionId(0);
         }
     }
+
     private async Task DeleteSystem(SoftwareSystemDto dto)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
@@ -153,6 +159,7 @@
             Snackbar.Add($"The Software System has been deleted!", MudBlazor.Severity.Success);
         }
     }
+
     private async Task DeleteVersion(SoftwareVersionDto dto)
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
@@ -174,22 +181,21 @@
         if (mudForm.IsValid)
         {
             string operation = string.Empty;
-            var dto = _softwareSystemDto;
 
-            if (_softwareSystemDto!.Id == 0)
+            if (State.Value.SoftwareSystemDto!.Id == 0)
             {
                 operation = "added";
-                dto!.MaintainableId = _selectedPlatform;
-                await SoftwareSystemApiClient.CreateAsync(dto);
+                State.Value.SoftwareSystemDto!.MaintainableId = State.Value.SelectedPlatform;
+                await SoftwareSystemApiClient.CreateAsync(State.Value.SoftwareSystemDto);
             }
             else
             {
                 operation = "updated";
-                await SoftwareSystemApiClient.UpdateAsync(_softwareSystemDto.Id, dto);
+                await SoftwareSystemApiClient.UpdateAsync(State.Value.SoftwareSystemDto.Id, State.Value.SoftwareSystemDto);
             }
             await RefreshSystems();
             await mudForm.ResetAsync();
-            _softwareSystemDto = new();
+            ChangeDto(new SoftwareSystemDto());
             Snackbar.Add($"The Software System was Successfully {operation}!", MudBlazor.Severity.Success);
         }
     }
@@ -201,26 +207,61 @@
         if (mudForm.IsValid)
         {
             string operation = string.Empty;
-            var dto = _softwareVersionDto;
 
-            if (_softwareVersionDto!.Id == 0)
+            if (State.Value.SoftwareVersionDto!.Id == 0)
             {
                 operation = "added";
-                dto!.SoftwareSystemId = _selectedSoftwareSystemId;
-                await SoftwareVersionApiClient.CreateAsync(dto);
+                State.Value.SoftwareVersionDto!.SoftwareSystemId = State.Value.SelectedSystemId;
+                await SoftwareVersionApiClient.CreateAsync(State.Value.SoftwareVersionDto);
             }
             else
             {
                 operation = "updated";
-                await SoftwareVersionApiClient.UpdateAsync(_softwareVersionDto.Id, dto);
+                await SoftwareVersionApiClient.UpdateAsync(State.Value.SelectedVersionId, State.Value.SoftwareVersionDto);
             }
             await RefreshVersions();
             await mudForm.ResetAsync();
-            _softwareVersionDto = new();
+            ChangeDto(new SoftwareVersionDto());
             Snackbar.Add($"The Software Version was Successfully {operation}!", MudBlazor.Severity.Success);
         }
     }
 
+    private void ChangeButtonText(string text, bool isSystem)
+    {
+        if (isSystem)
+        {
+            var action = new SoftwareButtonTextSystemChangeAction { ButtonText = text };
+            Dispatcher.Dispatch(action);
+        }
+        else
+        {
+            var action = new SoftwareButtonTextVersionChangeAction { ButtonText = text };
+            Dispatcher.Dispatch(action);
+        }
+    }
+    private void ChangeDto(object dto)
+    {
+        if (dto is SoftwareSystemDto)
+        {
+            var action = new SoftwareSystemDtoChangeAction { SoftwareSystemDto = (SoftwareSystemDto)dto };
+            Dispatcher.Dispatch(action);
+        }
+        else
+        {
+            var action = new SoftwareVersionDtoChangeAction { SoftwareVersionDto = (SoftwareVersionDto)dto };
+            Dispatcher.Dispatch(action);
+        }
+    }
+    private void ChangeSystemId(int id)
+    {
+        var newId = new SelectedSystemIdChangeAction { SelectedSystemId = id };
+        Dispatcher.Dispatch(newId);
+    }
+    private void ChangeVersionId(int id)
+    {
+        var newId = new SelectedVersionIdChangeAction { SelectedVersionId = id };
+        Dispatcher.Dispatch(newId);
+    }
     protected override async Task OnInitializedAsync()
     {
         isReady = false;

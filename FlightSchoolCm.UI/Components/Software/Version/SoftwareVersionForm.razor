@@ -1,4 +1,7 @@
-﻿@namespace FlightSchoolCm.UI.Components.Software
+﻿@inherits FluxorComponent
+@inject IState<SoftwareState> State
+
+@namespace FlightSchoolCm.UI.Components.Software
 
 <FSForm OnSubmitForm="SubmitForm" TItem="SoftwareVersionDto">
     <FormControls>
@@ -7,9 +10,9 @@
 
             <MudItem>
 
-                <MudTextField @bind-Value="_dto.Name"
+                <MudTextField @bind-Value="State.Value.SoftwareVersionDto.Name"
                               Variant="Variant.Outlined"
-                              For="(() => _dto.Name)"
+                              For="(() => State.Value.SoftwareVersionDto.Name)"
                               Label="Version Name"
                               OnlyValidateIfDirty="true"
                               Class="my-6" />
@@ -18,14 +21,14 @@
             </MudItem>
 
             <MudItem>
-                <MudDatePicker @bind-Date="@_dto.VersionDate"
-                    Class="my-5"
-                    For="(() => _dto.VersionDate)"
-                    Label="Version Date"
-                    Variant="Variant.Outlined" />
+                <MudDatePicker @bind-Date="@State.Value.SoftwareVersionDto.VersionDate"
+                               Class="my-5"
+                               For="(() => State.Value.SoftwareVersionDto.VersionDate)"
+                               Label="Version Date"
+                               Variant="Variant.Outlined" />
             </MudItem>
 
-            <MudHidden @bind-Value="@_dto.SoftwareSystemId" />
+            <MudHidden @bind-Value="@State.Value.SoftwareVersionDto.SoftwareSystemId" />
 
         </MudGrid>
 
@@ -39,12 +42,6 @@
 
     [Parameter]
     public MudForm? MudForm { get; set; } = new();
-
-    [CascadingParameter]
-    public SoftwareVersionDto _dto { get; set; } = new();
-
-    [Parameter]
-    public int SoftwareSystemId { get; set; }
 
     private async Task SubmitForm()
     {

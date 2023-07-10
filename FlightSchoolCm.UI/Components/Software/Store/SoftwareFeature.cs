@@ -24,6 +24,3 @@ public class SoftwareFeature : Feature<SoftwareState>
         };
     }
 }
-{
-
-}
