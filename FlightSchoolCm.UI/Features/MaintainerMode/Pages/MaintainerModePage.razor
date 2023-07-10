@@ -3,7 +3,7 @@
 @inherits FluxorComponent
 
 @inject IDispatcher Dispatcher
-@inject IState<MaintainerModeState> MaintainerModeState
+@inject IState<MaintainableModeState> MaintainerModeState
 @inject IMapper Mapper
 @inject IGenericApiClient<MaintainerDto> ApiClient
 
@@ -22,12 +22,12 @@
 
     private void ChangeMode(int mode)
     {
-        var action = new MaintainerModeChangeAction { MaintainerModeId = mode };
+        var action = new MaintainerModeIdChange { MaintainerModeId = mode };
         Dispatcher.Dispatch(action);
     }
     private async Task RefreshMaintainers()
     {
-        var action = new GetMaintainerDtosAction {  MaintainerDtos = await ApiClient.GetAllAsync() };
+        var action = new MaintainerDtosChange {  MaintainerDtos = await ApiClient.GetAllAsync() };
         Dispatcher.Dispatch(action);
     }
     protected override async Task OnInitializedAsync()

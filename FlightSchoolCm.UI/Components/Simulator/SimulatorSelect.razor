@@ -1,0 +1,23 @@
+﻿@inherits FluxorComponent
+@inject IDispatcher Dispatcher
+@inject IState<SimulatorState> State
+
+@if (State.Value.SimulatorDtos is not null)
+{
+    <FSSelect Items="State.Value.SimulatorDtos" OnSelectedOptionChanged="ChangeSimulator" TItem="SimulatorDto">
+        <SelectItems>
+            @foreach (var item in State.Value.SimulatorDtos!)
+            {
+                <MudSelectItem Value="@item.Id">@item.Name</MudSelectItem>
+            }
+        </SelectItems>
+    </FSSelect>
+}
+
+@code {
+
+    private void ChangeSimulator()
+    {
+
+    }
+}

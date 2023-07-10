@@ -2,16 +2,21 @@
 
 namespace FlightSchoolCm.UI.Features.MaintainerMode.Store;
 
-public class MaintainerModeFeature : Feature<MaintainerModeState>
+public class MaintainerModeFeature : Feature<MaintainableModeState>
 {
     public override string GetName() => "MaintainerMode";
 
-    protected override MaintainerModeState GetInitialState()
+    protected override MaintainableModeState GetInitialState()
     {
-        return new MaintainerModeState
+        return new MaintainableModeState
         {
             MaintainerModeId = 0,
-            MaintainerDtos = null
+            MaintainableModeId = 0,
+            ManModuleModeId = 0,
+            PlatformModeId = 0,
+            SimulatorModeId = 0,
+            LotModeId = 0,
+            MaintainerDtos = new()
         };
     }
 }
