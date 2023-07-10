@@ -239,6 +239,7 @@
             Dispatcher.Dispatch(action);
         }
     }
+    
     private void ChangeDto(object dto)
     {
         if (dto is SoftwareSystemDto)
@@ -252,16 +253,19 @@
             Dispatcher.Dispatch(action);
         }
     }
+    
     private void ChangeSystemId(int id)
     {
         var newId = new SelectedSystemIdChangeAction { SelectedSystemId = id };
         Dispatcher.Dispatch(newId);
     }
+    
     private void ChangeVersionId(int id)
     {
         var newId = new SelectedVersionIdChangeAction { SelectedVersionId = id };
         Dispatcher.Dispatch(newId);
     }
+    
     protected override async Task OnInitializedAsync()
     {
         isReady = false;
