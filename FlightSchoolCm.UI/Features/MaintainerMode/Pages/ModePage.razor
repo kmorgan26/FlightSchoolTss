@@ -1,0 +1,59 @@
+﻿@page "/mode"
+
+@inherits FluxorComponent
+
+@inject IDispatcher Dispatcher
+@inject IState<MaintainableModeState> MaintainerModeState
+@inject IMapper Mapper
+@inject IGenericApiClient<MaintainerDto> MaintainerClient
+@inject IPlatformApiClient PlatformClient
+
+@if (_maintainerDtos is not null)
+{
+    <CascadingValue Value="@MaintainerModeState.Value.MaintainerModeId">
+        <FSRadio TItem="MaintainerDto" RadioItems="@_maintainerDtos" Context="context" OnSelectedOptionChanged="ChangeMaintainerMode">
+            <RadioButtons>
+                <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
+            </RadioButtons>
+        </FSRadio>
+    </CascadingValue>
+}
+@if(_platformDtos is not null)
+{
+    <CascadingValue Value="@MaintainerModeState.Value.PlatformModeId">
+        <FSRadio TItem="PlatformDto" RadioItems="@_platformDtos" Context="context" OnSelectedOptionChanged="ChangePlatformMode">
+            <RadioButtons>
+                <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
+            </RadioButtons>
+        </FSRadio>
+    </CascadingValue>
+}
+
+@code {
+    private IEnumerable<MaintainerDto>? _maintainerDtos;
+    private IEnumerable<PlatformDto>? _platformDtos;
+
+    private async Task ChangeMaintainerMode(int mode)
+    {
+        var action = new MaintainerModeIdChange { MaintainerModeId = mode };
+        Dispatcher.Dispatch(action);
+        await RefreshPlatforms(mode);
+    }
+    private void ChangePlatformMode(int mode)
+    {
+        var action = new PlatformModeIdChange { PlatformModeId = mode };
+        Dispatcher.Dispatch(action);
+    }
+    private async Task RefreshPlatforms(int id)
+    {
+        _platformDtos = await PlatformClient.GetPlatformDtosByMaintainerIdAsync(id);
+    }
+    private async Task RefreshMaintainers()
+    {
+        _maintainerDtos = await MaintainerClient.GetAllAsync();
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshMaintainers();
+    }
+}
