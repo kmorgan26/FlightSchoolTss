@@ -1,6 +1,6 @@
 ﻿using FlightSchoolTss.DTOs.ManModule;
 
-namespace FlightSchoolTss.DTOs.Lot;
+namespace FlightSchoolTss.Data.DTOs.Lot;
 
 public class LotDetailsDto : LotDto
 {

@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.DTOs.Lot;
+using FlightSchoolTss.Data.DTOs.Lot;
 
 namespace FlightSchoolTss.Data.Validators.Lot;
 

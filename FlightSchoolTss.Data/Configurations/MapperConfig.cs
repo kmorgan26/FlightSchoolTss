@@ -12,7 +12,7 @@ using FlightSchoolTss.Data.DTOs.SoftwareSystem;
 using FlightSchoolTss.Data.DTOs.SoftwareVersion;
 using FlightSchoolTss.Data.DTOs.SoftwareVersionLoad;
 using FlightSchoolTss.Data.Entities;
-using FlightSchoolTss.DTOs.Lot;
+using FlightSchoolTss.Data.DTOs.Lot;
 using FlightSchoolTss.Data.DTOs.Maintainer;
 using FlightSchoolTss.DTOs.ManModule;
 using FlightSchoolTss.Data.DTOs.Platform;

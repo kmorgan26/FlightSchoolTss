@@ -1,6 +1,6 @@
 ﻿using FlightSchoolTss.Data.DTOs.Maintainer;
 using FlightSchoolTss.Data.Entities;
-using FlightSchoolTss.DTOs.Lot;
+using FlightSchoolTss.Data.DTOs.Lot;
 using FlightSchoolTss.Data.DTOs.Simulator;
 
 namespace FlightSchoolTss.Data.DTOs.Platform;

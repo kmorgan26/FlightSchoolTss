@@ -1,4 +1,4 @@
-﻿namespace FlightSchoolTss.DTOs.Lot;
+﻿namespace FlightSchoolTss.Data.DTOs.Lot;
 public class LotDto
 {
     public int Id { get; set; }
