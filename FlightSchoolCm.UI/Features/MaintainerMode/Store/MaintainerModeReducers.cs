@@ -93,20 +93,4 @@ public static class MaintainerModeReducers
             MaintainerDtos = state.MaintainerDtos
         };
     }
-
-    [ReducerMethod]
-    public static MaintainableModeState OnChangeMaintainerDtos(MaintainableModeState state, MaintainerDtosChange action)
-    {
-        return state with
-        {
-            MaintainerDtos = action.MaintainerDtos,
-            PlatformModeId = state.PlatformModeId,
-            SimulatorModeId = state.SimulatorModeId,
-            ManModuleModeId = state.ManModuleModeId,
-            MaintainerModeId = state.MaintainerModeId,
-            MaintainableModeId = state.MaintainableModeId,
-            LotModeId = state.LotModeId
-        };
-    }
-
 }

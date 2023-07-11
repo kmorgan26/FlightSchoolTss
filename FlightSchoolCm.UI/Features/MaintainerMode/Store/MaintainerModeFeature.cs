@@ -15,8 +15,7 @@ public class MaintainerModeFeature : Feature<MaintainableModeState>
             ManModuleModeId = 0,
             PlatformModeId = 0,
             SimulatorModeId = 0,
-            LotModeId = 0,
-            MaintainerDtos = new()
+            LotModeId = 0
         };
     }
 }
