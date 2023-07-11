@@ -11,7 +11,7 @@ public static class MaintainerModeReducers
         return state with
         {
             MaintainableModeId = action.MaintainableModeId,
-            MaintainerModeId = state.MaintainerModeId,
+            MaintainerId = state.MaintainerId,
             LotModeId = state.LotModeId,
             ManModuleModeId = state.ManModuleModeId,
             SimulatorModeId = state.SimulatorModeId,
@@ -25,7 +25,7 @@ public static class MaintainerModeReducers
     {
         return state with
         {
-            MaintainerModeId = action.MaintainerModeId,
+            MaintainerId = action.MaintainerModeId,
             MaintainableModeId = state.MaintainableModeId,
             LotModeId = state.LotModeId,
             ManModuleModeId = state.ManModuleModeId,
@@ -40,7 +40,7 @@ public static class MaintainerModeReducers
         return state with
         {
             LotModeId = action.LotModeId,
-            MaintainerModeId = state.MaintainerModeId,
+            MaintainerId = state.MaintainerId,
             MaintainableModeId = state.MaintainableModeId,
             ManModuleModeId = state.ManModuleModeId,
             SimulatorModeId = state.SimulatorModeId,
@@ -55,7 +55,7 @@ public static class MaintainerModeReducers
         return state with
         {
             ManModuleModeId = action.ManModuleModeId,
-            MaintainerModeId = state.MaintainerModeId,
+            MaintainerId = state.MaintainerId,
             MaintainableModeId = state.MaintainableModeId,
             LotModeId = state.LotModeId,
             SimulatorModeId = state.SimulatorModeId,
@@ -71,7 +71,7 @@ public static class MaintainerModeReducers
         {
             SimulatorModeId = action.SimulatorModeId,
             ManModuleModeId = state.ManModuleModeId,
-            MaintainerModeId = state.MaintainerModeId,
+            MaintainerId = state.MaintainerId,
             MaintainableModeId = state.MaintainableModeId,
             LotModeId = state.LotModeId,
             PlatformModeId = state.PlatformModeId,
@@ -87,7 +87,7 @@ public static class MaintainerModeReducers
             PlatformModeId = action.PlatformModeId,
             SimulatorModeId = state.SimulatorModeId,
             ManModuleModeId = state.ManModuleModeId,
-            MaintainerModeId = state.MaintainerModeId,
+            MaintainerId = state.MaintainerId,
             MaintainableModeId = state.MaintainableModeId,
             LotModeId = state.LotModeId,
             MaintainerDtos = state.MaintainerDtos

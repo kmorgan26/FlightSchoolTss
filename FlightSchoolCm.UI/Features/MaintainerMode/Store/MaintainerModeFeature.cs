@@ -10,7 +10,7 @@ public class MaintainerModeFeature : Feature<MaintainableModeState>
     {
         return new MaintainableModeState
         {
-            MaintainerModeId = 0,
+            MaintainerId = 0,
             MaintainableModeId = 0,
             ManModuleModeId = 0,
             PlatformModeId = 0,

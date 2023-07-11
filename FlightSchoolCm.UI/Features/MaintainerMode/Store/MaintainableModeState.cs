@@ -6,7 +6,7 @@ public record MaintainableModeState
 {
     public List<MaintainerDto>? MaintainerDtos { get; init; }
     
-    public int MaintainerModeId { get; init; }
+    public int MaintainerId { get; init; }
     public int PlatformModeId { get; init; }
     public int SimulatorModeId { get; init; }
     public int LotModeId { get; init; }

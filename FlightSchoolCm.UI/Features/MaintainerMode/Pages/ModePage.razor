@@ -13,7 +13,7 @@
     @if (_maintainerDtos is not null)
     {
         <MudItem sm="12">
-            <CascadingValue Value="@MaintainerModeState.Value.MaintainerModeId">
+            <CascadingValue Value="@MaintainerModeState.Value.MaintainerId">
                 <MudChip Color="Color.Primary">Maintainers</MudChip>
                 <FSRadio TItem="MaintainerDto" RadioItems="@_maintainerDtos" Context="context" OnSelectedOptionChanged="ChangeMaintainerMode">
                     <RadioButtons>
@@ -23,7 +23,7 @@
             </CascadingValue>
         </MudItem>
     }
-    @if (_platformDtos is not null)
+    @if (_platformDtos is not null && MaintainerModeState.Value.MaintainerId > 0)
     {
         <MudItem sm="12">
             <MudChip Color="Color.Success">Platforms</MudChip>
@@ -36,11 +36,39 @@
             </CascadingValue>
         </MudItem>
     }
+    @if(_simulatorDtos is not null && MaintainerModeState.Value.PlatformModeId > 0 && MaintainerModeState.Value.PlatformModeId != 7)
+    {
+        <MudItem sm="12">
+            <MudChip Color="Color.Info">Simulators</MudChip>
+            <CascadingValue Value="@MaintainerModeState.Value.SimulatorModeId">
+                <FSRadio TItem="SimulatorDto" RadioItems="@_simulatorDtos" Context="context" OnSelectedOptionChanged="ChangeSimulatorMode">
+                    <RadioButtons>
+                        <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
+                    </RadioButtons>
+                </FSRadio>
+            </CascadingValue>
+        </MudItem>
+    }
+    @if(_lotDtos is not null && MaintainerModeState.Value.PlatformModeId == 7)
+    {
+        <MudItem sm="12">
+            <MudChip Color="Color.Info">Lots</MudChip>
+            <CascadingValue Value="@MaintainerModeState.Value.LotModeId">
+                <FSRadio TItem="LotDto" RadioItems="@_lotDtos" Context="context" OnSelectedOptionChanged="ChangeLotMode">
+                    <RadioButtons>
+                        <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
+                    </RadioButtons>
+                </FSRadio>
+            </CascadingValue>
+        </MudItem>
+    }
 
 </MudGrid>
 @code {
     private IEnumerable<MaintainerDto>? _maintainerDtos;
     private IEnumerable<PlatformDto>? _platformDtos;
+    private IEnumerable<SimulatorDto>? _simulatorDtos;
+    private IEnumerable<LotDto>? _lotDtos;
 
     private async Task ChangeMaintainerMode(int mode)
     {
@@ -48,18 +76,44 @@
         Dispatcher.Dispatch(action);
         await RefreshPlatforms(mode);
     }
-    private void ChangePlatformMode(int mode)
+    private async Task ChangePlatformMode(int mode)
     {
         var action = new PlatformModeIdChange { PlatformModeId = mode };
+        Dispatcher.Dispatch(action);
+        
+        if(mode != 7)
+            await RefreshSimulators(mode);
+        
+        if(mode == 7)
+            await RefreshLots(mode);
+    }
+    private void ChangeSimulatorMode(int mode)
+    {
+        var action = new SimulatorModeIdChange { SimulatorModeId = mode };
+        Dispatcher.Dispatch(action);
+    }
+    private void ChangeLotMode(int mode)
+    {
+        var action = new LotModeIdChange { LotModeId = mode };
         Dispatcher.Dispatch(action);
     }
     private async Task RefreshPlatforms(int id)
     {
         _platformDtos = await PlatformClient.GetPlatformDtosByMaintainerIdAsync(id);
+        await RefreshSimulators(0);
+    }
+    private async Task RefreshLots(int id)
+    {
+        _lotDtos = await PlatformClient.GetLotDtosAsync();
+        await RefreshSimulators(0);
     }
     private async Task RefreshMaintainers()
     {
         _maintainerDtos = await MaintainerClient.GetAllAsync();
+    }
+    private async Task RefreshSimulators(int id)
+    {
+        _simulatorDtos = await PlatformClient.GetSimulatorDtosByPlatformIdAsync(id);
     }
     protected override async Task OnInitializedAsync()
     {
