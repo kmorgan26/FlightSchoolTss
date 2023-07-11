@@ -1,4 +1,4 @@
-﻿namespace FlightSchoolTss.DTOs.ManModule;
+﻿namespace FlightSchoolTss.Data.DTOs.ManModule;
 public class ManModuleDto
 {
     public int Id { get; set; }

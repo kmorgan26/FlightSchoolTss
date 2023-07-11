@@ -14,7 +14,7 @@ using FlightSchoolTss.Data.DTOs.SoftwareVersionLoad;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.DTOs.Lot;
 using FlightSchoolTss.Data.DTOs.Maintainer;
-using FlightSchoolTss.DTOs.ManModule;
+using FlightSchoolTss.Data.DTOs.ManModule;
 using FlightSchoolTss.Data.DTOs.Platform;
 using FlightSchoolTss.Data.DTOs.Simulator;
 using FlightSchoolTss.Data.ViewModels.Generic;

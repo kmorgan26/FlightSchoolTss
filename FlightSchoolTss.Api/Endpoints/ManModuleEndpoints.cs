@@ -2,7 +2,7 @@
 using FluentValidation;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
-using FlightSchoolTss.DTOs.ManModule;
+using FlightSchoolTss.Data.DTOs.ManModule;
 using FlightSchoolTss.Filters;
 using Microsoft.AspNetCore.Authorization;
 

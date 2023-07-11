@@ -1,4 +1,4 @@
-﻿using FlightSchoolTss.DTOs.ManModule;
+﻿using FlightSchoolTss.Data.DTOs.ManModule;
 
 namespace FlightSchoolTss.Data.DTOs.Lot;
 
