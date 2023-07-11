@@ -8,7 +8,7 @@ namespace FlightSchoolTss.Data.Repositories;
 public class SimulatorRepository : GenericRepository<Simulator>, ISimulatorRepository
 {
     public SimulatorRepository(FstssDataContext context) : base(context){}
-    public async Task<IEnumerable<Simulator>> GetAllSimulatorsByPlatformIdAsync(int platformId)
+    public async Task<IEnumerable<Simulator>> GetSimulatorsByPlatformIdAsync(int platformId)
     {
         return await _context.Simulators
             .Where(s => s.PlatformId == platformId)
