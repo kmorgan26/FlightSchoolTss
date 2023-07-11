@@ -1,5 +1,12 @@
-﻿<MudItem xs="12">
+﻿@inherits FluxorComponent
+@inject IDispatcher Dispatcher
+@inject IState<ModeState> State
+
+<MudItem xs="12">
     <MudText Typo="Typo.h3">Admin Panel</MudText>
+</MudItem>
+<MudItem>
+    MaintainableID: @State.Value.MaintainableModeId
 </MudItem>
 <MudPaper Elevation="0" Class="pa-4">
     <ModePage />

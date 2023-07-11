@@ -11,5 +11,4 @@ public interface IPlatformApiClient
     Task<IEnumerable<SimulatorDto>> GetSimulatorDtosByPlatformIdAsync(int id);
     Task<IEnumerable<LotDto>> GetLotDtosAsync();
     Task<List<SimulatorDto>> GetSimulatorDtosAsync();
-    Task<int> GetMaintainableIdFromPlatformId(int id);
 }

@@ -12,6 +12,8 @@ using FlightSchoolTss.Data.DTOs.Maintainable;
 using FlightSchoolTss.Data.DTOs.Simulator;
 using FlightSchoolTss.Data.DTOs.SoftwareSystem;
 using FlightSchoolTss.Data.DTOs.SoftwareVersion;
+using FlightSchoolTss.Data.DTOs.Lot;
+using FlightSchoolTss.Data.DTOs.ManModule;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -31,6 +33,12 @@ builder.Services.AddScoped<IGenericApiClient<PlatformDto>>
 
 builder.Services.AddScoped<IGenericApiClient<SimulatorDto>>
     (c => new GenericApiClient<SimulatorDto>(apiBaseAddress, "/api/simulator"));
+
+builder.Services.AddScoped<IGenericApiClient<LotDto>>
+    (c => new GenericApiClient<LotDto>(apiBaseAddress, "/api/lot"));
+
+builder.Services.AddScoped<IGenericApiClient<ManModuleDto>>
+    (c => new GenericApiClient<ManModuleDto>(apiBaseAddress, "/api/manmodule"));
 
 builder.Services.AddScoped<IGenericApiClient<SoftwareSystemDto>>
     (c => new GenericApiClient<SoftwareSystemDto>(apiBaseAddress, "/api/softwaresystem"));
