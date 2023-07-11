@@ -30,6 +30,20 @@ public class PlatformApiClient : IPlatformApiClient
         return null!;
     }
 
+    public async Task<IEnumerable<PlatformDto>> GetPlatformDtosByMaintainerIdAsync(int id)
+    {
+        var response = await _httpClient.GetAsync($"/api/platform/GetByMaintainerId/{id}");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+
+            var platforms = JsonConvert.DeserializeObject<IEnumerable<PlatformDto>>(content);
+            return platforms!;
+        }
+        return null!;
+    }
+
     public async Task<List<SimulatorDto>> GetSimulatorDtosAsync()
     {
         var response = await _httpClient.GetAsync($"/api/simulator/GetSimulatorDtos");
