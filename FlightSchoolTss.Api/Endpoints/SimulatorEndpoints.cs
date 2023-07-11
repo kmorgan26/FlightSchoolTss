@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FlightSchoolTss.Data.DTOs.Platform;
 using FlightSchoolTss.Data.DTOs.Simulator;
 using FlightSchoolTss.Data.Entities;
 using FlightSchoolTss.Data.Interfaces;
@@ -36,9 +35,9 @@ public static class SimulatorEndpoints
         .Produces<SimulatorDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
 
-        group.MapGet("/GetByPlatform/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        group.MapGet("/GetByPlatformId/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
-            return await unitOfWork.Simulators.GetAllSimulatorsByPlatformIdAsync(id)
+            return await unitOfWork.Simulators.GetSimulatorsByPlatformIdAsync(id)
                 is List<Simulator> model
                     ? Results.Ok(mapper.Map<List<SimulatorDto>>(model))
                     : Results.NotFound();
@@ -58,8 +57,6 @@ public static class SimulatorEndpoints
         .WithTags(nameof(Simulator))
         .WithName("GetSimulatorDtos")
         .Produces<List<SimulatorDto>>(StatusCodes.Status200OK);
-
-
 
         group.MapPut("/{id}", [AllowAnonymous] async (int id, SimulatorDto simulatorDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
