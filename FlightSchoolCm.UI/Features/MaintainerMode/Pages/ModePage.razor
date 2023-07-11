@@ -8,27 +8,36 @@
 @inject IGenericApiClient<MaintainerDto> MaintainerClient
 @inject IPlatformApiClient PlatformClient
 
-@if (_maintainerDtos is not null)
-{
-    <CascadingValue Value="@MaintainerModeState.Value.MaintainerModeId">
-        <FSRadio TItem="MaintainerDto" RadioItems="@_maintainerDtos" Context="context" OnSelectedOptionChanged="ChangeMaintainerMode">
-            <RadioButtons>
-                <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
-            </RadioButtons>
-        </FSRadio>
-    </CascadingValue>
-}
-@if(_platformDtos is not null)
-{
-    <CascadingValue Value="@MaintainerModeState.Value.PlatformModeId">
-        <FSRadio TItem="PlatformDto" RadioItems="@_platformDtos" Context="context" OnSelectedOptionChanged="ChangePlatformMode">
-            <RadioButtons>
-                <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
-            </RadioButtons>
-        </FSRadio>
-    </CascadingValue>
-}
+<MudGrid>
 
+    @if (_maintainerDtos is not null)
+    {
+        <MudItem sm="12">
+            <CascadingValue Value="@MaintainerModeState.Value.MaintainerModeId">
+                <MudChip Color="Color.Primary">Maintainers</MudChip>
+                <FSRadio TItem="MaintainerDto" RadioItems="@_maintainerDtos" Context="context" OnSelectedOptionChanged="ChangeMaintainerMode">
+                    <RadioButtons>
+                        <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
+                    </RadioButtons>
+                </FSRadio>
+            </CascadingValue>
+        </MudItem>
+    }
+    @if (_platformDtos is not null)
+    {
+        <MudItem sm="12">
+            <MudChip Color="Color.Success">Platforms</MudChip>
+            <CascadingValue Value="@MaintainerModeState.Value.PlatformModeId">
+                <FSRadio TItem="PlatformDto" RadioItems="@_platformDtos" Context="context" OnSelectedOptionChanged="ChangePlatformMode">
+                    <RadioButtons>
+                        <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
+                    </RadioButtons>
+                </FSRadio>
+            </CascadingValue>
+        </MudItem>
+    }
+
+</MudGrid>
 @code {
     private IEnumerable<MaintainerDto>? _maintainerDtos;
     private IEnumerable<PlatformDto>? _platformDtos;
