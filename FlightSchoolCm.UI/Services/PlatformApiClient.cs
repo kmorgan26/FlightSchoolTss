@@ -1,5 +1,6 @@
 ﻿using FlightSchoolCm.UI.Interfaces;
 using FlightSchoolTss.Data.DTOs.Lot;
+using FlightSchoolTss.Data.DTOs.ManModule;
 using FlightSchoolTss.Data.DTOs.Platform;
 using FlightSchoolTss.Data.DTOs.Simulator;
 using Newtonsoft.Json;
@@ -31,7 +32,23 @@ public class PlatformApiClient : IPlatformApiClient
         return null!;
     }
 
-    public async Task<List<PlatformDetailsDto>> GetPlatformDetailsAsync()
+    public async Task<IEnumerable<ManModuleDto>> GetManModulesByLotIdAsync(int id)
+    {
+        var response = await _httpClient.GetAsync($"/api/manmodule/GetByLotIdAsync/{id}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var content = await response.Content.ReadAsStringAsync();
+
+            var simulator = JsonConvert.DeserializeObject<IEnumerable<ManModuleDto>>(content);
+
+            return simulator!;
+        }
+
+        return null!;
+    }
+
+    public async Task<IEnumerable<PlatformDetailsDto>> GetPlatformDetailsAsync()
     {
         var response = await _httpClient.GetAsync($"/api/platform/GetPlatformDetailDtos");
 
@@ -39,7 +56,7 @@ public class PlatformApiClient : IPlatformApiClient
         {
             var content = await response.Content.ReadAsStringAsync();
             
-            var platform = JsonConvert.DeserializeObject<List<PlatformDetailsDto>>(content);
+            var platform = JsonConvert.DeserializeObject<IEnumerable<PlatformDetailsDto>>(content);
 
             return platform!;
         }
@@ -61,7 +78,7 @@ public class PlatformApiClient : IPlatformApiClient
         return null!;
     }
 
-    public async Task<List<SimulatorDto>> GetSimulatorDtosAsync()
+    public async Task<IEnumerable<SimulatorDto>> GetSimulatorDtosAsync()
     {
         var response = await _httpClient.GetAsync($"/api/simulator/GetSimulatorDtos");
 
