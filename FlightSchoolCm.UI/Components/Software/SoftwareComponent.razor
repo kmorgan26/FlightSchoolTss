@@ -1,18 +1,17 @@
-﻿@inject IGenericApiClient<PlatformDto> ApiClient
+﻿@inherits FluxorComponent
+
+@inject IGenericApiClient<PlatformDto> ApiClient
 @inject IGenericApiClient<SoftwareSystemDto> SoftwareSystemApiClient
 @inject IGenericApiClient<SoftwareVersionDto> SoftwareVersionApiClient
 @inject ISoftwareApiClient SoftwareApiClient
 @inject IMapper Mapper
 @inject ISnackbar Snackbar
 @inject IDialogService DialogService
-
-@inherits FluxorComponent
 @inject IDispatcher Dispatcher
 @inject IState<SoftwareState> State
-@inject IState<ModeState> ModeStateSample
-<PageTitle>Software</PageTitle>
+@inject IState<ModeState> MaintainableState
 
-@ModeStateSample.Value.MaintainableModeId
+<PageTitle>Software</PageTitle>
 
 <MudGrid Spacing="2" Justify="Justify.FlexStart">
     <MudItem xs="12">
@@ -21,20 +20,14 @@
     <MudItem xs="12">
         @if (isReady)
         {
-            <CascadingValue Value="@State.Value.SelectedMaintainable">
-                <FSRadio TItem="RadioVm" RadioItems="@_platforms" Context="context" OnSelectedOptionChanged="ChangePlatform">
-                    <RadioButtons>
-                        <MudRadio Option="@context.Id" Dense>@context.Name</MudRadio>
-                </RadioButtons>
-            </FSRadio>
-        </CascadingValue>
+            <MudText>Maintainable ID for Current Selection: @MaintainableState.Value.MaintainableModeId</MudText>
         }
     </MudItem>
 
     <MudDivider />
 
     <MudItem xs="12" sm="6">
-        @if (State.Value.SelectedMaintainable > 0)
+        @if (MaintainableState.Value.MaintainableModeId > 0)
         {
             <CascadingValue Value="State.Value.ButtonTextSystem">
                 <SoftwareSystemForm OnSubmitForm="CreateOrUpdateSystem" />
@@ -47,7 +40,7 @@
     </MudItem>
 
     <MudItem xs="12" sm="6">
-        @if (State.Value.SelectedSystemId > 0 && State.Value.SelectedMaintainable > 0)
+        @if (State.Value.SelectedSystemId > 0 && MaintainableState.Value.MaintainableModeId > 0)
         {
             <CascadingValue Value="State.Value.ButtonTextVersion">
                 <SoftwareVersionForm OnSubmitForm="CreateOrUpdateVersion" />
@@ -63,13 +56,12 @@
 @code {
     private bool isReady;
 
+    private string? _MaintainableLabel;
 
     public IEnumerable<RadioVm>? _platforms { get; set; }
 
-    private async Task ChangePlatform(int id)
+    private async Task SetupForMaintainable()
     {
-        var action = new SelectedMaintainableChangeAction { SelectedMaintainable = id };
-        Dispatcher.Dispatch(action);
         ChangeDto(new SoftwareSystemDto());
         ChangeDto(new SoftwareVersionDto());
         await RefreshSystems();
@@ -82,20 +74,13 @@
         await RefreshVersions();
     }
 
-    private async Task RefreshMaintainables()
-    {
-        var maintainables = await ApiClient.GetAllAsync();
-        _platforms = Mapper.Map<IEnumerable<RadioVm>>(maintainables);
-        
-    }
-
     private async Task RefreshSystems()
     {
         ChangeButtonText("ADD", true);
 
         var action = new SoftwareSystemDtosChangeAction
             {
-                SoftwareSystemDtos = await SoftwareApiClient.GetSoftwareSystemDtosByMaintainableIdAsync(State.Value.SelectedMaintainable)
+                SoftwareSystemDtos = await SoftwareApiClient.GetSoftwareSystemDtosByMaintainableIdAsync(MaintainableState.Value.MaintainableModeId)
             };
         Dispatcher.Dispatch(action);
 
@@ -113,7 +98,7 @@
         var action = new SoftwareVersionDtosChangeAction
             {
                 SoftwareVersionDtos = await SoftwareApiClient
-                                                .GetSoftwareVersionDtosBySoftwareSystemIdAsync(State.Value.SoftwareSystemDto.Id)
+                                                    .GetSoftwareVersionDtosBySoftwareSystemIdAsync(State.Value.SoftwareSystemDto.Id)
             };
         Dispatcher.Dispatch(action);
     }
@@ -191,7 +176,7 @@
             if (State.Value.SoftwareSystemDto!.Id == 0)
             {
                 operation = "added";
-                State.Value.SoftwareSystemDto!.MaintainableId = State.Value.SelectedMaintainable;
+                State.Value.SoftwareSystemDto!.MaintainableId = MaintainableState.Value.MaintainableModeId;
                 await SoftwareSystemApiClient.CreateAsync(State.Value.SoftwareSystemDto);
             }
             else
@@ -245,7 +230,7 @@
             Dispatcher.Dispatch(action);
         }
     }
-    
+
     private void ChangeDto(object dto)
     {
         if (dto is SoftwareSystemDto)
@@ -259,23 +244,23 @@
             Dispatcher.Dispatch(action);
         }
     }
-    
+
     private void ChangeSystemId(int id)
     {
         var newId = new SelectedSystemIdChangeAction { SelectedSystemId = id };
         Dispatcher.Dispatch(newId);
     }
-    
+
     private void ChangeVersionId(int id)
     {
         var newId = new SelectedVersionIdChangeAction { SelectedVersionId = id };
         Dispatcher.Dispatch(newId);
     }
-    
+
     protected override async Task OnInitializedAsync()
     {
         isReady = false;
-        await RefreshMaintainables();
+        await SetupForMaintainable();
         isReady = true;
     }
 }
