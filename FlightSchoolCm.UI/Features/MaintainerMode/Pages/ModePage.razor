@@ -14,7 +14,6 @@
 
 @inject IState<SoftwareState> SoftwareState
 
-@SoftwareState.Value.ButtonTextSystem
 <MudGrid>
 
     @if (_maintainerDtos is not null)
@@ -150,7 +149,6 @@
     private async Task RefreshLots(int id)
     {
         _lotDtos = await ApiClient.GetLotDtosAsync();
-        await RefreshSimulators(0);
     }
     private async Task RefreshMaintainers()
     {
@@ -200,10 +198,7 @@
         if (State.Value.PlatformId > 0)
         {
             await RefreshSimulators(State.Value.PlatformId);
-        }
-        if (State.Value.SimulatorId > 0)
-        {
-            await RefreshSimulators(State.Value.SimulatorId);
+            await RefreshLots(State.Value.PlatformId);
         }
     }
 }
