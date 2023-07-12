@@ -9,8 +9,10 @@
 @inherits FluxorComponent
 @inject IDispatcher Dispatcher
 @inject IState<SoftwareState> State
-
+@inject IState<ModeState> ModeStateSample
 <PageTitle>Software</PageTitle>
+
+@ModeStateSample.Value.MaintainableModeId
 
 <MudGrid Spacing="2" Justify="Justify.FlexStart">
     <MudItem xs="12">

@@ -2,7 +2,7 @@
 
 namespace FlightSchoolCm.UI.Components.Software.Store;
 
-public class SoftwareReducer
+public static class SoftwareReducer
 {
     
     [ReducerMethod] public static SoftwareState SoftwareSystemDtoChangeAction(SoftwareState state, SoftwareSystemDtoChangeAction action)

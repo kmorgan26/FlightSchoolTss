@@ -12,6 +12,9 @@
 @inject IGenericApiClient<ManModuleDto> ManModuleClient
 @inject IPlatformApiClient ApiClient
 
+@inject IState<SoftwareState> SoftwareState
+
+@SoftwareState.Value.ButtonTextSystem
 <MudGrid>
 
     @if (_maintainerDtos is not null)
@@ -198,7 +201,7 @@
         {
             await RefreshSimulators(State.Value.PlatformId);
         }
-        if(State.Value.SimulatorId > 0)
+        if (State.Value.SimulatorId > 0)
         {
             await RefreshSimulators(State.Value.SimulatorId);
         }
