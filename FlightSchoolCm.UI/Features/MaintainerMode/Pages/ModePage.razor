@@ -68,6 +68,19 @@
             </CascadingValue>
         </MudItem>
     }
+    @if (_manModuleDtos is not null && State.Value.LotId > 0)
+    {
+        <MudItem sm="12">
+            <MudChip Color="Color.Warning">Man Modules</MudChip>
+            <CascadingValue Value="@State.Value.ManModuleId">
+                <FSRadio TItem="ManModuleDto" RadioItems="@_manModuleDtos" Context="context" OnSelectedOptionChanged="ChangeManModuleId">
+                    <RadioButtons>
+                        <MudRadio Option="@context.Id" Color="Color.Dark" Size="Size.Small">@context.Name</MudRadio>
+                    </RadioButtons>
+                </FSRadio>
+            </CascadingValue>
+        </MudItem>
+    }
 
 </MudGrid>
 
@@ -77,6 +90,7 @@
     private IEnumerable<PlatformDto>? _platformDtos;
     private IEnumerable<SimulatorDto>? _simulatorDtos;
     private IEnumerable<LotDto>? _lotDtos;
+    private IEnumerable<ManModuleDto>? _manModuleDtos;
 
     private async Task ChangeMaintainerId(int id)
     {
@@ -85,8 +99,14 @@
             var action = new MaintainerIdChange { MaintainerModeId = id };
             Dispatcher.Dispatch(action);
 
-            var idChange = new PlatformIdChange { PlatformModeId = 0 };
-            Dispatcher.Dispatch(idChange);
+            var platformAction = new PlatformIdChange { PlatformModeId = 0 };
+            Dispatcher.Dispatch(platformAction);
+
+            var lotAction = new LotIdChange { LotModeId = 0 };
+            Dispatcher.Dispatch(lotAction);
+
+            var mmAction = new ManModuleIdChange { ManModuleModeId = 0 };
+            Dispatcher.Dispatch(mmAction);
 
             await RefreshPlatforms(id);
         }
@@ -133,17 +153,24 @@
             var action = new LotIdChange { LotModeId = id };
             Dispatcher.Dispatch(action);
 
+            await RefreshManModules(id);
             await SetMaintainableId("lot", id);
+        }
+    }
+    private async Task ChangeManModuleId(int id)
+    {
+        if (State.Value.ManModuleId != id)
+        {
+            var action = new ManModuleIdChange { ManModuleModeId = id };
+            Dispatcher.Dispatch(action);
+
+            await SetMaintainableId("mm", id);
         }
     }
     private async Task RefreshPlatforms(int id)
     {
         _platformDtos = await ApiClient.GetPlatformDtosByMaintainerIdAsync(id);
 
-        //var action = new PlatformIdChange { PlatformModeId = id };
-        //Dispatcher.Dispatch(action);
-
-        //await ChangePlatformId(0);
         await RefreshSimulators(0);
     }
     private async Task RefreshLots(int id)
@@ -157,6 +184,10 @@
     private async Task RefreshSimulators(int id)
     {
         _simulatorDtos = await ApiClient.GetSimulatorDtosByPlatformIdAsync(id);
+    }
+    private async Task RefreshManModules(int id)
+    {
+        _manModuleDtos = await ApiClient.GetManModulesByLotIdAsync(id);
     }
     private async Task SetMaintainableId(string table, int id)
     {
@@ -199,6 +230,10 @@
         {
             await RefreshSimulators(State.Value.PlatformId);
             await RefreshLots(State.Value.PlatformId);
+        }
+        if (State.Value.LotId > 0)
+        {
+            await RefreshManModules(State.Value.LotId);
         }
     }
 }
