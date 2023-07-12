@@ -5,6 +5,7 @@ using FlightSchoolTss.Data.Interfaces;
 using FlightSchoolTss.Data.DTOs.ManModule;
 using FlightSchoolTss.Filters;
 using Microsoft.AspNetCore.Authorization;
+using FlightSchoolTss.Data.DTOs.Simulator;
 
 namespace FlightSchoolTss.Endpoints;
 
@@ -35,6 +36,21 @@ public static class ManModuleEndpoints
         .WithName("GetManModuleById")
         .Produces<ManModuleDto>(StatusCodes.Status200OK)
         .Produces(StatusCodes.Status404NotFound);
+
+        group.MapGet("/GetByLotIdAsync/{id}", [AllowAnonymous] async (int id, IUnitOfWork unitOfWork, IMapper mapper) =>
+        {
+            return await unitOfWork.ManModules.GetManModulesByLotIdAsync(id)
+                is List<ManModule> model
+                    ? Results.Ok(mapper.Map<List<ManModuleDto>>(model))
+                    : Results.NotFound();
+
+        })
+        .WithTags(nameof(ManModule))
+        .WithName("GetManModulesByLotId")
+        .Produces<ManModuleDto>(StatusCodes.Status200OK)
+        .Produces(StatusCodes.Status404NotFound);
+
+
 
         group.MapPut("/{id}", [AllowAnonymous] async (int id, ManModuleDto manModuleDto, IUnitOfWork unitOfWork, IMapper mapper) =>
         {
