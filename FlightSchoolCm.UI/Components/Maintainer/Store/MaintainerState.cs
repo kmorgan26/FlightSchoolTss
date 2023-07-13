@@ -9,6 +9,6 @@ public record MaintainerState
     public MaintainerDto? MaintainerDto { get; init; } = new MaintainerDto();
 
     public string ButtonText { get; init; } = "ADD";
-    public int SelectedRow { get; set; } = -1;
+    public int SelectedRow { get; init; } = -1;
 
 }
