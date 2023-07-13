@@ -109,34 +109,25 @@
     }
     private async Task ChangeSimulatorId(int id)
     {
-        if (State.Value.SimulatorId != id)
-        {
-            var action = new SimulatorIdChange { SimulatorModeId = id };
-            Dispatcher.Dispatch(action);
+        var action = new SimulatorIdChange { SimulatorModeId = id };
+        Dispatcher.Dispatch(action);
 
-            await SetMaintainableId("simulator", id);
-        }
+        await SetMaintainableId("simulator", id);
     }
     private async Task ChangeLotId(int id)
     {
-        if (State.Value.LotId != id)
-        {
-            var action = new LotIdChange { LotModeId = id };
-            Dispatcher.Dispatch(action);
+        var action = new LotIdChange { LotModeId = id };
+        Dispatcher.Dispatch(action);
 
-            await RefreshManModules(id);
-            await SetMaintainableId("lot", id);
-        }
+        await RefreshManModules(id);
+        await SetMaintainableId("lot", id);
     }
     private async Task ChangeManModuleId(int id)
     {
-        if (State.Value.ManModuleId != id)
-        {
-            var action = new ManModuleIdChange { ManModuleModeId = id };
-            Dispatcher.Dispatch(action);
+        var action = new ManModuleIdChange { ManModuleModeId = id };
+        Dispatcher.Dispatch(action);
 
-            await SetMaintainableId("mm", id);
-        }
+        await SetMaintainableId("mm", id);
     }
     private async Task RefreshPlatforms(int id)
     {
