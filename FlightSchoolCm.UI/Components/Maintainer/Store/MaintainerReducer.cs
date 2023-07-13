@@ -17,16 +17,7 @@ public static class MaintainerReducer
             ButtonText = buttonText
         };
     }
-
-    [ReducerMethod]
-    public static MaintainerState OnButtonTextChange(MaintainerState state, MaintainerButtonTextChangeAction action)
-    {
-        return state with
-        {
-            ButtonText = action.ButtonText!
-        };
-    }
-
+    
     [ReducerMethod]
     public static MaintainerState OnCollectionChange(MaintainerState state, MaintainerCollectionChangeAction action)
     {
@@ -35,14 +26,6 @@ public static class MaintainerReducer
         {
             MaintainerDtos = action.MaintainerDtos!,
             ButtonText = buttonText,
-        };
-    }
-    [ReducerMethod]
-    public static MaintainerState OnSelectedRowChange(MaintainerState state, MaintainerSelectedRowChangeAction action)
-    {
-        return state with
-        {
-            SelectedRow = action.SelectedRow
         };
     }
 }
