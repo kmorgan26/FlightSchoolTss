@@ -85,7 +85,6 @@
 </MudGrid>
 
 @code {
-    //TODO: Change the logic so the RCTD isn't hard coded in ChangePlatformId() method
     private IEnumerable<MaintainerDto>? _maintainerDtos;
     private IEnumerable<PlatformDto>? _platformDtos;
     private IEnumerable<SimulatorDto>? _simulatorDtos;
@@ -104,21 +103,8 @@
         var action = new PlatformIdChange { PlatformModeId = id };
         Dispatcher.Dispatch(action);
 
-        if (id != 7)
-        {
-            var idChange = new SimulatorIdChange { SimulatorModeId = 0 };
-            Dispatcher.Dispatch(idChange);
-            await RefreshSimulators(id);
-        }
-
-        if (id == 7)
-        {
-            var idChange = new LotIdChange { LotModeId = 0 };
-            Dispatcher.Dispatch(idChange);
-
-            await RefreshLots(id);
-        }
-
+        await RefreshLots(id);
+        await RefreshSimulators(id);
         await SetMaintainableId("platform", id);
     }
     private async Task ChangeSimulatorId(int id)

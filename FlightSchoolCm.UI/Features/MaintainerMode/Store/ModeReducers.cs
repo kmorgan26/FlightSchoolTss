@@ -57,7 +57,10 @@ public static class ModeReducers
     {
         return state with
         {
-            PlatformId = action.PlatformModeId
+            PlatformId = action.PlatformModeId,
+            SimulatorId = 0,
+            LotId=0,
+            ManModuleId = 0
         };
     }
 }
