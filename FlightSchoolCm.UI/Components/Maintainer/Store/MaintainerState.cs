@@ -4,7 +4,7 @@ namespace FlightSchoolCm.UI.Components.Maintainer.Store;
 
 public record MaintainerState
 {
-    public List<MaintainerDto>? MaintainerDtos { get; init; } = new List<MaintainerDto>();
+    public IEnumerable<MaintainerDto>? MaintainerDtos { get; init; } = new List<MaintainerDto>();
 
     public MaintainerDto? MaintainerDto { get; init; } = new MaintainerDto();
 
