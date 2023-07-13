@@ -1,17 +1,20 @@
-﻿using Fluxor;
+﻿using FlightSchoolTss.Data.DTOs.Maintainer;
+using Fluxor;
 
 namespace FlightSchoolCm.UI.Components.Maintainer.Store;
 
-public class MaintainerReducer
+public static class MaintainerReducer
 {
     [ReducerMethod]
     public static MaintainerState OnDtoChange(MaintainerState state, MaintainerDtoChangeAction action)
     {
+        var buttonText = action.IsAdd ? "ADD" : "UPDATE";
+        var dto = action.MaintainerDto is not null ? action.MaintainerDto : new MaintainerDto();
+        
         return state with
         {
-            MaintainerDto = action.MaintainerDto,
-            MaintainerDtos = state.MaintainerDtos,
-            ButtonText = state.ButtonText
+            MaintainerDto = dto,
+            ButtonText = buttonText
         };
     }
 
@@ -20,20 +23,18 @@ public class MaintainerReducer
     {
         return state with
         {
-            ButtonText = action.ButtonText!,
-            MaintainerDtos = state.MaintainerDtos,
-            MaintainerDto = state.MaintainerDto
+            ButtonText = action.ButtonText!
         };
     }
 
     [ReducerMethod]
     public static MaintainerState OnCollectionChange(MaintainerState state, MaintainerCollectionChangeAction action)
     {
+        var buttonText = action.IsAdd ? "ADD" : "UPDATE";
         return state with
         {
             MaintainerDtos = action.MaintainerDtos!,
-            MaintainerDto = state.MaintainerDto,
-            ButtonText = state.ButtonText
+            ButtonText = buttonText,
         };
     }
     [ReducerMethod]
@@ -41,9 +42,6 @@ public class MaintainerReducer
     {
         return state with
         {
-            MaintainerDtos = state.MaintainerDtos!,
-            MaintainerDto = state.MaintainerDto,
-            ButtonText = state.ButtonText,
             SelectedRow = action.SelectedRow
         };
     }

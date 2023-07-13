@@ -27,33 +27,19 @@
 
 @code {
 
-    private async Task RefreshMaintainers()
+    private async Task RefreshMaintainers(bool isAdd)
     {
-        var action = new MaintainerButtonTextChangeAction { ButtonText = "ADD" };
-        Dispatcher.Dispatch(action);
+        var dtos = await ApiClient.GetAllAsync();
 
-        var action_maintainers = new MaintainerCollectionChangeAction { MaintainerDtos = await ApiClient.GetAllAsync() };
-        Dispatcher.Dispatch(action_maintainers);
+        var action = new MaintainerCollectionChangeAction { MaintainerDtos = dtos, IsAdd = isAdd };
+        Dispatcher.Dispatch(action);
     }
 
     private void SelectMaintainer(MaintainerDto dto)
     {
-        if (dto is not null)
-        {
-            var action = new MaintainerButtonTextChangeAction { ButtonText = "UPDATE" };
-            Dispatcher.Dispatch(action);
-
-            var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = dto };
-            Dispatcher.Dispatch(action_maintainer);
-        }
-        else
-        {
-            var action = new MaintainerButtonTextChangeAction { ButtonText = "ADD" };
-            Dispatcher.Dispatch(action);
-
-            var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = new() };
-            Dispatcher.Dispatch(action_maintainer);
-        }
+        var isAdd = dto is null ? true : false;
+        var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = dto, IsAdd = isAdd };
+        Dispatcher.Dispatch(action_maintainer);
     }
 
     private async Task CreateOrInsertAsync(MudForm _mudForm)
@@ -73,10 +59,10 @@
                 operation = "updated";
                 await ApiClient.UpdateAsync(State.Value.MaintainerDto.Id, State.Value.MaintainerDto);
             }
-            await RefreshMaintainers();
+            await RefreshMaintainers(true);
             await _mudForm.ResetAsync();
 
-            var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = new() };
+            var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = new(), IsAdd = true };
             Dispatcher.Dispatch(action_maintainer);
             Snackbar.Add($"The Maintainer was Successfully {operation}!", MudBlazor.Severity.Success);
         }
@@ -90,7 +76,7 @@
         if (!result.Canceled)
         {
             await ApiClient.DeleteAsync(dto.Id);
-            await RefreshMaintainers();
+            await RefreshMaintainers(true);
 
             Snackbar.Add($"The Maintainer has been deleted!", MudBlazor.Severity.Success);
         }
@@ -99,6 +85,6 @@
     protected override async Task OnInitializedAsync()
     {
         SelectMaintainer(new MaintainerDto());
-        await RefreshMaintainers();
+        await RefreshMaintainers(true);
     }
 }
