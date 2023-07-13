@@ -19,7 +19,10 @@ public static class ModeReducers
     {
         return state with
         {
-            MaintainerId = action.MaintainerModeId
+            MaintainerId = action.MaintainerModeId,
+            PlatformId = 0,
+            LotId = 0,
+            ManModuleId = 0
         };
     }
     [ReducerMethod]

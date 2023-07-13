@@ -99,15 +99,6 @@
             var action = new MaintainerIdChange { MaintainerModeId = id };
             Dispatcher.Dispatch(action);
 
-            var platformAction = new PlatformIdChange { PlatformModeId = 0 };
-            Dispatcher.Dispatch(platformAction);
-
-            var lotAction = new LotIdChange { LotModeId = 0 };
-            Dispatcher.Dispatch(lotAction);
-
-            var mmAction = new ManModuleIdChange { ManModuleModeId = 0 };
-            Dispatcher.Dispatch(mmAction);
-
             await RefreshPlatforms(id);
         }
     }
