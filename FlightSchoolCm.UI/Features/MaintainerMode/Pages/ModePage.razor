@@ -94,13 +94,10 @@
 
     private async Task ChangeMaintainerId(int id)
     {
-        if (State.Value.MaintainerId != id)
-        {
-            var action = new MaintainerIdChange { MaintainerModeId = id };
-            Dispatcher.Dispatch(action);
+        var action = new MaintainerIdChange { MaintainerModeId = id };
+        Dispatcher.Dispatch(action);
 
-            await RefreshPlatforms(id);
-        }
+        await RefreshPlatforms(id);
     }
     private async Task ChangePlatformId(int id)
     {
