@@ -38,35 +38,17 @@
     private void SelectMaintainer(MaintainerDto dto)
     {
         var isAdd = dto is null ? true : false;
+
         var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = dto, IsAdd = isAdd };
         Dispatcher.Dispatch(action_maintainer);
     }
 
-    private async Task CreateOrUpdateAsync(MudForm _mudForm)
+    private void CreateOrUpdateAsync()
     {
-        await _mudForm!.Validate();
-        if (_mudForm.IsValid)
-        {
-            string operation = string.Empty;
+        var action = new MaintainerCreateOrUpdateAction { MaintainerDto = State.Value.MaintainerDto! };
+        Dispatcher.Dispatch(action);
 
-
-            if (State.Value.MaintainerDto!.Id == 0)
-            {
-                operation = "added";
-                await ApiClient.CreateAsync(State.Value.MaintainerDto);
-            }
-            else
-            {
-                operation = "updated";
-                await ApiClient.UpdateAsync(State.Value.MaintainerDto.Id, State.Value.MaintainerDto);
-            }
-            await RefreshMaintainers(true);
-            await _mudForm.ResetAsync();
-
-            var action_maintainer = new MaintainerDtoChangeAction { MaintainerDto = new(), IsAdd = true };
-            Dispatcher.Dispatch(action_maintainer);
-            Snackbar.Add($"The Maintainer was Successfully {operation}!", MudBlazor.Severity.Success);
-        }
+        Snackbar.Add($"The Maintainer was Successfully { State.Value.Message }!", MudBlazor.Severity.Success);
     }
 
     public async Task DeleteMaintainer(MaintainerDto dto)

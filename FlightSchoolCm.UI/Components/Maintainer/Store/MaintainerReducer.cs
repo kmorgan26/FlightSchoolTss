@@ -8,13 +8,15 @@ public static class MaintainerReducer
     [ReducerMethod]
     public static MaintainerState OnDtoChange(MaintainerState state, MaintainerDtoChangeAction action)
     {
-        var buttonText = action.IsAdd ? "ADD" : "UPDATE";
+        string buttonText = action.IsAdd ? "ADD" : "UPDATE";
+        string messageText = action.IsAdd ? "Created" : "Updated";
         var dto = action.MaintainerDto is not null ? action.MaintainerDto : new MaintainerDto();
         
         return state with
         {
             MaintainerDto = dto,
-            ButtonText = buttonText
+            ButtonText = buttonText,
+            Message = messageText!
         };
     }
     
@@ -25,7 +27,7 @@ public static class MaintainerReducer
         return state with
         {
             MaintainerDtos = action.MaintainerDtos!,
-            ButtonText = buttonText,
+            ButtonText = buttonText
         };
     }
 }

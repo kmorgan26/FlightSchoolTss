@@ -9,4 +9,6 @@ public record MaintainerState
     public MaintainerDto? MaintainerDto { get; init; } = new MaintainerDto();
 
     public string ButtonText { get; init; } = "ADD";
+
+    public string Message { get; init; } = string.Empty;
 }

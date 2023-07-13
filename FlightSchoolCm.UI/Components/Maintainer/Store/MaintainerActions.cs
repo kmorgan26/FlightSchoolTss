@@ -12,3 +12,7 @@ public class MaintainerDtoChangeAction
     public MaintainerDto? MaintainerDto { get; set; }
     public bool IsAdd { get; set; }
 }
+public class MaintainerCreateOrUpdateAction
+{
+    public MaintainerDto? MaintainerDto { get; set; }
+}

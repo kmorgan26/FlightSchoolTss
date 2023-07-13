@@ -12,7 +12,8 @@ public class MaintainerFeature : Feature<MaintainerState>
         {
             ButtonText = "ADD",
             MaintainerDto = new MaintainerDto(),
-            MaintainerDtos = new List<MaintainerDto>()
+            MaintainerDtos = new List<MaintainerDto>(),
+            Message = string.Empty
         };
     }
 }

@@ -22,13 +22,14 @@
 @code {
 
     [Parameter]
-    public EventCallback<MudForm> OnSubmitForm { get; set; }
+    public EventCallback OnSubmitForm { get; set; }
 
     [Parameter]
     public MudForm? MudForm { get; set; } = new();
 
     private async Task SubmitForm()
     {
-        await OnSubmitForm.InvokeAsync(MudForm);
+        await OnSubmitForm.InvokeAsync();
+        await MudForm!.ResetAsync();
     }
 }
