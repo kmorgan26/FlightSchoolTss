@@ -10,7 +10,7 @@ public static class ModeReducers
     {
         return state with
         {
-            MaintainableModeId = action.MaintainableModeId
+            MaintainableModeId = action.MaintainableId
         };
     }
 
@@ -19,7 +19,7 @@ public static class ModeReducers
     {
         return state with
         {
-            MaintainerId = action.MaintainerModeId,
+            MaintainerId = action.MaintainerId,
             PlatformId = 0,
             LotId = 0,
             ManModuleId = 0
@@ -30,7 +30,9 @@ public static class ModeReducers
     {
         return state with
         {
-            LotId = action.LotModeId
+            LotId = action.LotId,
+            ManModuleId = 0,
+            MaintainableModeId = action.LotId
         };
     }
 
@@ -39,7 +41,8 @@ public static class ModeReducers
     {
         return state with
         {
-            ManModuleId = action.ManModuleModeId
+            ManModuleId = action.ManModuleId,
+            MaintainableModeId = action.ManModuleId
         };
     }
 
@@ -48,7 +51,8 @@ public static class ModeReducers
     {
         return state with
         {
-            SimulatorId = action.SimulatorModeId
+            SimulatorId = action.SimulatorId,
+            MaintainableModeId = action.SimulatorId
         };
     }
 
@@ -57,7 +61,8 @@ public static class ModeReducers
     {
         return state with
         {
-            PlatformId = action.PlatformModeId,
+            PlatformId = action.PlatformId,
+            MaintainableModeId = action.PlatformId,
             SimulatorId = 0,
             LotId=0,
             ManModuleId = 0

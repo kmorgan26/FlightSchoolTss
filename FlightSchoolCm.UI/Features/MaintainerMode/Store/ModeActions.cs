@@ -2,26 +2,26 @@
 
 public class MaintainerIdChange 
 {
-    public int MaintainerModeId { get; set; } = 0;
+    public int MaintainerId { get; set; } = 0;
 }
 public class PlatformIdChange
 {
-    public int PlatformModeId { get; set; } = 0;
+    public int PlatformId { get; set; } = 0;
 }
 
 public class SimulatorIdChange
 {
-    public int SimulatorModeId { get; set; } = 0;
+    public int SimulatorId { get; set; } = 0;
 }
 public class LotIdChange
 {
-    public int LotModeId { get; set; } = 0;
+    public int LotId { get; set; } = 0;
 }
 public class ManModuleIdChange
 {
-    public int ManModuleModeId { get; set; } = 0;
+    public int ManModuleId { get; set; } = 0;
 }
 public class MaintainableIdChange
 {
-    public int MaintainableModeId { get; set; } = 0;
+    public int MaintainableId { get; set; } = 0;
 }

@@ -93,41 +93,35 @@
 
     private async Task ChangeMaintainerId(int id)
     {
-        var action = new MaintainerIdChange { MaintainerModeId = id };
+        var action = new MaintainerIdChange { MaintainerId = id };
         Dispatcher.Dispatch(action);
 
         await RefreshPlatforms(id);
     }
     private async Task ChangePlatformId(int id)
     {
-        var action = new PlatformIdChange { PlatformModeId = id };
+        var action = new PlatformIdChange { PlatformId = id };
         Dispatcher.Dispatch(action);
 
         await RefreshLots(id);
         await RefreshSimulators(id);
-        await SetMaintainableId("platform", id);
     }
-    private async Task ChangeSimulatorId(int id)
+    private void ChangeSimulatorId(int id)
     {
-        var action = new SimulatorIdChange { SimulatorModeId = id };
+        var action = new SimulatorIdChange { SimulatorId = id };
         Dispatcher.Dispatch(action);
-
-        await SetMaintainableId("simulator", id);
     }
     private async Task ChangeLotId(int id)
     {
-        var action = new LotIdChange { LotModeId = id };
+        var action = new LotIdChange { LotId = id };
         Dispatcher.Dispatch(action);
 
         await RefreshManModules(id);
-        await SetMaintainableId("lot", id);
     }
-    private async Task ChangeManModuleId(int id)
+    private void ChangeManModuleId(int id)
     {
-        var action = new ManModuleIdChange { ManModuleModeId = id };
+        var action = new ManModuleIdChange { ManModuleId = id };
         Dispatcher.Dispatch(action);
-
-        await SetMaintainableId("mm", id);
     }
     private async Task RefreshPlatforms(int id)
     {
@@ -151,36 +145,6 @@
     {
         _manModuleDtos = await ApiClient.GetManModulesByLotIdAsync(id);
     }
-    private async Task SetMaintainableId(string table, int id)
-    {
-        int maintainableId = 0;
-
-        switch (table)
-        {
-            case "platform":
-                var platformDto = await PlatformClient.GetByIdAsync(id);
-                maintainableId = platformDto.MaintainableId;
-                break;
-
-            case "simulator":
-                var simulatorDto = await SimulatorClient.GetByIdAsync(id);
-                maintainableId = simulatorDto.MaintainableId;
-                break;
-
-            case "lot":
-                var lotDto = await LotClient.GetByIdAsync(id);
-                maintainableId = lotDto.MaintainableId;
-                break;
-
-            case "mm":
-                var mmDto = await ManModuleClient.GetByIdAsync(id);
-                maintainableId = mmDto.MaintainableId;
-                break;
-        }
-        var action = new MaintainableIdChange { MaintainableModeId = maintainableId };
-        Dispatcher.Dispatch(action);
-    }
-
     protected override async Task OnInitializedAsync()
     {
         await RefreshMaintainers();
